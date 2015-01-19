@@ -1,0 +1,38 @@
+html, body { margin: 0; padding: 0; width: 100%; height: 100%; font-family: "Open Sans"; background-color: #ffffff; color: #606060; }
+* { box-sizing: border-box; }
+img a { border: 0px none transparent; }
+a { text-decoration: none; }
+nav ul, nav li { margin: 0; padding: 0; list-style: none; }
+nav ul li { display: inline-block; margin-right: 10px; }
+
+header { background-color: #0071BC; height: 110px; margin: 0; padding: 15px; color: #9cc5ea; }
+header a { color: #9cc5ea; margin-right: 15px;}
+header a:hover { color: #ffffff; }
+header .logo { padding-top: 15px; margin-left: 100px; display: inline-block; }
+header .logo em { color: #9cc5ea; font-size: 30px; cursor: default; vertical-align: top; line-height: 50px; }
+header nav { display: inline-block; float: right; font-weight: bold; margin-right: 100px; margin-top: 25px;}
+
+footer { background-color: #f0f0f0; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15) inset; padding: 20px 0 10px; text-align: center; color: #999999;
+	position: relative; height: 150px; margin-top: -150px; clear: both; overflow: hidden; }
+footer a { color: #999999; }
+footer a:hover { color: #4d4d4d; }
+footer a img { opacity: 0.4; transition: all 0.2s ease 0s; }
+footer a:hover img { opacity: 1; }
+footer .copyright { margin-top: 40px; }
+
+#footerfix { min-height: 100%; }
+#content { overflow: auto; padding: 20px 0px; padding-bottom: 180px; box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.15) inset; }
+
+strong { color: #0071BC; }
+h1 { margin: 10px 20px; text-align: center; }
+h2 { margin: 10px 50px; }
+p { overflow: hidden; }
+a { color: #f7941e; }
+
+div.answer {
+	overflow: hidden;
+	padding: 10px 100px;
+	background-color: #fafafa;
+	margin-bottom: 100px;
+	box-shadow: 0 2px 2px 0 rgba(100, 100, 100, 0.15), 0 -2px 2px 0 rgba(100, 100, 100, 0.15);
+}
