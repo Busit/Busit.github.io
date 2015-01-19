@@ -121,10 +121,30 @@
 <div class="answer">
 	We talk about push and pull when it comes to exchange data accross devices or services. We always look at the <em>origin</em> of the data:
 	<ul>
-		<li>When the device that has the data sends it directly to Busit, we say it <strong>pushes</strong> its data to the platform. On the other way around, when Busit has data and sends it directly to an external service, Busit should <strong>push</strong> data to that service.</li>
-		<li>When the device that has the data keeps it and waits for Busit to collect it every once in a while (see <a href='#'>automatic</a> interfaces) then we say that Busit <strong>pulls</strong> the data from that device. On the other way around, when Busit has the data and keeps it until an external service collects it, the external service should <strong>pull</strong> data from Busit.</li>
+		<li>When the device that has the data sends it directly to Busit, we say it <strong>pushes</strong> its data to the platform. On the other way around, when Busit has data and sends it directly to an external service, Busit should <strong>push</strong> data to that service.
+			<div style="text-align: center; margin: 20px;">
+				<em>My phone <strong>pushes</strong> the data to Busit.<br />Here is the data !</em><br />
+				<div class="connector"><img src="https://www.busit.com/busit/images/connectors/27.png" /></div>
+				<div class="arrow">&#xf061</div>
+				<div class="connector"><img src="img/logo_white.png" /></div>
+			</div>
+		</li>
+		<li>When the device that has the data keeps it and waits for Busit to collect it every once in a while (see <a href='#'>automatic</a> interfaces) then we say that Busit <strong>pulls</strong> the data from that device.
+			<div style="text-align: center; margin: 20px;">
+				<em>Busit <strong>pulls</strong> the data from my phone.<br />Do you have some data ?</em><br />
+				<div class="connector"><img src="https://www.busit.com/busit/images/connectors/27.png" /></div>
+				<div class="arrow">&#xf060</div>
+				<div class="connector"><img src="img/logo_white.png" /></div>
+			</div>
+			<div style="text-align: center; margin: 20px;">
+				<em>Yes, here it is.</em><br />
+				<div class="connector"><img src="https://www.busit.com/busit/images/connectors/27.png" /></div>
+				<div class="arrow">&#xf061</div>
+				<div class="connector"><img src="img/logo_white.png" /></div>
+			</div>
+		</li>
 	</ul>
-	<p>As you can guess, the ideal situation is always to <strong>push</strong> data because it allows realtime processing. However, this heavily depends on what the external devices or services support. On its side, Busit can collect data from external sources either in push or pull. However, Busit can <span style='text-decoration: underline;'>only push</span> data to external services and does not support pulling for external services. This is enforced by Busit's terms of use stating that <em>we do not store data</em>; hence, we cannot keep it until some external service pulls it.</p>
+	<p>As you can guess, the ideal situation is always to <strong>push</strong> data because it is straight forward and allows realtime processing. However, this heavily depends on what the external devices or services support. On its side, Busit can collect data from external sources either in push or pull. However, Busit can <span style='text-decoration: underline;'>only push</span> data to external services. This is enforced by Busit's terms of use stating that <em>we do not store data</em> ; hence, we cannot keep it until some external service pulls it.</p>
 </div>
 
 	
