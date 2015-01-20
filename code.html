@@ -36,7 +36,7 @@
 <a name="producer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Producer</h2>
 <div class="answer">
 <pre>
-<?php
+&lt;?php
 define("__CLASSNAME__", "\\MyProducer");
 use com\busit as cb;
 
@@ -44,18 +44,19 @@ class MyProducer extends cb\Connector implements cb\Producer
 {
 	public function produce($message, $out)
 	{
-		$message->setContentUTF8("Hello World!");
+		$message-&gt;setContentUTF8("Hello World!");
 		return $message;
 	}
 }
 
-?>
+?&gt;
 </pre>
 </div>
 
 <a name="consumer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Consumer</h2>
+<div class="answer">
 <pre>
-<?php
+&lt;?php
 define("__CLASSNAME__", "\\MyConsumer");
 use com\busit as cb;
 
@@ -63,19 +64,18 @@ class MyConsumer extends cb\Connector implements cb\Consumer
 {
 	public function consume($message, $in)
 	{
-		do_something($message->getContentUTF8);
+		do_something($message-&gt;getContentUTF8);
 	}
 }
 
-?>
+?&gt;
 </pre>
-<div class="answer">
 </div>
 
 <a name="transformer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Transformer</h2>
 <div class="answer">
 <pre>
-<?php
+&lt;?php
 define("__CLASSNAME__", "\\MyTransformer");
 use com\busit as cb;
 
@@ -83,13 +83,13 @@ class MyTransformer extends cb\Connector implements cb\Transformer
 {
 	public function transform($message, $in, $out)
 	{
-		$text = $message->getContentUTF8();
-		$message->setContentUTF8(strtolower($text));
+		$text = $message-&gt;getContentUTF8();
+		$message-&gt;setContentUTF8(strtolower($text));
 		return $message;
 	}
 }
 
-?>
+?&gt;
 </pre>
 </div>
 
