@@ -36,3 +36,8 @@ div.answer {
 	margin-bottom: 100px;
 	box-shadow: 0 2px 2px 0 rgba(100, 100, 100, 0.15), 0 -2px 2px 0 rgba(100, 100, 100, 0.15);
 }
+
+a.javadoc {
+	font-style: italic;
+	color: #f7941e;
+}

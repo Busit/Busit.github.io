@@ -112,8 +112,8 @@ class MyConnector extends com\busit\Connector
 			<ul>
 				<li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then the 
 					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#pull(com.busit.Connector.Interface)"><em>pull()</em></a> method is called.</li>
-				<li>If you implemented the <strong>Transformer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a> method is called.</li>
 				<li>If you implemented the <strong>Producer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called.</li>
+				<li>If you implemented the <strong>Transformer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a> method is called.</li>
 			</ul>
 		</li>
 		<li>Your connector's class instance is destroyed</li>
@@ -122,7 +122,9 @@ class MyConnector extends com\busit\Connector
 
 <a name="producer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Producer pattern</h2>
 <div class="answer">
-	<p>If your connector brings data from external devices or services, it is producing data for Busit.</p>
+	<p>If your connector brings data from external devices or services, it is producing data for Busit.<br />
+	External devices or services can <strong>push</strong> data directly on your connector, or your connector can <strong>pull</strong>
+	from those at regular intervals (see <a href="#cron">automatic interfaces</a>)</p>
 	<p>There are 2 conditions to fulfill if you want to be a producer:</p>
 	<ol>
 		<li>Your class must <strong>extend</strong> the abstract class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
@@ -134,7 +136,7 @@ class MyConnector extends com\busit\Connector
 		<li>The <strong>$message</strong> parameter is of type <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and represents an 
 			empty message container that is already initialized with the user credentials. <a href="#messages">More about Messages</a>.</li>
 		<li>The <strong>$out</strong> parameter is of type <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the output
-			interface that should produce data.  <a href="#interfaces">More about Interfaces</a>.</li>
+			interface that should produce data. <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method must return the same <strong>$message</strong> that was provided <em>(filled with data, of course)</em> or
 			<em>null</em> if there is no message content to be produced.</li>
 	</ul>
@@ -273,17 +275,41 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 	</code></pre>
 </div>
 
-<a name="messages"></a><h2 onclick="return; $(this).next().slideToggle(500);">About Messages</h2>
+<a name="messages"></a><h2 onclick="return; $(this).next().slideToggle(500);">About messages</h2>
 <div class="answer">
 	<em>... in progress ... </em>
 </div>
 
-<a name="interfaces"></a><h2 onclick="return; $(this).next().slideToggle(500);">About Interfaces (inputs and outputs)</h2>
+<a name="interfaces"></a><h2 onclick="return; $(this).next().slideToggle(500);">About interfaces (inputs and outputs)</h2>
+<div class="answer">
+	<p>Interfaces <em>(do not confuse with OOP class interface)</em> are either inputs or outputs from your connector.
+		When publishing your connector, you should mention the different inputs and outputs that your connector accepts and
+		give each of them an internal name (the interface <strong>key</strong>) that will never change. 
+		Then, the user can give it a friendly <strong>name</strong>.
+		Eventually, for custom interfaces, the user can also specify a <strong>value</strong> for it.<p>
+	<p>Example: The mail sender connector has only one input interface with internal key <em>email</em>.<br />
+		When the user adds it to his flow, he can add several of those, and thus give them a name and a value:</p>
+	<ul>
+		<li>Key: <em>email</em> (this cannot change, the user does not see it, this is only for you, the developper)</li>
+		<li>Name: <em>Bob's mail<em> (this is the friendly name set by the user)</li>
+		<li>Value: <em>bob@example.com</em> (this is the value set by the user)</li>
+	</ul>
+	<p>So now, in your code, if you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
+		<em>com\busit\IConnector</em></a>, you receive the interface <strong>key</strong> for every call to <em>cron()</em>,
+		<em>getInput()</em> or <em>setOutput()</em> and it's your logic that determines what to do.<br />
+		On the other hand, if you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
+		<em>com\busit\Connector</em></a>, then you receive a populated <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html">
+		<em>com\busit\Interface</em></a> object with the 3 properties <em>key</em>, <em>name</em> and <em>value</em>.
+	</p>
+	<p>This means that now you know which input or output the message was targetting and you can behave accordingly.</p>
+</div>
+
+<a name="cron"></a><h2 onclick="return; $(this).next().slideToggle(500);">About automatic interfaces (cron)</h2>
 <div class="answer">
 	<em>... in progress ... </em>
 </div>
 
-<a name="configs"></a><h2 onclick="return; $(this).next().slideToggle(500);">About Configurations</h2>
+<a name="configs"></a><h2 onclick="return; $(this).next().slideToggle(500);">About configurations</h2>
 <div class="answer">
 	<em>... in progress ... </em>
 </div>
