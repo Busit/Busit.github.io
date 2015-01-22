@@ -44,9 +44,9 @@
 	It is highly recommended that you'd be familiar with <a href="http://en.wikipedia.org/wiki/Object-oriented_programming">OOP</a>.</p>
 	<ul>
 		<li>Connectors are <strong>stateless</strong>, see <a href="#workflow">workflow</a> section for more details.</li>
-		<li>PHP connectors are using <a href=http://php.net/manual/en/language.namespaces.php">namespaces</a>. 
+		<li>PHP connectors are using <a href="http://php.net/manual/en/language.namespaces.php">namespaces</a>. 
 			However, it is recommended that you leave your code in the default namespace.</li>
-		<li>PHP connectors are composed of at lease one <a href="http://php.net/manual/en/language.oop5.php">class</a> <em>(and ideally only one)</em>.</li>
+		<li>PHP connectors are composed of at lease one class <em>(and ideally only one)</em>.</li>
 		<li>Connectors must be <a href="publish.html">validated by Busit</a> prior to be available on the platform.</li>
 		<li>All programming languages supported (an thus also PHP) share the same object model, 
 			this may lead to unusual methods or structures but allows to have a common meaningful documentation.</li>
@@ -60,7 +60,7 @@
 	<ol>
 		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
 		<!--li>There must be a namespace <strong>use</strong> statement to import <strong>com\busit</strong> classes.</li-->
-		<li>There must be a <strong>class</strong> which's name matches the <strong>__CLASSNAME__</strong> define and that either
+		<li>There must be a <strong>class</strong> which's name matches the <strong>__CLASSNAME__</strong> define, and that either
 			<ul><li><strong>implements</strong> the interface <strong>com\busit\IConnector</strong>, OR</li>
 			<li><strong>extends</strong> the abstract class <strong>com\busit\Connector</strong></li></ul>
 		</li>
@@ -100,7 +100,7 @@ class MyProducer extends cb\Connector implements cb\Producer
 
 <a name="consumer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Consumer</h2>
 <div class="answer">
-<pre>
+<pre><code class="php">
 &lt;?php
 define("__CLASSNAME__", "\\MyConsumer");
 use com\busit as cb;
@@ -114,12 +114,12 @@ class MyConsumer extends cb\Connector implements cb\Consumer
 }
 
 ?&gt;
-</pre>
+</code></pre>
 </div>
 
 <a name="transformer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Transformer</h2>
 <div class="answer">
-<pre>
+<pre><code class="php">
 &lt;?php
 define("__CLASSNAME__", "\\MyTransformer");
 use com\busit as cb;
@@ -135,9 +135,10 @@ class MyTransformer extends cb\Connector implements cb\Transformer
 }
 
 ?&gt;
-</pre>
+</code></pre>
 </div>
 
+<script>hljs.initHighlightingOnLoad();</script>
 			</div>
 		</div>
 		<footer>
