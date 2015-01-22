@@ -45,7 +45,7 @@
 		<li>Connectors are <strong>stateless</strong> and must have a parameterless constructor, see <a href="#lifecycle">lifecycle</a> section for more details.</li>
 		<li>PHP connectors are using <a href="http://php.net/manual/en/language.namespaces.php">namespaces</a>. 
 			However, it is recommended that you leave your code in the default namespace.</li>
-		<li>PHP connectors are composed of at lease one class <em>(and ideally only one)</em>.</li>
+		<li>PHP connectors are composed of at least one class <em>(and ideally only one)</em>.</li>
 		<li>Connectors must be <a href="publish.html">validated by Busit</a> prior to be available on the platform.</li>
 		<li>All programming languages supported share the same object model <em>(as close as possible)</em>, 
 			this may lead to unusual methods or structures for certain languages but allows to have a common meaningful documentation.</li>
@@ -59,7 +59,7 @@
 	<ol>
 		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
 		<!--li>There must be a namespace <strong>use</strong> statement to import <strong>com\busit</strong> classes.</li-->
-		<li>There must be a <strong>class</strong> which's name matches the <strong>__CLASSNAME__</strong> define and that either
+		<li>There must be a <strong>class</strong> which's name matches the <strong>__CLASSNAME__</strong> define, and that either:
 			<ul><li><strong>implements</strong> the interface <strong>com\busit\IConnector</strong>, OR</li>
 			<li><strong>extends</strong> the abstract class <strong>com\busit\Connector</strong> <em>(recommended)</em></li></ul>
 		</li>
@@ -130,26 +130,32 @@ class MyConnector extends com\busit\Connector
 			empty message container that is already initialized with the user credentials.</li>
 		<li>The <strong>$out</strong> parameter is of type <strong>com\busit\Interface</strong> and represents the output
 			interface that should produce data.</li>
-		<li>The method must return the same <strong>com\busit\IMessage</strong> that was provided in <strong>$message</strong> or
+		<li>The method must return the same <strong>$message</strong> that was provided <em>(filled with data, of course)</em> or
 			<em>null</em> if there is no message content to be produced.</li>
 	</ul>
 	<pre><code class="php">
 &lt;?php
-define("__CLASSNAME__", "\\MyProducer");
+define("__CLASSNAME__", "\\WeatherStation");
 
-class MyProducer extends com\busit\Connector implements com\busit\Producer
+class WeatherStation extends com\busit\Connector implements com\busit\Producer
 {
 	public function produce($message, $out)
 	{
-		if( $out->key == 'hello' )
-			$message-&gt;setContentUTF8("Hello " . $out->value);
-		else if( $out->key == 'bye' )
-			$message-&gt;setContentUTF8("Goodbye " . $out->value);
-		else
+		if( !$this-&gt;hasData() )
 			return null;
+			
+		if( $out-&gt;key == 'pressure' )
+			$message-&gt;setContentUTF8("Pressure is " . $this-&gt;getPressure());
+			
+		if( $out-&gt;key == 'temperature' )
+			$message-&gt;setContentUTF8("Temperature is " . $this-&gt;getTemperature());
 			
 		return $message;
 	}
+	
+	private function hasData() { ... }
+	private function getPressure() { ... }
+	private function getTemperature() { ... }
 }
 
 ?&gt;
@@ -158,42 +164,104 @@ class MyProducer extends com\busit\Connector implements com\busit\Producer
 
 <a name="consumer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Consumer pattern</h2>
 <div class="answer">
-<pre><code class="php">
+	<p>If your connector sends data to external devices or services, it is consuming data from Busit.</p>
+	<p>There are 2 conditions to fulfill if you want to be a consumer:</p>
+	<ol>
+		<li>Your class must <strong>extend</strong> the abstract class <strong>com\busit\Connector</strong>.</li>
+		<li>Your class must <strong>implement</strong> the interface <strong>com\busit\Consumer</strong>.</li>
+	</ol>
+	<p>The consumer pattern provides a single <strong>consume()</strong> method with the following signature:</p>
+	<pre><code class="php">public function consume($message, $in)</code></pre>
+	<ul>
+		<li>The <strong>$message</strong> parameter is of type <strong>com\busit\IMessage</strong> and contains the actual data.</li>
+		<li>The <strong>$in</strong> parameter is of type <strong>com\busit\Interface</strong> and represents the input
+			interface to which data should be sent.</li>
+		<li>The method does not return anything.</li>
+	</ul>
+	<pre><code class="php">
 &lt;?php
-define("__CLASSNAME__", "\\MyConsumer");
-use com\busit as cb;
+define("__CLASSNAME__", "\\Light");
 
-class MyConsumer extends cb\Connector implements cb\Consumer
+class Light extends com\busit\Connector implements com\busit\Consumer
 {
 	public function consume($message, $in)
 	{
-		do_something($message-&gt;getContentUTF8);
+		if( $in-&gt;key == 'state' )
+		{
+			if( $message-&gt;getContentUTF8() == 'ON' )
+				$this-&gt;turnOn();
+			else
+				$this-&gt;turnOff();
+		}
+		
+		if( $in-&gt;key == 'color' )
+			$this-&gt;changeColor($message-&gt;getContentUTF8());
 	}
+	
+	private function turnOn() { ... }
+	private function turnOff() { ... }
+	private function changeColor($color) { ... }
 }
 
 ?&gt;
-</code></pre>
+	</code></pre>
 </div>
 
 <a name="transformer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Transformer pattern</h2>
 <div class="answer">
-<pre><code class="php">
+	<p>If your connector aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
+	<p>There are 2 conditions to fulfill if you want to be a transformer:</p>
+	<ol>
+		<li>Your class must <strong>extend</strong> the abstract class <strong>com\busit\Connector</strong>.</li>
+		<li>Your class must <strong>implement</strong> the interface <strong>com\busit\Transformer</strong>.</li>
+	</ol>
+	<p>The transformer pattern provides a single <strong>transform()</strong> method with the following signature:</p>
+	<pre><code class="php">public function transform($message, $in, $out)</code></pre>
+	<ul>
+		<li>The <strong>$message</strong> parameter is of type <strong>com\busit\IMessage</strong> and contains the actual data.</li>
+		<li>The <strong>$in</strong> parameter is of type <strong>com\busit\Interface</strong> and gives you a hint on what data is comming in.</li>
+		<li>The <strong>$out</strong> parameter is of type <strong>com\busit\Interface</strong> and tells you what the user wants to come out.</li>
+		<li>The method must return the same <strong>$message</strong> that was provided <em>(with its data transformed, of course)</em> or
+			<em>null</em> if you want to stop the flow and prevent further processing.</li>
+	</ul>
+	<pre><code class="php">
 &lt;?php
-define("__CLASSNAME__", "\\MyTransformer");
-use com\busit as cb;
+define("__CLASSNAME__", "\\Translator");
 
-class MyTransformer extends cb\Connector implements cb\Transformer
+class Translator extends com\busit\Connector implements com\busit\Transformer
 {
 	public function transform($message, $in, $out)
 	{
-		$text = $message-&gt;getContentUTF8();
-		$message-&gt;setContentUTF8(strtolower($text));
-		return $message;
+		if( $in-&gt;key == $out-&gt;key )
+		{
+			// no need to translate :)
+			return $message;
+		}
+		
+		if( $in-&gt;key == 'french' && $out-&gt;key == 'english' )
+		{
+			$text = $this-&gt;FRtoEN($message-&gt;getContentUTF8());
+			$message-&gt;setContentUTF8($text);
+			return $message;
+		}
+		
+		if( $in-&gt;key == 'english' && $out-&gt;key == 'french' )
+		{
+			$text = $this-&gt;ENtoFR($message-&gt;getContentUTF8());
+			$message-&gt;setContentUTF8($text);
+			return $message;
+		}
+		
+		// we do not support another translation so break the flow
+		return null;
 	}
+	
+	private function FRtoEN($text) { ... }
+	private function ENtoFR($text) { ... }
 }
 
 ?&gt;
-</code></pre>
+	</code></pre>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
