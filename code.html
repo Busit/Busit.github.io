@@ -295,12 +295,55 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 		<li><strong>Value</strong>: <em>bob@example.com</em> (this is the value set by the user)</li>
 	</ul>
 	<p>So now, in your code, if you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
-		<em>com\busit\IConnector</em></a>, you receive the interface <strong>key</strong> for every call to <em>cron()</em>,
-		<em>getInput()</em> or <em>setOutput()</em> and it's your logic that determines what to do.<br />
+		<em>com\busit\IConnector</em></a>, you receive the interface <strong>name</strong> for every call to <em>cron()</em>,
+		<em>getInput()</em> or <em>setOutput()</em> and it's your logic that determines what to do.
+	</p>
+	<pre><code class="php">
+&lt;?php
+define("__CLASSNAME__", "\\NotRecommendedApproach");
+
+class NotRecommendedApproach implements com\busit\IConnector
+{
+	private $outputs = null;
+	
+	public function init($config, $inputs, $outputs) { $this-&lt;outputs = $outputs }
+	public function cron($message, $interfaceId) { ... }
+	public function setInput($message, $interfaceId) { ... }
+	public function getOutput($interfaceId)
+	{
+		if( !isset($this-&lt;outputs[$interfaceId]) )
+			throw new \Exception("Unknown output interface name");
+		
+		$out = $this-&lt;outputs[$interfaceId];
+		$key = $out['key'];
+		$name = $interfaceId;
+		$value = $out['value'];
+	}
+}
+
+?&gt;
+	</code></pre>
+	<p>
 		On the other hand, if you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
 		<em>com\busit\Connector</em></a>, then you receive a populated <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html">
 		<em>com\busit\Interface</em></a> object with the 3 properties <em>key</em>, <em>name</em> and <em>value</em>.
 	</p>
+	<pre><code class="php">
+&lt;?php
+define("__CLASSNAME__", "\\Recommended");
+
+class Recommended extends com\busit\Connector implements com\busit\Producer
+{
+	public function produce($message, $out)
+	{
+		$key = $out->key;
+		$name = $out->name;
+		$value = $out->value;
+	}
+}
+
+?&gt;
+	</code></pre>
 	<p>This means that now you know which input or output the message was targetting and you can behave accordingly.</p>
 </div>
 
