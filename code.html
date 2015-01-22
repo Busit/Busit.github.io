@@ -34,8 +34,7 @@
 			</header>
 			<div id="content">
 
-<h1>Second, we're working on it !</h1>
-<h1>Code</h1>
+			<h1>Code</h1>
 <a name="start"></a><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2>
 <div class="answer">
 	<p>Busit supports multiple programming languages for connectors. 
@@ -43,14 +42,14 @@
 	You can find the complete reference on <a href="http://php.net/">php.net</a>.<br />
 	It is highly recommended that you'd be familiar with <a href="http://en.wikipedia.org/wiki/Object-oriented_programming">OOP</a>.</p>
 	<ul>
-		<li>Connectors are <strong>stateless</strong>, see <a href="#workflow">workflow</a> section for more details.</li>
+		<li>Connectors are <strong>stateless</strong> and must have a parameterless constructor, see <a href="#lifecycle">lifecycle</a> section for more details.</li>
 		<li>PHP connectors are using <a href="http://php.net/manual/en/language.namespaces.php">namespaces</a>. 
 			However, it is recommended that you leave your code in the default namespace.</li>
 		<li>PHP connectors are composed of at lease one class <em>(and ideally only one)</em>.</li>
 		<li>Connectors must be <a href="publish.html">validated by Busit</a> prior to be available on the platform.</li>
-		<li>All programming languages supported (an thus also PHP) share the same object model, 
-			this may lead to unusual methods or structures but allows to have a common meaningful documentation.</li>
-			
+		<li>All programming languages supported share the same object model <em>(as close as possible)</em>, 
+			this may lead to unusual methods or structures for certain languages but allows to have a common meaningful documentation.</li>
+		<li>For most accurate class documentation, see the <a href="https://www.busit.com/busit/doc/javadoc/">javadoc</a></li>
 	</ul>
 </div>
 
@@ -60,9 +59,9 @@
 	<ol>
 		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
 		<!--li>There must be a namespace <strong>use</strong> statement to import <strong>com\busit</strong> classes.</li-->
-		<li>There must be a <strong>class</strong> which's name matches the <strong>__CLASSNAME__</strong> define, and that either
+		<li>There must be a <strong>class</strong> which's name matches the <strong>__CLASSNAME__</strong> define and that either
 			<ul><li><strong>implements</strong> the interface <strong>com\busit\IConnector</strong>, OR</li>
-			<li><strong>extends</strong> the abstract class <strong>com\busit\Connector</strong></li></ul>
+			<li><strong>extends</strong> the abstract class <strong>com\busit\Connector</strong> <em>(recommended)</em></li></ul>
 		</li>
 	</ol>
 	
@@ -78,27 +77,86 @@ class MyConnector extends com\busit\Connector
 	</code></pre>
 </div>
 
-<a name="producer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Producer</h2>
+<a name="lifecycle"></a><h2 onclick="return; $(this).next().slideToggle(500);">Connector lifecycle</h2>
 <div class="answer">
-<pre><code class="php">
+	<p>Everytime a connector is triggered, a new instance of the class is created. After processing the message, the class instance is destroyed. 
+	This means that there is no persistency nor any kind of state of the class: connectors are <strong>stateless</strong>.
+	If your connector absolutely requires an internal state or some sort of history, you should setup one of your own using external services or you 
+	should have a <em>premium developper account</em> so that Busit provides such mechanism to you.</p>
+	<p>Context:</p>
+	<ol>
+		<li>You create a connector and publish it on the Busit store.</li>
+		<li>A user adds your connector to one of his own flows.</li>
+		<li>The user configures his copy of your connector, this is stored in the Busit database.</li>
+		<li>The user sends a message to his flow...</li>
+	</ol>
+	<p>Server side:</p>
+	<ol>
+		<li>The Busit broker detects that the message is targetting your connector.</li>
+		<li>Your code is retreived from the connector store and the class specified by the <strong>__CLASSNAME__</strong> define is instanciated using a parameterless constructor.</li>
+		<li>The user configuration, inputs and outputs are retreived and passed to the <strong>com\busit\IConnector.init()</strong> method.
+			<ul><li>If you extended the class <strong>com\busit\Connector</strong>, then all is handled for you.</li></ul>
+		</li>
+		<li>The user message is passed to the <strong>com\busit\IConnector.setInput()</strong> method.
+			<ul>
+				<li>If you extended the class <strong>com\busit\Connector</strong>, then the <strong>push()</strong> method is called.</li>
+				<li>If you implemented the <strong>Consumer</strong> pattern, then the <strong>consume()</strong> method is called.</li>
+			</ul>
+		</li>
+		<li>The Busit broker checks if there are any other connectors in the flow ; if there are any, the <strong>com\busit\IConnector.getOutput()</strong>
+			method is called.
+			<ul>
+				<li>If you extended the class <strong>com\busit\Connector</strong>, then the <strong>pull()</strong> method is called.</li>
+				<li>If you implemented the <strong>Transformer</strong> pattern, then the <strong>transform()</strong> method is called.</li>
+				<li>If you implemented the <strong>Producer</strong> pattern, then the <strong>produce()</strong> method is called.</li>
+			</ul>
+		</li>
+		<li>Your connector's class instance is destroyed</li>
+	</ol>
+</div>
+
+<a name="producer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Producer pattern</h2>
+<div class="answer">
+	<p>If your connector brings data from external devices or services, it is producing data for Busit.</p>
+	<p>There are 2 conditions to fulfill if you want to be a producer:</p>
+	<ol>
+		<li>Your class must <strong>extend</strong> the abstract class <strong>com\busit\Connector</strong>.</li>
+		<li>Your class must <strong>implement</strong> the interface <strong>com\busit\Producer</strong>.</li>
+	</ol>
+	<p>The producer pattern provides a single <strong>produce()</strong> method with the following signature:</p>
+	<pre><code class="php">public function produce($message, $out)</code></pre>
+	<ul>
+		<li>The <strong>$message</strong> parameter is of type <strong>com\busit\IMessage</strong> and represents an 
+			empty message container that is already initialized with the user credentials.</li>
+		<li>The <strong>$out</strong> parameter is of type <strong>com\busit\Interface</strong> and represents the output
+			interface that should produce data.</li>
+		<li>The method must return the same <strong>com\busit\IMessage</strong> that was provided in <strong>$message</strong> or
+			<em>null</em> if there is no message content to be produced.</li>
+	</ul>
+	<pre><code class="php">
 &lt;?php
 define("__CLASSNAME__", "\\MyProducer");
-use com\busit as cb;
 
-class MyProducer extends cb\Connector implements cb\Producer
+class MyProducer extends com\busit\Connector implements com\busit\Producer
 {
 	public function produce($message, $out)
 	{
-		$message-&gt;setContentUTF8("Hello World!");
+		if( $out->key == 'hello' )
+			$message-&gt;setContentUTF8("Hello " . $out->value);
+		else if( $out->key == 'bye' )
+			$message-&gt;setContentUTF8("Goodbye " . $out->value);
+		else
+			return null;
+			
 		return $message;
 	}
 }
 
 ?&gt;
-</code></pre>
+	</code></pre>
 </div>
 
-<a name="consumer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Consumer</h2>
+<a name="consumer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Consumer pattern</h2>
 <div class="answer">
 <pre><code class="php">
 &lt;?php
@@ -117,7 +175,7 @@ class MyConsumer extends cb\Connector implements cb\Consumer
 </code></pre>
 </div>
 
-<a name="transformer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Transformer</h2>
+<a name="transformer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Transformer pattern</h2>
 <div class="answer">
 <pre><code class="php">
 &lt;?php
