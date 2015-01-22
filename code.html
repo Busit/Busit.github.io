@@ -306,15 +306,15 @@ class NotRecommendedApproach implements com\busit\IConnector
 {
 	private $outputs = null;
 	
-	public function init($config, $inputs, $outputs) { $this-&lt;outputs = $outputs }
+	public function init($config, $inputs, $outputs) { $this-&gt;outputs = $outputs }
 	public function cron($message, $interfaceId) { ... }
 	public function setInput($message, $interfaceId) { ... }
 	public function getOutput($interfaceId)
 	{
-		if( !isset($this-&lt;outputs[$interfaceId]) )
+		if( !isset($this-&gt;outputs[$interfaceId]) )
 			throw new \Exception("Unknown output interface name");
 		
-		$out = $this-&lt;outputs[$interfaceId];
+		$out = $this-&gt;outputs[$interfaceId];
 		$key = $out['key'];
 		$name = $interfaceId;
 		$value = $out['value'];
@@ -336,9 +336,9 @@ class Recommended extends com\busit\Connector implements com\busit\Producer
 {
 	public function produce($message, $out)
 	{
-		$key = $out->key;
-		$name = $out->name;
-		$value = $out->value;
+		$key = $out-&gt;key;
+		$name = $out-&gt;name;
+		$value = $out-&gt;value;
 	}
 }
 
