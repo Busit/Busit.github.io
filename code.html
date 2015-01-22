@@ -290,9 +290,9 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 	<p>Example: The mail sender connector has only one input interface with internal key <em>email</em>.<br />
 		When the user adds it to his flow, he can add several of those, and thus give them a name and a value:</p>
 	<ul>
-		<li>Key: <em>email</em> (this cannot change, the user does not see it, this is only for you, the developper)</li>
-		<li>Name: <em>Bob's mail</em> (this is the friendly name set by the user)</li>
-		<li>Value: <em>bob@example.com</em> (this is the value set by the user)</li>
+		<li><strong>Key</strong>: <em>email</em> (this cannot change, the user does not see it, this is only for you, the developper)</li>
+		<li><strong>Name</strong>: <em>Bob's mail</em> (this is the friendly name set by the user)</li>
+		<li><strong>Value</strong>: <em>bob@example.com</em> (this is the value set by the user)</li>
 	</ul>
 	<p>So now, in your code, if you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
 		<em>com\busit\IConnector</em></a>, you receive the interface <strong>key</strong> for every call to <em>cron()</em>,
