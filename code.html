@@ -295,14 +295,14 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 		<li><strong>Value</strong>: <em>bob@example.com</em> (this is the value set by the user)</li>
 	</ul>
 	<p>So now, in your code, if you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
-		<em>com\busit\IConnector</em></a>, you receive the interface <strong>name</strong> for every call to <em>cron()</em>,
+		<em>com\busit\IConnector</em></a> (not recommended), you receive the interface <strong>name</strong> for every call to <em>cron()</em>,
 		<em>getInput()</em> or <em>setOutput()</em> and it's your logic that determines what to do.
 	</p>
 	<pre><code class="php">
 &lt;?php
-define("__CLASSNAME__", "\\NotRecommendedApproach");
+define("__CLASSNAME__", "\\NotRecommended");
 
-class NotRecommendedApproach implements com\busit\IConnector
+class NotRecommended implements com\busit\IConnector
 {
 	private $outputs = null;
 	
@@ -314,10 +314,9 @@ class NotRecommendedApproach implements com\busit\IConnector
 		if( !isset($this-&gt;outputs[$interfaceId]) )
 			throw new \Exception("Unknown output interface name");
 		
-		$out = $this-&gt;outputs[$interfaceId];
-		$key = $out['key'];
-		$name = $interfaceId;
-		$value = $out['value'];
+		$key = $this-&gt;outputs[$interfaceId]['key']; // email
+		$name = $interfaceId; // Bob's mail
+		$value = $this-&gt;outputs[$interfaceId]['value']; // bob@example.com
 	}
 }
 
@@ -325,7 +324,7 @@ class NotRecommendedApproach implements com\busit\IConnector
 	</code></pre>
 	<p>
 		On the other hand, if you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
-		<em>com\busit\Connector</em></a>, then you receive a populated <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html">
+		<em>com\busit\Connector</em></a> (recommended), then you receive a populated <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html">
 		<em>com\busit\Interface</em></a> object with the 3 properties <em>key</em>, <em>name</em> and <em>value</em>.
 	</p>
 	<pre><code class="php">
@@ -336,9 +335,9 @@ class Recommended extends com\busit\Connector implements com\busit\Producer
 {
 	public function produce($message, $out)
 	{
-		$key = $out-&gt;key;
-		$name = $out-&gt;name;
-		$value = $out-&gt;value;
+		$key = $out-&gt;key; // email
+		$name = $out-&gt;name; // Bob's mail
+		$value = $out-&gt;value; // bob@example.com
 	}
 }
 
