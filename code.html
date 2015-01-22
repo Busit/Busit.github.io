@@ -100,16 +100,18 @@ class MyConnector extends com\busit\Connector
 			<em>com\busit\IConnector.init()</em></a> method.
 			<ul><li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then all is handled for you.</li></ul>
 		</li>
-		<li>The user message is passed to the <strong>com\busit\IConnector.setInput()</strong> method.
+		<li>The user message is passed to the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#setInput(com.busit.IMessage,%20java.lang.String)"><em>com\busit\IConnector.setInput()</em></a> method.
 			<ul>
-				<li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then the <strong>push()</strong> method is called.</li>
+				<li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then the 
+					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>push()</em></a> method is called.</li>
 				<li>If you implemented the <strong>Consumer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method is called.</li>
 			</ul>
 		</li>
-		<li>The Busit broker checks if there are any other connectors in the flow ; if there are any, the <strong>com\busit\IConnector.getOutput()</strong>
-			method is called.
+		<li>The Busit broker checks if there are any other connectors in the flow ; if there are any, the 
+			<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)"><em>com\busit\IConnector.getOutput()</em></a> method is called.
 			<ul>
-				<li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then the <strong>pull()</strong> method is called.</li>
+				<li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then the 
+					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#pull(com.busit.Connector.Interface)"><em>pull()</em></a> method is called.</li>
 				<li>If you implemented the <strong>Transformer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a> method is called.</li>
 				<li>If you implemented the <strong>Producer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called.</li>
 			</ul>
