@@ -304,20 +304,21 @@ define("__CLASSNAME__", "\\NotRecommended");
 
 class NotRecommended implements com\busit\IConnector
 {
-	private $outputs = null;
+	private $inputs = null;
 	
-	public function init($config, $inputs, $outputs) { $this-&gt;outputs = $outputs }
+	public function init($config, $inputs, $outputs) { $this-&gt;inputs = $inputs }
 	public function cron($message, $interfaceId) { ... }
-	public function setInput($message, $interfaceId) { ... }
-	public function getOutput($interfaceId)
+	public function setInput($message, $interfaceId)
 	{
-		if( !isset($this-&gt;outputs[$interfaceId]) )
+		if( !isset($this-&gt;inputs[$interfaceId]) )
 			throw new \Exception("Unknown output interface name");
 		
-		$key = $this-&gt;outputs[$interfaceId]['key']; // email
+		$key = $this-&gt;inputs[$interfaceId]['key']; // email
 		$name = $interfaceId; // Bob's mail
-		$value = $this-&gt;outputs[$interfaceId]['value']; // bob@example.com
+		$value = $this-&gt;inputs[$interfaceId]['value']; // bob@example.com
+		...
 	}
+	public function getOutput($interfaceId) { ... }
 }
 
 ?&gt;
@@ -331,13 +332,14 @@ class NotRecommended implements com\busit\IConnector
 &lt;?php
 define("__CLASSNAME__", "\\Recommended");
 
-class Recommended extends com\busit\Connector implements com\busit\Producer
+class Recommended extends com\busit\Connector implements com\busit\Consumer
 {
-	public function produce($message, $out)
+	public function consume($message, $in)
 	{
-		$key = $out-&gt;key; // email
-		$name = $out-&gt;name; // Bob's mail
-		$value = $out-&gt;value; // bob@example.com
+		$key = $in-&gt;key; // email
+		$name = $in-&gt;name; // Bob's mail
+		$value = $in-&gt;value; // bob@example.com
+		...
 	}
 }
 
