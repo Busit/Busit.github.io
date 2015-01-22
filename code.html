@@ -60,8 +60,10 @@
 		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
 		<!--li>There must be a namespace <strong>use</strong> statement to import <strong>com\busit</strong> classes.</li-->
 		<li>There must be a <strong>class</strong> which's name matches the <strong>__CLASSNAME__</strong> define, and that either:
-			<ul><li><strong>implements</strong> the interface <strong>com\busit\IConnector</strong>, OR</li>
-			<li><strong>extends</strong> the abstract class <strong>com\busit\Connector</strong> <em>(recommended)</em></li></ul>
+			<ul><li><strong>implements</strong> the interface <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
+			<em>com\busit\IConnector</em></a>, OR</li>
+			<li><strong>extends</strong> the abstract class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
+			<em>com\busit\Connector</em></a> <em>(recommended)</em></li></ul>
 		</li>
 	</ol>
 	
@@ -127,9 +129,9 @@ class MyConnector extends com\busit\Connector
 	<pre><code class="php">public function produce($message, $out)</code></pre>
 	<ul>
 		<li>The <strong>$message</strong> parameter is of type <strong>com\busit\IMessage</strong> and represents an 
-			empty message container that is already initialized with the user credentials.</li>
+			empty message container that is already initialized with the user credentials. <a href="#messages">More about Messages</a>.</li>
 		<li>The <strong>$out</strong> parameter is of type <strong>com\busit\Interface</strong> and represents the output
-			interface that should produce data.</li>
+			interface that should produce data.  <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method must return the same <strong>$message</strong> that was provided <em>(filled with data, of course)</em> or
 			<em>null</em> if there is no message content to be produced.</li>
 	</ul>
@@ -173,9 +175,10 @@ class WeatherStation extends com\busit\Connector implements com\busit\Producer
 	<p>The consumer pattern provides a single <strong>consume()</strong> method with the following signature:</p>
 	<pre><code class="php">public function consume($message, $in)</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <strong>com\busit\IMessage</strong> and contains the actual data.</li>
+		<li>The <strong>$message</strong> parameter is of type <strong>com\busit\IMessage</strong> and contains the actual data. 
+			<a href="#messages">More about Messages</a>.</li>
 		<li>The <strong>$in</strong> parameter is of type <strong>com\busit\Interface</strong> and represents the input
-			interface to which data should be sent.</li>
+			interface to which data should be sent. <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method does not return anything.</li>
 	</ul>
 	<pre><code class="php">
@@ -218,9 +221,12 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 	<p>The transformer pattern provides a single <strong>transform()</strong> method with the following signature:</p>
 	<pre><code class="php">public function transform($message, $in, $out)</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <strong>com\busit\IMessage</strong> and contains the actual data.</li>
-		<li>The <strong>$in</strong> parameter is of type <strong>com\busit\Interface</strong> and gives you a hint on what data is comming in.</li>
-		<li>The <strong>$out</strong> parameter is of type <strong>com\busit\Interface</strong> and tells you what the user wants to come out.</li>
+		<li>The <strong>$message</strong> parameter is of type <strong>com\busit\IMessage</strong> and contains the actual data. 
+			<a href="#messages">More about Messages</a>.</li>
+		<li>The <strong>$in</strong> parameter is of type <strong>com\busit\Interface</strong> and gives you a hint on what data is comming in.
+			 <a href="#interfaces">More about Interfaces</a>.</li>
+		<li>The <strong>$out</strong> parameter is of type <strong>com\busit\Interface</strong> and tells you what the user wants to come out.
+			<a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method must return the same <strong>$message</strong> that was provided <em>(with its data transformed, of course)</em> or
 			<em>null</em> if you want to stop the flow and prevent further processing.</li>
 	</ul>
@@ -262,6 +268,21 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 
 ?&gt;
 	</code></pre>
+</div>
+
+<a name="messages"></a><h2 onclick="return; $(this).next().slideToggle(500);">About Messages</h2>
+<div class="answer">
+	<em>... in progress ... </em>
+</div>
+
+<a name="interfaces"></a><h2 onclick="return; $(this).next().slideToggle(500);">About Interfaces (inputs and outputs)</h2>
+<div class="answer">
+	<em>... in progress ... </em>
+</div>
+
+<a name="configs"></a><h2 onclick="return; $(this).next().slideToggle(500);">About Configurations</h2>
+<div class="answer">
+	<em>... in progress ... </em>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
