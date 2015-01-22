@@ -10,6 +10,9 @@
 		<link rel="stylesheet" href="css/main.css" type="text/css" />
 		<script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="js/jquery.min.js"></script>
+		
+		<link class="codestyle" rel="stylesheet" href="css/github.css">
+		<script type="text/javascript" src="js/highlight.pack.js"></script>
 	</head>
 	<body>
 		<div id="footerfix">
@@ -32,10 +35,52 @@
 			<div id="content">
 
 <h1>Second, we're working on it !</h1>
+<h1>Code</h1>
+<a name="start"></a><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2>
+<div class="answer">
+	<p>Busit supports multiple programming languages for connectors. 
+	However, only <strong>PHP 5</strong> is open for developers at this time. 
+	You can find the complete reference on <a href="http://php.net/">php.net</a>.<br />
+	It is highly recommended that you'd be familiar with <a href="http://en.wikipedia.org/wiki/Object-oriented_programming">OOP</a>.</p>
+	<ul>
+		<li>Connectors are <strong>stateless</strong>, see <a href="#workflow">workflow</a> section for more details.</li>
+		<li>PHP connectors are using <a href=http://php.net/manual/en/language.namespaces.php">namespaces</a>. 
+			However, it is recommended that you leave your code in the default namespace.</li>
+		<li>PHP connectors are composed of at lease one <a href="http://php.net/manual/en/language.oop5.php">class</a> <em>(and ideally only one)</em>.</li>
+		<li>Connectors must be <a href="publish.html">validated by Busit</a> prior to be available on the platform.</li>
+		<li>All programming languages supported (an thus also PHP) share the same object model, 
+			this may lead to unusual methods or structures but allows to have a common meaningful documentation.</li>
+			
+	</ul>
+</div>
+
+<a name="basic"></a><h2 onclick="return; $(this).next().slideToggle(500);">Basic structure</h2>
+<div class="answer">
+	<p>There are 2 basic requirements for a PHP connector:</p>
+	<ol>
+		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
+		<!--li>There must be a namespace <strong>use</strong> statement to import <strong>com\busit</strong> classes.</li-->
+		<li>There must be a <strong>class</strong> which's name matches the <strong>__CLASSNAME__</strong> define and that either
+			<ul><li><strong>implements</strong> the interface <strong>com\busit\IConnector</strong>, OR</li>
+			<li><strong>extends</strong> the abstract class <strong>com\busit\Connector</strong></li></ul>
+		</li>
+	</ol>
+	
+	<pre><code class="php">
+&lt;?php
+define("__CLASSNAME__", "\\MyConnector");
+
+class MyConnector extends com\busit\Connector
+{
+}
+
+?&gt;
+	</code></pre>
+</div>
 
 <a name="producer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Producer</h2>
 <div class="answer">
-<pre>
+<pre><code class="php">
 &lt;?php
 define("__CLASSNAME__", "\\MyProducer");
 use com\busit as cb;
@@ -50,7 +95,7 @@ class MyProducer extends cb\Connector implements cb\Producer
 }
 
 ?&gt;
-</pre>
+</code></pre>
 </div>
 
 <a name="consumer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Consumer</h2>
