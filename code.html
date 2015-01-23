@@ -37,6 +37,8 @@
 			<h1>Code</h1>
 <a name="start"></a><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2>
 <div class="answer">
+	<p style="font-size: 1.2em;">Before writing the first line of code, you should be familiar with the <a href="settings.html">connector settings</a> and have a 
+		concrete idea on what your connector is going to do and what interfaces it has.</p>
 	<p>Busit supports multiple programming languages for connectors. 
 	However, only <strong>PHP 5</strong> is open for developers at this time. 
 	You can find the complete reference on <a href="http://php.net/">php.net</a>.<br />
@@ -55,6 +57,14 @@
 
 <a name="basic"></a><h2 onclick="return; $(this).next().slideToggle(500);">Basic structure</h2>
 <div class="answer">
+	<p>Developping a connector is done in 2 phases :</p>
+	<ol>
+		<li>Define the connector's capabilities and settings, name, description, translations, what interfaces it supports, what are
+			the configuration parameters,...<br />This is done on the developper panel and not in the code. See the 
+			<a href="settings.html">connector settings</a> in order to have all details about this.</li>
+		<li>Write the actual code of your connector according to the settings you have declared.</li>
+	</ol>
+		
 	<p>There are 2 basic requirements for a PHP connector:</p>
 	<ol>
 		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
@@ -286,7 +296,7 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 		When publishing your connector, you should mention the different inputs and outputs that your connector accepts and
 		give each of them an internal name (the interface <strong>key</strong>) that will never change. 
 		Then, the user can give it a friendly <strong>name</strong>.
-		Eventually, for custom interfaces, the user can also specify a <strong>value</strong> for it.<p>
+		Eventually, for custom interfaces, the user can also specify a <strong>value</strong> for it.</p>
 	<p>Example: The mail sender connector has only one input interface with internal key <em>email</em>.<br />
 		When the user adds it to his flow, he can add several of those, and thus give them a name and a value:</p>
 	<ul>
