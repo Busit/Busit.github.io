@@ -409,28 +409,28 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 
 <a name="configs"></a><h2 onclick="return; $(this).next().slideToggle(500);">About configurations</h2>
 <div class="answer">
-	<p>The configuration parameters as designed in the <a href="settings.html">connector settings</a> section -and later completed by the user- are
+	<p>The configuration parameters as you designed them in the <a href="settings.html">connector settings</a> -and later completed by the user- are
 	available in your code.</p>
-	<p>If you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
+	<ul><li>If you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
 	<em>com\busit\IConnector</em></a>, then you get the configuration parameters at the same time as the input and output interfaces definition in the 
 	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
 	<em>com\busit\IConnector.init()</em></a> method. It is up to you to decide what to do then. Note that the <strong>$config</strong> parameter is only
 	available in the <em>init()</em> method unless you save it in an internl property. The <strong>$config</strong> parameter is an 
-	associative array.</p>
+	associative array.
 	<pre><code class="php">
 public function init($config, $inputs, $outputs)
 {
 	// only in init() :
 	$value = $config['my_parameter'];
 }
-</code></pre>
-	<p>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a> then
+</code></pre></li>
+	<li>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a> then
 	the configuration parameters are made avilable via the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#config(java.lang.String)">
-	<em>config()</em></a> method that returns the value of the desired configuration parameter. This method is available anywhere in the class.</p>
+	<em>config()</em></a> method that returns the value of the desired configuration parameter. This method is available anywhere in the class.
 <pre><code class="php">
 	// anywhere in the code :
 	$value = $this->config('my_parameter');
-</code></pre>
+</code></pre></li></ul>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
