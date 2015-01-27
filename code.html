@@ -69,7 +69,6 @@
 	<p>There are 2 basic requirements for a PHP connector:</p>
 	<ol>
 		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
-		<!--li>There must be a namespace <strong>use</strong> statement to import <strong>com\busit</strong> classes.</li-->
 		<li>There must be a <strong>class</strong> whose name matches the <strong>__CLASSNAME__</strong> define, and that either:
 			<ul><li><strong>implements</strong> the interface <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
 			<em>com\busit\IConnector</em></a>, OR</li>
@@ -142,27 +141,27 @@ public function run($message)
 	
 	// 3) initialize
 	if( $instance instanceof com\busit\IConnector )
-		$instance->init($config, $inputs, $outputs);
+		$instance-&gt;init($config, $inputs, $outputs);
 	
 	// 4) pass the message in the connector
 	if( $instance instanceof com\busit\IConnector )
-		$instance->setInput($message, $interfaceId);
+		$instance-&gt;setInput($message, $interfaceId);
 	else if( $instance instanceof com\busit\Connector )
-		$instance->push($message, $in);
+		$instance-&gt;push($message, $in);
 	else if( $instance instanceof com\busit\Consumer )
-		$instance->consume($message, $in);
+		$instance-&gt;consume($message, $in);
 	
 	// 5) get the result and pass it to the next connector
 	if( hasMoreConnectors() )
 	{
 		if( $instance instanceof com\busit\IConnector )
-			$new_message = $instance->getOutput($message, $interfaceId);
+			$new_message = $instance-&gt;getOutput($message, $interfaceId);
 		else if( $instance instanceof com\busit\Connector )
-			$new_message = $instance->pull($message, $out);
+			$new_message = $instance-&gt;pull($message, $out);
 		else if( $instance instanceof com\busit\Producer )
-			$new_message = $instance->produce($message, $out);
+			$new_message = $instance-&gt;produce($message, $out);
 		else if( $instance instanceof com\busit\Transformer )
-			$new_message = $instance->transform($message, $in, $out);
+			$new_message = $instance-&gt;transform($message, $in, $out);
 		
 		if( $new_message != null )
 			run($new_message);
@@ -331,7 +330,45 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 
 <a name="messages"></a><h2 onclick="return; $(this).next().slideToggle(500);">About messages</h2>
 <div class="answer">
-	<em>... in progress ... </em>
+	<p>The messages convey data across the connectors and make sure the content is encrypted with the user's identity. All messages are of type 
+	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a>. You can change the message content but
+	you <strong>cannot create new messages</strong> because it requires to be initialized with the user's identity which you don't have ! However, you can 
+	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html#duplicate()"><em>duplicate()</em></a> an existing message if needed.</p>
+	<p>The content of the messages is split in 2 parts <em>(just like an email)</em> :</p>
+	<ol>
+		<li>The textual <strong>content</strong> can be set or retreived in <a href="http://en.wikipedia.org/wiki/UTF-8">UTF8</a> encoding or as raw
+		binary.
+<pre><code class="php">
+$text = $message-&gt;getContentUTF8();
+$message-&gt;setContentUTF8('Hello World!');
+
+$bytes = $message-&gt;getContentBinary();
+$message-&gt;setContentBinary($data);
+</code></pre>
+		However, there is a possibility to format the message content in a structured way using a <strong>Known Type</strong>. <a href="#knowntype">More about Known Types</a>.
+		</li>
+		<li>The <strong>attachments</strong> that can contain pictures, files,...
+<pre><code class="php">
+$files = $message-&gt;getAttachmentNames();
+foreach( $files as $f )
+	$message-&gt;getAttachment($f);
+
+$message-&gt;addAttachment($name, $data);
+</code></pre>
+		</li>
+	</ol>
+	<p>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
+	<em>com\busit\Connector</em></a>, there are 3 usefull method you can use to get a message class instance:<p>
+	<ul>
+		<li>To get a brand new empty message, just call the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#empty()">
+		<em>empty()</em></a> method from anywhere in your code.<pre><code class="php">$new_message = $this-&gt;empty();</code></pre></li>
+		<li>To get a copy of the initial message with the same content, just call the 
+		<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#copy()"><em>copy()</em></a> method from anywhere in your code.
+		<pre><code class="php">$new_message = $this-&gt;copy();</code></pre></li>
+		<li>To get the actual real original message, just call the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#original()">
+		<em>original()</em></a> method from anywhere in your code.<pre><code class="php">$the_message = $this-&gt;original();</code></pre>
+		Be careful with the original message, because if you modify it, you will not be able to get the original content back.</li>
+	</ul>
 </div>
 
 <a name="interfaces"></a><h2 onclick="return; $(this).next().slideToggle(500);">About interfaces (inputs and outputs)</h2>
@@ -429,8 +466,13 @@ public function init($config, $inputs, $outputs)
 	<em>config()</em></a> method that returns the value of the desired configuration parameter. This method is available anywhere in the class.
 <pre><code class="php">
 	// anywhere in the code :
-	$value = $this->config('my_parameter');
+	$value = $this-&gt;config('my_parameter');
 </code></pre></li></ul>
+</div>
+
+<a name="knowntype"></a><h2 onclick="return; $(this).next().slideToggle(500);">About Known Types</h2>
+<div class="answer">
+	<em>... in progress ... </em>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
