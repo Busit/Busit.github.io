@@ -129,6 +129,49 @@ class MyConnector extends com\busit\Connector
 		</li>
 		<li>Your connector's class instance is destroyed</li>
 	</ol>
+	<p>Pseudo code:</p><pre><code class="php">
+public function run($message)
+{
+	// 1) detect your connector
+	$connector_id = getTargetConnector($message);
+	
+	// 2) get the code and create a class instance
+	loadCode($connector_id);
+	$class_name = __CLASSNAME__;
+	$instance = new $class_name();
+	
+	// 3) initialize
+	if( $instance instanceof com\busit\IConnector )
+		$instance->init($config, $inputs, $outputs);
+	
+	// 4) pass the message in the connector
+	if( $instance instanceof com\busit\IConnector )
+		$instance->setInput($message, $interfaceId);
+	else if( $instance instanceof com\busit\Connector )
+		$instance->push($message, $in);
+	else if( $instance instanceof com\busit\Consumer )
+		$instance->consume($message, $in);
+	
+	// 5) get the result and pass it to the next connector
+	if( hasMoreConnectors() )
+	{
+		if( $instance instanceof com\busit\IConnector )
+			$new_message = $instance->getOutput($message, $interfaceId);
+		else if( $instance instanceof com\busit\Connector )
+			$new_message = $instance->pull($message, $out);
+		else if( $instance instanceof com\busit\Producer )
+			$new_message = $instance->produce($message, $out);
+		else if( $instance instanceof com\busit\Transformer )
+			$new_message = $instance->transform($message, $in, $out);
+		
+		if( $new_message != null )
+			run($new_message);
+	}
+	
+	// 6) destroy the instance
+	$instance = null;
+}
+</code></pre>
 </div>
 
 <a name="producer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Producer pattern</h2>
@@ -366,7 +409,28 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 
 <a name="configs"></a><h2 onclick="return; $(this).next().slideToggle(500);">About configurations</h2>
 <div class="answer">
-	<em>... in progress ... </em>
+	<p>The configuration parameters as designed in the <a href="settings.html">connector settings</a> section -and later completed by the user- are
+	available in your code.</p>
+	<p>If you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
+	<em>com\busit\IConnector</em></a>, then you get the configuration parameters at the same time as the input and output interfaces definition in the 
+	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
+	<em>com\busit\IConnector.init()</em></a> method. It is up to you to decide what to do then. Note that the <strong>$config</strong> parameter is only
+	available in the <em>init()</em> method unless you save it in an internl property. The <strong>$config</strong> parameter is an 
+	associative array.</p>
+	<pre><code class="php">
+public function init($config, $inputs, $outputs)
+{
+	// only in init() :
+	$value = $config['my_parameter'];
+}
+</code></pre>
+	<p>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a> then
+	the configuration parameters are made avilable via the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#config(java.lang.String)">
+	<em>config()</em></a> method that returns the value of the desired configuration parameter. This method is available anywhere in the class.</p>
+<pre><code class="php">
+	// anywhere in the code :
+	$value = $this->config('my_parameter');
+</code></pre>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
