@@ -118,12 +118,12 @@ class MyConnector extends com\busit\Connector
 			</ul>
 		</li>
 		<li>The Busit broker checks if there are any other connectors in the flow ; if there are any, the 
-			<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)"><em>com\busit\IConnector.getOutput()</em></a> method is called.
+			<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)"><em>com\busit\IConnector.getOutput()</em></a> method is called for each different <strong>output</strong> interface that is linked to another connector.
 			<ul>
 				<li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then the 
-					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#pull(com.busit.Connector.Interface)"><em>pull()</em></a> method is called.</li>
-				<li>If you implemented the <strong>Producer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called.</li>
-				<li>If you implemented the <strong>Transformer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a> method is called.</li>
+					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#pull(com.busit.Connector.Interface)"><em>pull()</em></a> method is called for each output.</li>
+				<li>If you implemented the <strong>Producer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called for each output.</li>
+				<li>If you implemented the <strong>Transformer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a> method is called for each output.</li>
 			</ul>
 		</li>
 		<li>Your connector's class instance is destroyed</li>
@@ -358,7 +358,7 @@ $message-&gt;addAttachment($name, $data);
 		</li>
 	</ol>
 	<p>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
-	<em>com\busit\Connector</em></a>, there are 3 usefull method you can use to get a message class instance:<p>
+	<em>com\busit\Connector</em></a>, there are 3 usefull method you can use to get a message class instance:</p>
 	<ul>
 		<li>To get a brand new empty message, just call the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#empty()">
 		<em>empty()</em></a> method from anywhere in your code.<pre><code class="php">$new_message = $this-&gt;empty();</code></pre></li>
@@ -441,7 +441,39 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 
 <a name="cron"></a><h2 onclick="return; $(this).next().slideToggle(500);">About automatic interfaces (cron)</h2>
 <div class="answer">
-	<em>... in progress ... </em>
+	<p>Automatic interfaces are <strong>input</strong> or <strong>output</strong> <a href="#interfaces">interfaces</a> that are activated at 
+	given interval defined by the user.</p>
+	<ul>
+		<li>An automatic <strong>input</strong> can be for a <strong>Consumer</strong>, saying for instance <em>"Post this tweet (predefined) every day at 8AM"</em> ;
+		Or for a <strong>Transformer</strong>, it could mean <em>"Change 1 euro (euro = the input interface) to -whatever currency is connected after- every hour, so I can follow the trends".</li>
+		<li>An automatic <strong>output</strong> only applies to a <strong>Producer</strong>, saying for instance <em>"I want to get the GPS 
+		coordinate every minute"</em>.</li>
+	</ul>
+	Conceptually, the regular <a href="#lifecycle">lifecycle</a> is more or less followed except that the input data is fixed and does not change.</p>
+	<p>If you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html"><em>com\busit\IConnector</em></a>, then:</p>
+	<ol>
+		<li>The	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#cron(com.busit.IMessage,%20java.lang.String)"><em>cron()</em></a> 
+		method is called first (instead of <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#setInput(com.busit.IMessage,%20java.lang.String)">
+		<em>com\busit\IConnector.setInput()</em></a>)</li>
+		<li>Then
+			<ul><li>If the automatic interface is an <strong>output</strong> and there are other connectors linked to that particular output, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)">
+			<em>com\busit\IConnector.getOutput()</em></a> method is called for that output interface <strong>only</strong>.</li>
+			<li>If the automatic interface is an <strong>input</strong>, the normal lifecycle applies and triggers the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)">
+			<em>com\busit\IConnector.getOutput()</em></a> method for <strong>all</strong> connected outputs.</li>
+		</li>
+	</ol>
+	<p>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then:</p>
+	<ul>
+		<li>If the automatic interface is an <strong>output</strong> and there are other connectors linked to that particular output, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)">
+		<em>pull()</em></a> method is called for that output interface <strong>only</strong>.</li>
+		<li>If the automatic interface is an <strong>input</strong>, the normal lifecycle applies and first triggers the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>push()</em></a>
+		method, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)">
+		<em>pull()</em></a> for <strong>all</strong> connected outputs.</li>
+	</ul>
+	<p>If you implemented the <a href="#consumer"><em>Consumer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method is called as usual for that particular input interface.</p>
+	<p>If you implemented the <a href="#transformer"><em>Transformer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a>
+	method is called as usual for <strong>all</strong> connected outputs.</p>
+	<p>If you implemented the <a href="#producer"><em>Producer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called for that output interface <strong>only</strong>.</p>
 </div>
 
 <a name="configs"></a><h2 onclick="return; $(this).next().slideToggle(500);">About configurations</h2>
