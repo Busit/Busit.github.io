@@ -154,17 +154,20 @@ public function run($message)
 	// 5) get the result and pass it to the next connector
 	if( hasMoreConnectors() )
 	{
-		if( $instance instanceof com\busit\IConnector )
-			$new_message = $instance-&gt;getOutput($message, $interfaceId);
-		else if( $instance instanceof com\busit\Connector )
-			$new_message = $instance-&gt;pull($message, $out);
-		else if( $instance instanceof com\busit\Producer )
-			$new_message = $instance-&gt;produce($message, $out);
-		else if( $instance instanceof com\busit\Transformer )
-			$new_message = $instance-&gt;transform($message, $in, $out);
-		
-		if( $new_message != null )
-			run($new_message);
+		foreach( $outputs as $out )
+		{
+			if( $instance instanceof com\busit\IConnector )
+				$new_message = $instance-&gt;getOutput($out);
+			else if( $instance instanceof com\busit\Connector )
+				$new_message = $instance-&gt;pull($out);
+			else if( $instance instanceof com\busit\Producer )
+				$new_message = $instance-&gt;produce($message, $out);
+			else if( $instance instanceof com\busit\Transformer )
+				$new_message = $instance-&gt;transform($message, $in, $out);
+			
+			if( $new_message != null )
+				run($new_message);
+		}
 	}
 	
 	// 6) destroy the instance
@@ -445,7 +448,7 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 	given interval defined by the user.</p>
 	<ul>
 		<li>An automatic <strong>input</strong> can be for a <strong>Consumer</strong>, saying for instance <em>"Post this tweet (predefined) every day at 8AM"</em> ;
-		Or for a <strong>Transformer</strong>, it could mean <em>"Change 1 euro (euro = the input interface) to -whatever currency is connected after- every hour, so I can follow the trends"</em>.</li>
+		<br />Or for a <strong>Transformer</strong>, it could mean <em>"Change 1 (1 = the message data) euro (euro = the input interface) into dollars every hour, so I can follow the trends"</em>.</li>
 		<li>An automatic <strong>output</strong> only applies to a <strong>Producer</strong>, saying for instance <em>"I want to get the GPS 
 		coordinate every minute"</em>.</li>
 	</ul>
@@ -454,14 +457,31 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 	<ol>
 		<li>The	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#cron(com.busit.IMessage,%20java.lang.String)"><em>cron()</em></a> 
 		method is called first (instead of <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#setInput(com.busit.IMessage,%20java.lang.String)">
-		<em>com\busit\IConnector.setInput()</em></a>)</li>
+		<em>setInput()</em></a>)</li>
 		<li>Then
 			<ul><li>If the automatic interface is an <strong>output</strong> and there are other connectors linked to that particular output, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)">
-			<em>com\busit\IConnector.getOutput()</em></a> method is called for that output interface <strong>only</strong>.</li>
+			<em>getOutput()</em></a> method is called for that output interface <strong>only</strong>.</li>
 			<li>If the automatic interface is an <strong>input</strong>, the normal lifecycle applies and triggers the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)">
-			<em>com\busit\IConnector.getOutput()</em></a> method for <strong>all</strong> connected outputs.</li>
+			<em>getOutput()</em></a> method for <strong>all</strong> connected outputs.</li>
 		</li>
 	</ol>
+<pre><code class="php">
+if( $instance instanceof com\busit\IConnector )
+{
+	$instance-&gt;cron($message, $interfaceId);
+
+	if( isOutput($interfaceId) )
+	{
+		$instance-&gt;getOutput($interfaceId);
+	}
+
+	if( isInput($interfaceId) )
+	{
+		foreach( $outputs as $out )
+			$instance-&gt;getOutput($out);
+	}
+}
+</code></pre>
 	<p>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then:</p>
 	<ul>
 		<li>If the automatic interface is an <strong>output</strong> and there are other connectors linked to that particular output, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)">
@@ -470,10 +490,39 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 		method, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)">
 		<em>pull()</em></a> for <strong>all</strong> connected outputs.</li>
 	</ul>
+<pre><code class="php">
+if( $instance instanceof com\busit\Connector )
+{
+	if( isOutput($interfaceId) )
+	{
+		$instance-&gt;pull($interfaceId);
+	}
+
+	if( isInput($interfaceId) )
+	{
+		$instance-&gt;push($message, $interfaceId);
+		foreach( $outputs as $out )
+			$instance-&gt;getOutput($out);
+	}
+}
+</code></pre>
 	<p>If you implemented the <a href="#consumer"><em>Consumer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method is called as usual for that particular input interface.</p>
-	<p>If you implemented the <a href="#transformer"><em>Transformer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a>
-	method is called as usual for <strong>all</strong> connected outputs.</p>
+<pre><code class="php">
+if( $instance instanceof com\busit\Consumer && isInput($interfaceId) )
+	$instance-&gt;consume($message, $in);
+</code></pre>
+	<p>If you implemented the <a href="#transformer"><em>Transformer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)">
+	<em>transform()</em></a> method is called as usual for <strong>all</strong> connected outputs.</p>
+<pre><code class="php">
+if( $instance instanceof com\busit\Transformer && isInput($interfaceId) )
+	foreach( $outputs as $out )
+		$instance-&gt;transform($message, $interfaceId, $out);
+</code></pre>
 	<p>If you implemented the <a href="#producer"><em>Producer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called for that output interface <strong>only</strong>.</p>
+<pre><code class="php">
+if( $instance instanceof com\busit\Producer && isOutput($interfaceId) )
+	$instance-&gt;produce($message, $interfaceId);
+</code></pre>
 </div>
 
 <a name="configs"></a><h2 onclick="return; $(this).next().slideToggle(500);">About configurations</h2>
