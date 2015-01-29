@@ -26,6 +26,7 @@ footer .copyright { margin-top: 40px; }
 strong { color: #0071BC; }
 h1 { margin: 10px 20px; text-align: center; }
 h2 { margin: 10px 50px; }
+a h2 { color: #606060; cursor: default; }
 p { overflow: hidden; }
 a { color: #f7941e; }
 a:hover { color: #FF4200; }
