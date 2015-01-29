@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Busit - Developpers</title>
-		<meta name="description" content="Busit Developper Portal" />
+		<title>Busit - Developers</title>
+		<meta name="description" content="Busit Developer Portal" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="cache-control" content="no-cache, must-revalidate" /> 
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" /> 
@@ -20,13 +20,15 @@
 				<div class="content">
 					<div class="logo">
 						<a href="https://www.busit.com"><img src="img/logo_white.png" alt="logo" /></a>
-						<em>Developper Portal</em>
+						<em>Developer Portal</em>
 					</div>
 			<nav id="navigation">
 				<ul id="mainmenu">
 					<li><a href="index.html">Home</a></li>
-					<li><a href="concepts.html">Concepts</a></li>
+					<li><a href="concepts.html">Learn</a></li>
+					<li><a href="settings.html">Think</a></li>
 					<li><a href="code.html">Code</a></li>
+					<li><a href="publish.html">Publish</a></li>
 				</ul>
 			</nav>
 			
@@ -34,11 +36,12 @@
 			</header>
 			<div id="content">
 
-			<h1>Code</h1>
+			<h1>Let's <strong>Code</strong> a bit</h1>
 <a name="start"><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2></a>
+
 <div class="answer">
 	<p style="font-size: 1.4em;">Before writing the first line of code, you should be familiar with the <a href="settings.html">connector settings</a> and have a 
-		concrete idea on what your connector is going to do and what interfaces it has. Once you have setup your connector settings in the developper panel,
+		concrete idea on what your connector is going to do and what interfaces it has. Once you have setup your connector settings in the developer panel,
 		you can start the code part.<br /><br /></p>
 	<p>Busit supports multiple programming languages for connectors. 
 	However, only <strong>PHP 5</strong> is open for developers at this time. 
@@ -61,7 +64,7 @@
 	<p>Developping a connector is done in 2 phases :</p>
 	<ol>
 		<li>Define the connector's capabilities and settings, name, description, translations, what interfaces it supports, what are
-			the configuration parameters,...<br />This is done on the developper panel and not in the code. See the 
+			the configuration parameters,...<br />This is done on the developer panel and not in the code. See the 
 			<a href="settings.html">connector settings</a> in order to have all details about this.</li>
 		<li>Write the actual code of your connector according to the settings you have declared.</li>
 	</ol>
@@ -94,7 +97,7 @@ class MyConnector extends com\busit\Connector
 	<p>Everytime a connector is triggered, a new instance of the class is created. After processing the message, the class instance is destroyed. 
 	This means that there is no persistency nor any kind of state of the class: connectors are <strong>stateless</strong>.
 	If your connector absolutely requires an internal state or some sort of history, you should setup one of your own using external services or you 
-	should have a <em>premium developper account</em> so that Busit provides such mechanism to you.</p>
+	should have a <em>premium developer account</em> so that Busit provides such mechanism to you.</p>
 	<p>Context:</p>
 	<ol>
 		<li>You create a connector and publish it on the Busit store.</li>
@@ -384,7 +387,7 @@ $message-&gt;addAttachment($name, $data);
 	<p>Example: The mail sender connector has only one input interface with internal key <em>email</em>.<br />
 		When the user adds it to his flow, he can add several of those, and thus give them a name and a value:</p>
 	<ul>
-		<li><strong>Key</strong>: <em>email</em> (this cannot change, the user does not see it, this is only for you, the developper)</li>
+		<li><strong>Key</strong>: <em>email</em> (this cannot change, the user does not see it, this is only for you, the developer)</li>
 		<li><strong>Name</strong>: <em>Bob's mail</em> (this is the friendly name set by the user)</li>
 		<li><strong>Value</strong>: <em>bob@example.com</em> (this is the value set by the user)</li>
 	</ul>
