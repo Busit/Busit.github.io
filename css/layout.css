@@ -28,6 +28,7 @@ h1 { margin: 10px 20px; text-align: center; }
 h2 { margin: 10px 50px; }
 p { overflow: hidden; }
 a { color: #f7941e; }
+a:hover { color: #FF4200; }
 
 div.answer {
 	overflow: hidden;
@@ -41,3 +42,47 @@ a.javadoc {
 	font-style: italic;
 	color: #f7941e;
 }
+
+#quick {
+	position: fixed;
+	right: -150px;
+	top: 20px;
+	padding: 5px;
+	border: 1px solid #606060;
+	border-right: 0px none transparent;
+	border-radius: 3px 0 0 3px;
+	background-color: #eaeaea;
+	/*box-shadow: 0 2px 2px 0 rgba(100, 100, 100, 0.15);*/
+	transition: all 0.5s ease 0s;
+	width: 150px;
+}
+#quick:before {
+	display: block;
+	content: '\f053';
+	font-family: FontAwesome;
+	padding: 15px 8px;
+	border-radius: 3px 0 0 3px;
+	border: 1px solid #606060;
+	border-right: 0px none transparent;
+	position: fixed;
+	top: 25px;
+	right: 0px;
+	/*box-shadow: 0 2px 2px 0 rgba(100, 100, 100, 0.15);*/
+	background-color: #eaeaea;
+	background: linear-gradient(to right, #fafafa 0%,#eaeaea 100%);
+	transition: all 0.5s ease 0s;
+	margin-right: -1px;
+}
+#quick:hover:before {
+	right: 150px;
+}
+#quick:hover {
+	right: 0px;
+}
+#quick a {
+	display: block;
+	font-size: 0.7em;
+	color: #606060;
+	margin: 2px;
+}
+#quick a:hover { color: #FF4200; }

@@ -35,7 +35,7 @@
 			<div id="content">
 
 			<h1>Code</h1>
-<a name="start"></a><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2>
+<a name="start"><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2></a>
 <div class="answer">
 	<p style="font-size: 1.4em;">Before writing the first line of code, you should be familiar with the <a href="settings.html">connector settings</a> and have a 
 		concrete idea on what your connector is going to do and what interfaces it has. Once you have setup your connector settings in the developper panel,
@@ -56,7 +56,7 @@
 	</ul>
 </div>
 
-<a name="basic"></a><h2 onclick="return; $(this).next().slideToggle(500);">Basic structure</h2>
+<a name="basic"><h2 onclick="return; $(this).next().slideToggle(500);">Basic <strong>structure</strong></h2></a>
 <div class="answer">
 	<p>Developping a connector is done in 2 phases :</p>
 	<ol>
@@ -89,7 +89,7 @@ class MyConnector extends com\busit\Connector
 	</code></pre>
 </div>
 
-<a name="lifecycle"></a><h2 onclick="return; $(this).next().slideToggle(500);">Connector lifecycle</h2>
+<a name="lifecycle"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Connector</strong> lifecycle</h2></a>
 <div class="answer">
 	<p>Everytime a connector is triggered, a new instance of the class is created. After processing the message, the class instance is destroyed. 
 	This means that there is no persistency nor any kind of state of the class: connectors are <strong>stateless</strong>.
@@ -176,7 +176,7 @@ public function run($message)
 </code></pre>
 </div>
 
-<a name="producer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Producer pattern</h2>
+<a name="producer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Producer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your connector brings data from external devices or services, it is producing data for Busit.<br />
 	External devices or services can <strong>push</strong> data directly on your connector, or your connector can <strong>pull</strong>
@@ -225,7 +225,7 @@ class WeatherStation extends com\busit\Connector implements com\busit\Producer
 	</code></pre>
 </div>
 
-<a name="consumer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Consumer pattern</h2>
+<a name="consumer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Consumer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your connector sends data to external devices or services, it is consuming data from Busit.</p>
 	<p>There are 2 conditions to fulfill if you want to be a consumer:</p>
@@ -271,7 +271,7 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 	</code></pre>
 </div>
 
-<a name="transformer"></a><h2 onclick="return; $(this).next().slideToggle(500);">Transformer pattern</h2>
+<a name="transformer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Transformer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your connector aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
 	<p>There are 2 conditions to fulfill if you want to be a transformer:</p>
@@ -331,7 +331,7 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 	</code></pre>
 </div>
 
-<a name="messages"></a><h2 onclick="return; $(this).next().slideToggle(500);">About messages</h2>
+<a name="messages"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>messages</strong></h2></a>
 <div class="answer">
 	<p>The messages convey data across the connectors and make sure the content is encrypted with the user's identity. All messages are of type 
 	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a>. You can change the message content but
@@ -374,7 +374,7 @@ $message-&gt;addAttachment($name, $data);
 	</ul>
 </div>
 
-<a name="interfaces"></a><h2 onclick="return; $(this).next().slideToggle(500);">About interfaces (inputs and outputs)</h2>
+<a name="interfaces"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>interfaces</strong> (inputs and outputs)</h2></a>
 <div class="answer">
 	<p>Interfaces <em>(do not confuse with OOP class interface)</em> are either inputs or outputs from your connector.
 		When publishing your connector, you should mention the different inputs and outputs that your connector accepts and
@@ -442,7 +442,7 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 	<p>This means that now you know which input or output the message was targetting and you can behave accordingly.</p>
 </div>
 
-<a name="cron"></a><h2 onclick="return; $(this).next().slideToggle(500);">About automatic interfaces (cron)</h2>
+<a name="cron"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>automatic</strong> interfaces (cron)</h2></a>
 <div class="answer">
 	<p>Automatic interfaces are <strong>input</strong> or <strong>output</strong> <a href="#interfaces">interfaces</a> that are activated at 
 	given interval defined by the user.</p>
@@ -519,7 +519,7 @@ if( $instance instanceof com\busit\Producer && isOutput($interfaceId) )
 </code></pre>
 </div>
 
-<a name="configs"></a><h2 onclick="return; $(this).next().slideToggle(500);">About configurations</h2>
+<a name="configs"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>configurations</strong></h2></a>
 <div class="answer">
 	<p>The configuration parameters as you designed them in the <a href="settings.html">connector settings</a> -and later completed by the user- are
 	available in your code.</p>
@@ -545,12 +545,14 @@ public function init($config, $inputs, $outputs)
 </code></pre></li></ul>
 </div>
 
-<a name="knowntype"></a><h2 onclick="return; $(this).next().slideToggle(500);">About Known Types</h2>
+<a name="knowntype"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>Known Types</strong></h2></a>
 <div class="answer">
 	<em>... in progress ... </em>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
+<div id="quick"></div>
+<script>createShortcutMenu();</script>
 			</div>
 		</div>
 		<footer>

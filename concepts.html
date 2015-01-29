@@ -32,7 +32,7 @@
 			<div id="content">
         
 <h1>Concepts</h1>
-<a name="connector"></a><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>connector</strong> ?</h2>
+<a name="connector"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>connector</strong> ?</h2></a>
 <div class="answer">
 	A connector is a little piece of code that can <em>do</em> stuff. See them as independant boxes that users can link to each 
 	other in order to create scenarios (aka: <a href="#flow">flows</a>).
@@ -61,7 +61,7 @@
 	defined for that connector.
 </div>
 
-<a name="instance"></a><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>instance</strong> ?</h2>
+<a name="instance"><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>instance</strong> ?</h2></a>
 <div class="answer">
 	An instance of a connector is a user's copy of that connector whereas the connector itself is more like a template.
 	Instances are usually <a href="#config">configured</a> and linked in a <a href="#flow">flow</a> 
@@ -70,7 +70,7 @@
 	We speak about <em>connectors</em> when it is not bound to a user, and about <em>instances</em> when it is.
 </div>
 
-<a name="flow"></a><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>flow</strong> ?</h2>
+<a name="flow"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>flow</strong> ?</h2></a>
 <div class="answer">
 	A flow is the actual scenario that a user creates when linking instances of different connectors. 
 	A flow usually starts with a <em>producer</em> in order to get data, then any number of <em>transformers</em>, then a <em>consumer</em>.
@@ -96,7 +96,7 @@
 	using the API to <a href="#pushpull">push</a> data directly on an instance.</p>
 </div>
 
-<a name="interface"></a><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>interface</strong> ?</h2>
+<a name="interface"><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>interface</strong> ?</h2></a>
 <div class="answer">
 	Every connector have one or more interfaces that can emit or receive data. See them as different doors that allows to enter 
 	or exit the connector.
@@ -139,7 +139,7 @@
 	<a href='#cron'>automatically</a>.</p>
 </div>
 
-<a name="custom"></a><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>custom</strong> interface ?</h2>
+<a name="custom"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>custom</strong> interface ?</h2></a>
 <div class="answer">
 	A custom interface can be any input or output that require user configuration to work properly. Hence, you can have multiple 
 	time the same interface with different configuration.
@@ -164,14 +164,14 @@
 	</div>
 </div>
 	
-<a name="cron"></a><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>automatic</strong> interface ?</h2>
+<a name="cron"><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>automatic</strong> interface ?</h2></a>
 <div class="answer">
 	An automatic (or <a href='http://en.wikipedia.org/wiki/Cron'>cron</a>) interface will be activated at regular interval. It is 
 	typically designed for <strong>producers</strong> that <a href='#pushpull'>pull</a> data from your devices or services. 
 	Moreover, it can have multiple applications for time related matters: birthdays, alarm clock, reminders,...
 </div>
 
-<a name="pushpull"></a><h2 onclick="return; $(this).next().slideToggle(500);">What about <strong>push</strong> and <strong>pull</strong> ?</h2>
+<a name="pushpull"><h2 onclick="return; $(this).next().slideToggle(500);">What about <strong>push</strong> and <strong>pull</strong> ?</h2></a>
 <div class="answer">
 	We talk about push and pull when it comes to exchange data accross devices or services. We always look at the 
 	<em>origin</em> of the data:
@@ -209,7 +209,7 @@
 	cannot keep it until some external service pulls it.</p>
 </div>
 
-<a name="config"></a><h2 onclick="return; $(this).next().slideToggle(500);">How to <strong>configure</strong> an instance ?</h2>
+<a name="config"><h2 onclick="return; $(this).next().slideToggle(500);">How to <strong>configure</strong> an instance ?</h2></a>
 <div class="answer">
 	Some connectors require configuration parameters to work properly. For instance, the Facebook connector needs your security token to be
 	able to post or read messages.<br />
@@ -222,7 +222,8 @@
 	</ol>
 </div>
 
-	
+<div id="quick"></div>
+<script>createShortcutMenu();</script>
 			</div>
 		</div>
 		<footer>
