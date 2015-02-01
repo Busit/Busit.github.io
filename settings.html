@@ -10,6 +10,9 @@
 		<link rel="stylesheet" href="css/main.css" type="text/css" />
 		<script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="js/jquery.min.js"></script>
+		
+		<link class="codestyle" rel="stylesheet" href="css/github.css">
+		<script type="text/javascript" src="js/highlight.pack.js"></script>
 	</head>
 	<body>
 		<div id="footerfix">
@@ -33,10 +36,76 @@
 			</header>
 			<div id="content">
         
-<h1><strong>Think</strong> and define what you want</h1>
+			<h1><strong>Think</strong> and define what you want</h1>
 
-... We're working on this ...
+<a name="start"><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2></a>
+<div class="answer">
+	<p style="font-size: 1.4em;">You sould be familiar with the <a href="concepts.html">concepts</a> in order to understand the various key points and make educated choices about those.<br /><br /></p>
+	<p>Before writing some code, you need to define the properties and the behavior of your connector. You can do so in different manners, either
+	manually on your <a href="http://www.busit.com/developers/panel">developer panel</a> or by uploading a <a href="http://en.wikipedia.org/wiki/JSON">JSON</a> file containing all 
+	such parameters ; the latter is the recommended approach and the rest of this document will only provide JSON examples.</p>
+</div>
 
+<a name="pattern"><h2 onclick="return; $(this).next().slideToggle(500);">Choose your <strong>Pattern</strong></h2></a>
+<div class="answer">
+	<p>Depending on what your connector is doing, you should choose a pattern that will indicate where it can happen in a user flow. You can eventually apply several patterns however this is not recommended unless you are experienced about it.</p>
+	<ul>
+		<li><strong>Producer</strong>: If you gather data from devices or services that are external to Busit, you are then the 
+		first element in a user flow that will trigger the chain by feeding new messages in the system.
+			<div style="text-align: center; margin: 20px;">
+				<div class="connector"><img src="https://www.busit.com/busit/images/connectors/28.png" /></div>
+				<div class="arrow">&#xf061 </div>
+			</div>
+		</li>
+		<li><strong>Consumer</strong>: If you accept incomming data and send it to devices or services that are external to Busit, you are then the last element in a user flow and nothing will happen after.
+			<div style="text-align: center; margin: 20px;">
+				<div class="arrow">&#xf061 </div>
+				<div class="connector"><img src="https://www.busit.com/busit/images/connectors/10.png" /></div>
+			</div>
+		</li>
+		<li><strong>Transformer</strong>: If you accept incomming data, then make eventual modifications, decide to stop the chain or not,
+		aggregate or enhance data with other information that can eventually come from external sources, then pass it on to the next connector, 
+		then you are an intermediate element in a user flow.
+			<div style="text-align: center; margin: 20px;">
+				<div class="arrow">&#xf061 </div>
+				<div class="connector"><img src="https://www.busit.com/busit/images/connectors/24.png" /></div>
+				<div class="arrow">&#xf061 </div>
+			</div>
+		</li>
+	</ul>
+	<p>The type of connector will affect the <a href="#interfaces">interfaces</a> you declare.</p>
+</div>
+
+<a name="name"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Name</strong> to your creature</h2></a>
+<div class="answer">
+	<p>The first thing to do is to declare your connector on your <a href="http://www.busit.com/developers/panel">developer panel</a> and to give
+	it a meaninfull name. Then you can add more information. There are 6 basic element you should define for every connector:</p>
+	<ol>
+		<li>The <strong>programming language</strong> used. Currently, only <em>PHP</em> is allowed.</li>
+		<li>The <strong>category</strong> in which it will appear in the store. One of <em>Business, Communication, Entertainment, Health
+			Home automation, Industry, News, Productivity, Social, Storage, Technology, Utilities</em>.</li>
+		<li>The <strong>buy price</strong> that users will be charged once-for-all for using your connector. This amount will be credited to
+			your account.</li>
+		<li>The <strong>use price</strong> that users will be charged for every message that is handled by your connector. This amount 
+			will be credited to your account.</li>
+		<li>The <strong>small logo</strong> as a 100x100 transparent PNG file. It should be 
+			<a href="http://en.wikipedia.org/wiki/Base64">base64</a>'d in the JSON file.</li>
+		<li>The <strong>big logo</strong> as a 300x300 transparent PNG. It should also be base64'd in the JSON file.</li>
+	</ol>
+	<pre><code class="json">
+{
+	"language": 	"PHP",
+	"category": 	"Social",
+	"buy_price": 	0,
+	"use_price": 	1,
+	"small_logo": 	"...",
+	"big_logo": 	"..."
+}
+	</code></pre>
+</div>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>createShortcutMenu();</script>
 			</div>
 		</div>
 		<footer>

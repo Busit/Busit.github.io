@@ -38,7 +38,6 @@
 
 			<h1>Let's <strong>Code</strong> a bit</h1>
 <a name="start"><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2></a>
-
 <div class="answer">
 	<p style="font-size: 1.4em;">Before writing the first line of code, you should be familiar with the <a href="settings.html">connector settings</a> and have a 
 		concrete idea on what your connector is going to do and what interfaces it has. Once you have setup your connector settings in the developer panel,
@@ -455,7 +454,7 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 		<li>An automatic <strong>output</strong> only applies to a <strong>Producer</strong>, saying for instance <em>"I want to get the GPS 
 		coordinate every minute"</em>.</li>
 	</ul>
-	Conceptually, the regular <a href="#lifecycle">lifecycle</a> is more or less followed except that the input data is fixed and does not change (set by the user).</p>
+	<p>Conceptually, the regular <a href="#lifecycle">lifecycle</a> is more or less followed except that the input data is fixed and does not change (set by the user).</p>
 	<p>If you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html"><em>com\busit\IConnector</em></a>, then:</p>
 	<ol>
 		<li>The	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#cron(com.busit.IMessage,%20java.lang.String)"><em>cron()</em></a> 
@@ -466,6 +465,7 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 			<em>getOutput()</em></a> method is called for that output interface <strong>only</strong>.</li>
 			<li>If the automatic interface is an <strong>input</strong>, the normal lifecycle applies and triggers the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)">
 			<em>getOutput()</em></a> method for <strong>all</strong> connected outputs.</li>
+			</ul>
 		</li>
 	</ol>
 <pre><code class="php">
@@ -554,7 +554,6 @@ public function init($config, $inputs, $outputs)
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
-<div id="quick"></div>
 <script>createShortcutMenu();</script>
 			</div>
 		</div>
