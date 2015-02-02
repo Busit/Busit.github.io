@@ -76,13 +76,13 @@
 	<p>The type of connector will affect the <a href="#interfaces">interfaces</a> you declare.</p>
 </div>
 
-<a name="name"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Name</strong> to your creature</h2></a>
+<a name="general"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>General</strong> connector settings</h2></a>
 <div class="answer">
 	<p>The first thing to do is to declare your connector on your <a href="http://www.busit.com/developers/panel">developer panel</a> and to give
 	it a meaninfull name. Then you can add more information. There are 6 basic element you should define for every connector:</p>
 	<ol>
 		<li>The <strong>programming language</strong> used. Currently, only <em>PHP</em> is allowed.</li>
-		<li>The <strong>category</strong> in which it will appear in the store. One of <em>Business, Communication, Entertainment, Health
+		<li>The <strong>category</strong> in which it will appear in the store. One of <em>Business, Communication, Entertainment, Health,
 			Home automation, Industry, News, Productivity, Social, Storage, Technology, Utilities</em>.</li>
 		<li>The <strong>buy price</strong> that users will be charged once-for-all for using your connector. This amount will be credited to
 			your account.</li>
@@ -90,18 +90,62 @@
 			will be credited to your account.</li>
 		<li>The <strong>small logo</strong> as a 100x100 transparent PNG file. It should be 
 			<a href="http://en.wikipedia.org/wiki/Base64">base64</a>'d in the JSON file.</li>
-		<li>The <strong>big logo</strong> as a 300x300 transparent PNG. It should also be base64'd in the JSON file.</li>
+		<li>The <strong>big logo</strong> as a 300x300 transparent PNG. It should also be 
+			<a href="http://en.wikipedia.org/wiki/Base64">base64</a>'d in the JSON file.</li>
 	</ol>
-	<pre><code class="json">
+<pre><code class="json">
 {
 	"language": 	"PHP",
 	"category": 	"Social",
 	"buy_price": 	0,
 	"use_price": 	1,
-	"small_logo": 	"...",
-	"big_logo": 	"..."
+	"small_logo": 	"SGVoZSwgeW91IGRpZCBkZWNvZGUgdGhpcyBhY3R1YWxseSwgeW91J3JlIHNtYXJ0ISBDb250
+		YWN0IG1lOiBzaW1vbkBidXNpdC5jb20gYW5kIHdlJ2xsIHNlZSBob3cgdG8gd29yayB0b2dldGhlcg==",
+	"big_logo": 	"SGVoZSwgeW91IGRpZCBkZWNvZGUgdGhpcyBhY3R1YWxseSwgeW91J3JlIHNtYXJ0ISBDb250
+		YWN0IG1lOiBzaW1vbkBidXNpdC5jb20gYW5kIHdlJ2xsIHNlZSBob3cgdG8gd29yayB0b2dldGhlcg=="
 }
-	</code></pre>
+</code></pre>
+</div>
+
+<a name="interfaces"><h2 onclick="return; $(this).next().slideToggle(500);">List your <strong>Interfaces</strong></h2></a>
+<div class="answer">
+	<p>After you've declared the <a href="#general">general</a> settings, you should proceed with the input and output 
+	<a href="concepts.html#interface">interfaces</a> your connector has. This way, you can give a hint to users about what your connector
+	does.<br />The interfaces settings have 6 mandatory parameters:</p>
+	<ol>
+		<li>The internal <strong>key</strong> which is an internal name that the user will not see (lower case, no spaces, 
+			no special characters).</li>
+		<li>The <strong>direction</strong> of the interface: <em>input</em> or <em>output</em>.</li>
+		<li>Whether or not this is a <strong>custom</strong> interface.</li>
+		<li>Whether or not this is an <strong>automatic</strong> interface.</li>
+		<li>Whether or not the interface is <strong>hidden</strong> to the user... Why would it be ? Because then it can be used internally
+			for some reason.</li>
+		<li>The <strong>type</strong> of interface according to the <a href="#pattern">pattern</a> you have picked (this is in case you have 
+			multiple patterns). This can be one of: <em>producer, consumer, transformer</em>.</li>
+	</ol>
+<pre><code class="json">
+{
+	"interfaces":
+	[
+		{
+			"name": 		"receiver",
+			"direction": 	"input",
+			"custom": 		false,
+			"automatic": 	false,
+			"hidden": 		true,
+			"type": 		"producer"
+		},
+		{
+			"name": 		"temperature",
+			"direction": 	"output",
+			"custom": 		false,
+			"automatic": 	false,
+			"hidden": 		false,
+			"type": 		"producer"
+		}
+	]
+}
+</code></pre>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
