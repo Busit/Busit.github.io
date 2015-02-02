@@ -123,29 +123,52 @@
 		<li>The <strong>type</strong> of interface according to the <a href="#pattern">pattern</a> you have picked (this is in case you have 
 			multiple patterns). This can be one of: <em>producer, consumer, transformer</em>.</li>
 	</ol>
+	<p>Example: A thermometer device can <a href="concepts.html#pushpull">push</a> data on my connector then I make it available to the user, 
+		so my connector is a <em>Producer</em>.<br />
+		Because the device will push data, I need an <em>input</em> interface to receive it, but the user shouldn't see it, because it 
+		is only available to the device (lets not confuse the user about this).<br />
+		Then, I offer an <em>output</em> interface that will send the temperature to whatever the user connects to it...<br ><br />
+		<span style="color: #d14;">In red, what happens behind the scenes, the user does not see it.</span><br />
+		<span style="color: #00d140;">In green, what the user can use.</span><br />
+		</p>
+	<div style="text-align: center; margin: 20px;">
+		<div class="connector" style="color: #d14;">The device</div>
+		<span style="font-size: 0.6em; color: #d14; display: inline-block;">(push data on the<br /> hidden input interface)</span>
+		<div class="arrow" style="color: #d14;">&#xf061 </div>
+		<div class="connector" style="color: #00d140;">My connector</div>
+		<div class="arrow" style="color: #00d140;">&#xf061 </div>
+	</div>
 <pre><code class="json">
 {
 	"interfaces":
 	[
 		{
-			"name": 		"receiver",
+			"name": 	"receiver",
 			"direction": 	"input",
-			"custom": 		false,
+			"custom": 	false,
 			"automatic": 	false,
-			"hidden": 		true,
-			"type": 		"producer"
+			"hidden": 	true,
+			"type": 	"producer"
 		},
 		{
-			"name": 		"temperature",
+			"name": 	"temperature",
 			"direction": 	"output",
-			"custom": 		false,
+			"custom": 	false,
 			"automatic": 	false,
-			"hidden": 		false,
-			"type": 		"producer"
+			"hidden": 	false,
+			"type": 	"producer"
 		}
 	]
 }
 </code></pre>
+</div>
+
+<a name="config"><h2 onclick="return; $(this).next().slideToggle(500);">Do you require extra <strong>configuration</strong> ?</h2></a>
+<div class="answer">
+	<p>If your connector needs some authentication or some extra parameters in order to work properly, then those are 
+		<strong>configuration</strong> parameters that the user will set at the beginning, before using your connector.</p>
+	
+	... to be continued ...
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
