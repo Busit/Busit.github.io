@@ -95,14 +95,17 @@
 	</ol>
 <pre><code class="json">
 {
-	"language": 	"PHP",
-	"category": 	"Social",
-	"buy_price": 	0,
-	"use_price": 	1,
-	"small_logo": 	"SGVoZSwgeW91IGRpZCBkZWNvZGUgdGhpcyBhY3R1YWxseSwgeW91J3JlIHNtYXJ0ISBDb250
-		YWN0IG1lOiBzaW1vbkBidXNpdC5jb20gYW5kIHdlJ2xsIHNlZSBob3cgdG8gd29yayB0b2dldGhlcg==",
-	"big_logo": 	"SGVoZSwgeW91IGRpZCBkZWNvZGUgdGhpcyBhY3R1YWxseSwgeW91J3JlIHNtYXJ0ISBDb250
-		YWN0IG1lOiBzaW1vbkBidXNpdC5jb20gYW5kIHdlJ2xsIHNlZSBob3cgdG8gd29yayB0b2dldGhlcg=="
+	"general":
+	{
+		"language": 	"PHP",
+		"category": 	"Social",
+		"buy_price": 	0,
+		"use_price": 	1,
+		"small_logo": 	"SGVoZSwgeW91IGRpZCBkZWNvZGUgdGhpcyBhY3R1YWxseSwgeW91J3JlIHNtYXJ0ISBDb250
+			YWN0IG1lOiBzaW1vbkBidXNpdC5jb20gYW5kIHdlJ2xsIHNlZSBob3cgdG8gd29yayB0b2dldGhlcg==",
+		"big_logo": 	"SGVoZSwgeW91IGRpZCBkZWNvZGUgdGhpcyBhY3R1YWxseSwgeW91J3JlIHNtYXJ0ISBDb250
+			YWN0IG1lOiBzaW1vbkBidXNpdC5jb20gYW5kIHdlJ2xsIHNlZSBob3cgdG8gd29yayB0b2dldGhlcg=="
+	}
 }
 </code></pre>
 </div>
@@ -143,7 +146,7 @@
 	"interfaces":
 	[
 		{
-			"name": 	"receiver",
+			"key": 		"receiver",
 			"direction": 	"input",
 			"custom": 	false,
 			"automatic": 	false,
@@ -151,7 +154,7 @@
 			"type": 	"producer"
 		},
 		{
-			"name": 	"temperature",
+			"key": 		"temperature",
 			"direction": 	"output",
 			"custom": 	false,
 			"automatic": 	false,
@@ -166,8 +169,45 @@
 <a name="config"><h2 onclick="return; $(this).next().slideToggle(500);">Do you require extra <strong>configuration</strong> ?</h2></a>
 <div class="answer">
 	<p>If your connector needs some authentication or some extra parameters in order to work properly, then those are 
-		<strong>configuration</strong> parameters that the user will set at the beginning, before using your connector.</p>
-	
+		<strong>configuration</strong> parameters that the user will set at the beginning, before using your connector. In short,
+		those are just containers for user settings.<br />
+		Configuration prameters are composed of only 3 elements:</p>
+	<ol>
+		<li>An internal <strong>key</strong> which is an internal name that the user will not see (lower case, no spaces, 
+			no special characters).</li>
+		<li>Whether or not it is <strong>hidden</strong> to the user. (see just below for more info).</li>
+		<li>An optionnal <strong>default</strong> value just in case... Combined with a <em>hidden</em> interface, this allows
+			to store values for internal usage that the user should not know about.<br />For instance: if my connector should connect
+			to a URL to retreive data, it's best not to hardcode the URL in the code, but instead use a hidden configuration parameter
+			with the URL as default value such that whenever it changes, it is easy to adjust.</li>
+	</ol>
+<pre><code class="json">
+{
+	"configs":
+	[
+		{
+			"key": 		"url",
+			"hidden": 	true,
+			"default":	"http://example.com"
+		},
+		{
+			"key": 		"something",
+			"hidden": 	false,
+			"default":	null
+		}
+	]
+}
+</code></pre>
+	<p>As explained in the <a href="concepts.html#config">concepts</a>, there are 2 ways for the user to fill in the configuration parameters.
+		By default, a simple input form is generated so that the user can input any value ; hence, the configurtion parameters should 
+		not be hidden. <br />However, with the second option, you can redirect the user to an <a href="external">external configuration</a> 
+		website that you should host and maintain
+		unless you have a <em>premium developer account</em> ; then, you have the possibility to provide a nicer way to configure your 
+		connector (OAuth,...) and therefore, your configuration parameters can be hidden (per-se) to the user.</p>
+</div>
+
+<a name="external"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>external configuration</strong> websites</h2></a>
+<div class="answer">
 	... to be continued ...
 </div>
 
