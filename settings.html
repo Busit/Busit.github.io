@@ -44,6 +44,14 @@
 	<p>Before writing some code, you need to define the properties and the behavior of your connector. You can do so in different manners, either
 	manually on your <a href="http://www.busit.com/developers/panel">developer panel</a> or by uploading a <a href="http://en.wikipedia.org/wiki/JSON">JSON</a> file containing all 
 	such parameters ; the latter is the recommended approach and the rest of this document will only provide JSON examples.</p>
+	<p>The following main properties are required to cover all aspects of your connector's settings:</p>
+<pre><code class="json">
+{
+	"general": {...},
+	"interfaces": [...],
+	"configs": [...]
+}
+</code></pre>
 </div>
 
 <a name="pattern"><h2 onclick="return; $(this).next().slideToggle(500);">Choose your <strong>Pattern</strong></h2></a>
@@ -166,7 +174,7 @@
 </code></pre>
 </div>
 
-<a name="config"><h2 onclick="return; $(this).next().slideToggle(500);">Do you require extra <strong>configuration</strong> ?</h2></a>
+<a name="config"><h2 onclick="return; $(this).next().slideToggle(500);">Specify your <strong>configuration</strong> settings</h2></a>
 <div class="answer">
 	<p>If your connector needs some authentication or some extra parameters in order to work properly, then those are 
 		<strong>configuration</strong> parameters that the user will set at the beginning, before using your connector. In short,
