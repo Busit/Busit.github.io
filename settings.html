@@ -49,7 +49,8 @@
 {
 	"general": {...},
 	"interfaces": [...],
-	"configs": [...]
+	"configs": [...],
+	"translation": [...]
 }
 </code></pre>
 </div>
@@ -87,7 +88,7 @@
 <a name="general"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>General</strong> connector settings</h2></a>
 <div class="answer">
 	<p>The first thing to do is to declare your connector on your <a href="http://www.busit.com/developers/panel">developer panel</a> and to give
-	it a meaningfull name. Then you can add more information. There are 6 basic element you should define for every connector:</p>
+	it a meaningfull name. Then you can add more information. There are some basic element you should define for every connector:</p>
 	<ol>
 		<li>The <strong>programming language</strong> used. Currently, only <em>PHP</em> is allowed.</li>
 		<li>The <strong>category</strong> in which it will appear in the store. One of <em>Business, Communication, Entertainment, Health,
@@ -101,6 +102,7 @@
 		<li>The <strong>big logo</strong> as a 300x300 transparent PNG. It should also be 
 			<a href="http://en.wikipedia.org/wiki/Base64">base64</a>'d in the JSON file.</li>
 	</ol>
+	<p>For the <em>description</em> of your connector, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 <pre><code class="json">
 {
 	"general":
@@ -134,6 +136,7 @@
 		<li>The <strong>type</strong> of interface according to the <a href="#pattern">pattern</a> you have picked. This can be one of: 
 			<em>producer, consumer, transformer</em>.</li>
 	</ol>
+	<p>For the <em>description</em> of your interfaces, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 	<p>Example: A thermometer device can <a href="concepts.html#pushpull">push</a> data on my connector then I make it available to the user, 
 		so my connector is a <em>Producer</em>.<br />
 		Because the device will push data, I need an <em>input</em> interface to receive it, but the user shouldn't see it, because it 
@@ -189,6 +192,7 @@
 			to a URL to retreive data, it's best not to hardcode the URL in the code, but instead use a hidden configuration parameter
 			with the URL as default value such that whenever it changes, it is easy to adjust.</li>
 	</ol>
+	<p>For the <em>description</em> of your parameters, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 <pre><code class="json">
 {
 	"configs":
@@ -214,7 +218,85 @@
 		connector (OAuth,...) and therefore, your configuration parameters are kind of hidden (per-se) to the user.</p>
 </div>
 
-<a name="external"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>external configuration</strong> websites</h2></a>
+<a name="translation"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Translate</strong> everything</h2></a>
+<div class="answer">
+	<p>After setting all your different parameters, you now need to make sure they will be understood by everyone with a properly
+		translated name, description and more. There is one <strong>mandatory</strong> language that you must support : <strong>
+		english</strong>. So that if the user selects a language that is not supported by your connector, we can fallback on
+		a common predefined language. Beware that if a translation set is provided but incomplete, there will not be any fallback,
+		it will show empty values instead.</p>
+	<p>Then, you can add as many translations sets as you need. Here is how it is structured :</p>
+	<p>Every translation set should be grouped with the <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">
+		2 letters ISO639-1 language code</a> and should contain be 3 subsections for :
+	<ul>
+		<li>The <strong>general</strong> settings:
+			<ul>
+				<li>The displayed friendly <strong>name</strong> of your connector. No text formatting allowed.</li>
+				<li>The <strong>description</strong> of your connector. No text formatting allowed.</li>
+				<li>An optional special <strong>prevention</strong> message. <a href="http://www.bbcode.org/reference.php">BBCode</a> allowed.
+					<br />If specified, this will prevent the users from adding this connector from the store. Why is that ? 
+					For instance, the iPhone connector will be added automatically when you install the app on your phone. Thus,
+					you cannot manually install it from the store.</li>
+				<li>An optional external <strong>config url</strong>. <a href="external">More about external websites</a>.</li>
+				<li>An optional external <strong>panel url</strong>. <a href="external">More about external websites</a>.</li>
+				<li>An optional <strong>product url</strong> that redirects to the official device (or service, software,...) 
+					that the user must acquire prior to using the connector.</li>
+			</ul>
+		</li>
+		<li>All <strong>interfaces</strong> declared, and for each of them:
+			<ul>
+				<li>The displayed friendly <strong>name</strong> of your interface. No text formatting allowed.</li>
+				<li>The <strong>description</strong> of your interface. No text formatting allowed.</li>
+			</ul>
+		</li>
+		<li>All <strong>configs</strong> declared, and for each of them:
+			<ul>
+				<li>The displayed friendly <strong>name</strong> of your parameter. No text formatting allowed.</li>
+				<li>The <strong>description</strong> of your parameter. No text formatting allowed.</li>
+			</ul>
+		</li>
+	</ul>
+<pre><code class="json">
+{
+	"translation":
+	{
+		"en":
+		{
+			"general": 
+			{
+				"name": "My Connector",
+				"description": "This is a test connector, and so on...",
+				"prevention": null,
+				"config_url": null,
+				"panel_url": "http://example.com/?{INSTANCE}",
+				"product_url": null
+			},
+			"interfaces": 
+			{
+				"temperature":
+				{
+					"name": "The Outdoor Temperature",
+					"description": "The outdoor temperature in celcius degrees is gathered every 5 min"
+				},
+				"pressure": {...}
+			},
+			"configs": 
+			{
+				"something":
+				{
+					"name": "Anything Here",
+					"description": "Type in anyhing hoping it'll do something"
+				},
+				"another_thing": {...}
+			}
+		}
+		"fr": {...}
+	}
+}
+</code></pre>
+</div>
+
+<a name="external"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>external</strong> websites</h2></a>
 <div class="answer">
 	... to be continued ...
 </div>
