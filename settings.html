@@ -50,7 +50,7 @@
 	"general": {...},
 	"interfaces": [...],
 	"configs": [...],
-	"translation": [...]
+	"translation": {...}
 }
 </code></pre>
 </div>
@@ -130,7 +130,8 @@
 			no special characters).</li>
 		<li>The <strong>direction</strong> of the interface: <em>input</em> or <em>output</em>.</li>
 		<li>Whether or not this is a <strong>custom</strong> interface.</li>
-		<li>Whether or not this is an <strong>automatic</strong> interface.</li>
+		<li>Whether or not this is an <strong>automatic</strong> interface. <span style='text-decoration: underline;'>Important</span>: 
+			only <em>output</em> interfaces can be automatic !</li>
 		<li>Whether or not the interface is <strong>hidden</strong> to the user... Why would it be ? Because then it can be used internally
 			for some reason.</li>
 		<li>The <strong>type</strong> of interface according to the <a href="#pattern">pattern</a> you have picked. This can be one of: 
@@ -212,7 +213,7 @@
 </code></pre>
 	<p>As explained in the <a href="concepts.html#config">concepts</a>, there are 2 ways for the user to fill in the configuration parameters.
 		By default, a simple input form is generated so that the user can input any value ; hence, the configurtion parameters should 
-		not be hidden. <br />However, with the second option, you can redirect the user to an <a href="external">external configuration</a> 
+		not be hidden. <br />However, with the second option, you can redirect the user to an <a href="#external">external configuration</a> 
 		website that you should host and maintain
 		unless you have a <em>premium developer account</em> ; then, you have the possibility to provide a nicer way to configure your 
 		connector (OAuth,...) and therefore, your configuration parameters are kind of hidden (per-se) to the user.</p>
@@ -231,28 +232,28 @@
 	<ul>
 		<li>The <strong>general</strong> settings:
 			<ul>
-				<li>The displayed friendly <strong>name</strong> of your connector. No text formatting allowed.</li>
-				<li>The <strong>description</strong> of your connector. No text formatting allowed.</li>
+				<li>The displayed friendly <strong>name</strong> of your connector.</li>
+				<li>The <strong>description</strong> of your connector.</li>
 				<li>An optional special <strong>prevention</strong> message. <a href="http://www.bbcode.org/reference.php">BBCode</a> allowed.
 					<br />If specified, this will prevent the users from adding this connector from the store. Why is that ? 
 					For instance, the iPhone connector will be added automatically when you install the app on your phone. Thus,
 					you cannot manually install it from the store.</li>
-				<li>An optional external <strong>config url</strong>. <a href="external">More about external websites</a>.</li>
-				<li>An optional external <strong>panel url</strong>. <a href="external">More about external websites</a>.</li>
+				<li>An optional external <strong>config url</strong>. <a href="#external">More about external websites</a>.</li>
+				<li>An optional external <strong>panel url</strong>. <a href="#external">More about external websites</a>.</li>
 				<li>An optional <strong>product url</strong> that redirects to the official device (or service, software,...) 
 					that the user must acquire prior to using the connector.</li>
 			</ul>
 		</li>
 		<li>All <strong>interfaces</strong> declared, and for each of them:
 			<ul>
-				<li>The displayed friendly <strong>name</strong> of your interface. No text formatting allowed.</li>
-				<li>The <strong>description</strong> of your interface. No text formatting allowed.</li>
+				<li>The displayed friendly <strong>name</strong> of your interface.</li>
+				<li>The <strong>description</strong> of your interface.</li>
 			</ul>
 		</li>
 		<li>All <strong>configs</strong> declared, and for each of them:
 			<ul>
-				<li>The displayed friendly <strong>name</strong> of your parameter. No text formatting allowed.</li>
-				<li>The <strong>description</strong> of your parameter. No text formatting allowed.</li>
+				<li>The displayed friendly <strong>name</strong> of your parameter.</li>
+				<li>The <strong>description</strong> of your parameter.</li>
 			</ul>
 		</li>
 	</ul>
@@ -264,19 +265,19 @@
 		{
 			"general": 
 			{
-				"name": "My Connector",
-				"description": "This is a test connector, and so on...",
-				"prevention": null,
-				"config_url": null,
-				"panel_url": "http://example.com/?{INSTANCE}",
-				"product_url": null
+				"name": 	"My Connector",
+				"description": 	"This is a test connector, and so on...",
+				"prevention": 	null,
+				"config_url": 	null,
+				"panel_url": 	"http://example.com/?{INSTANCE}",
+				"product_url": 	null
 			},
 			"interfaces": 
 			{
 				"temperature":
 				{
-					"name": "The Outdoor Temperature",
-					"description": "The outdoor temperature in celcius degrees is gathered every 5 min"
+					"name": 	"The Outdoor Temperature",
+					"description": 	"The outdoor temperature in celcius degrees is gathered every 5 min"
 				},
 				"pressure": {...}
 			},
@@ -284,12 +285,12 @@
 			{
 				"something":
 				{
-					"name": "Anything Here",
-					"description": "Type in anyhing hoping it'll do something"
+					"name": 	"Anything Here",
+					"description": 	"Type in anyhing hoping it'll do something"
 				},
 				"another_thing": {...}
 			}
-		}
+		},
 		"fr": {...}
 	}
 }
