@@ -328,7 +328,9 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 	<p>The messages convey data across the connectors and make sure the content is encrypted with the user's identity. All messages are of type 
 	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a>. You can change the message content but
 	you <strong>cannot create new messages</strong> because it requires to be initialized with the user's identity which you don't have ! However, you can 
-	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html#duplicate()"><em>duplicate()</em></a> an existing message if needed.</p>
+	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html#duplicate()">
+	<em>duplicate()</em></a> an existing message if needed.<br />Anyhow, since your code's entry point is one of the <em>consume()</em>,
+	<em>produce()</em> or <em>transform()</em> methods, you'll already have a message at that point.</p>
 	<p>The content of the messages is split in 2 parts <em>(just like an email)</em> :</p>
 	<ol>
 		<li>The textual <strong>content</strong> can be set or retreived in <a href="http://en.wikipedia.org/wiki/UTF-8">UTF8</a> encoding or as raw
@@ -437,10 +439,10 @@ if( $instance instanceof com\busit\Producer && isOutput($interfaceId) )
 	<p>The configuration parameters as you designed them in the <a href="settings.html">connector settings</a> -and later completed by the user- are
 	available in your code. Those are automatically populated via the 
 	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
-	<em>com\busit\Connector.init()</em></a> method. And you can later use it anywhere in your code via the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#config(java.lang.String)">
-	<em>config()</em></a> method that returns the value of the desired configuration parameter. This method is available anywhere in the class.
+	<em>com\busit\Connector.init()</em></a> method at the very beginning so you should not bother about it. 
+	You can thus use it anywhere in your code via the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#config(java.lang.String)">
+	<em>config()</em></a> method that returns the value of the desired configuration parameter as a string.
 <pre><code class="php">
-// anywhere in the code :
 $value = $this-&gt;config('my_parameter');
 </code></pre></li></ul>
 </div>
