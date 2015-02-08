@@ -71,11 +71,15 @@
 	<p>There are 2 basic requirements for a PHP connector:</p>
 	<ol>
 		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
-		<li>There must be a <strong>class</strong> whose name matches the <strong>__CLASSNAME__</strong> define, and that either:
-			<ul><li><strong>implements</strong> the interface <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
-			<em>com\busit\IConnector</em></a>, OR</li>
-			<li><strong>extends</strong> the abstract class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
-			<em>com\busit\Connector</em></a> <em>(recommended)</em></li></ul>
+		<li>There must be a <strong>class</strong> whose name matches the <strong>__CLASSNAME__</strong> define, and that:
+			<ol>
+				<li><strong>extends</strong> the abstract class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
+					<em>com\busit\Connector</em></a></li>
+				<li><strong>implements</em> one of the patterns 
+					<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html"><em>com\busit\Producer</em></a>,
+					<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html"><em>com\busit\Consumer</em></a> or 
+					<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html"><em>com\busit\Transformer</em></a></li>
+			</ol>
 		</li>
 	</ol>
 	
@@ -83,7 +87,7 @@
 &lt;?php
 define("__CLASSNAME__", "\\MyConnector");
 
-class MyConnector extends com\busit\Connector
+class MyConnector extends com\busit\Connector implements com\busit\Transformer
 {
 }
 
@@ -108,24 +112,19 @@ class MyConnector extends com\busit\Connector
 	<ol>
 		<li>The Busit broker detects that the message is targetting your connector.</li>
 		<li>Your code is retreived from the connector store and the class specified by the <strong>__CLASSNAME__</strong> define is instanciated using a parameterless constructor.</li>
-		<li>The user configuration, inputs and outputs are retreived and passed to the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
-			<em>com\busit\IConnector.init()</em></a> method.
-			<ul><li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then all is handled for you.</li></ul>
-		</li>
-		<li>The user message is passed to the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#setInput(com.busit.IMessage,%20java.lang.String)"><em>com\busit\IConnector.setInput()</em></a> method.
+		<li>The user configuration, inputs and outputs are retreived and populated in your class via 
+			<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)"><em></em></a></li>
+		<li>If you implemented the <strong>Consumer</strong> pattern, then the 
+			<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)">
+			<em>consume()</em></a> method is called.</li>
+		<li>The Busit broker checks if there are any other connectors in the flow ; if there are any:
 			<ul>
-				<li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then the 
-					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>push()</em></a> method is called.</li>
-				<li>If you implemented the <strong>Consumer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method is called.</li>
-			</ul>
-		</li>
-		<li>The Busit broker checks if there are any other connectors in the flow ; if there are any, the 
-			<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)"><em>com\busit\IConnector.getOutput()</em></a> method is called for each different <strong>output</strong> interface that is linked to another connector.
-			<ul>
-				<li>If you extended the class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then the 
-					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#pull(com.busit.Connector.Interface)"><em>pull()</em></a> method is called for each output.</li>
-				<li>If you implemented the <strong>Producer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called for each output.</li>
-				<li>If you implemented the <strong>Transformer</strong> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a> method is called for each output.</li>
+				<li>If you implemented the <strong>Producer</strong> pattern, then the 
+					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)">
+					<em>produce()</em></a> method is called for each output.</li>
+				<li>If you implemented the <strong>Transformer</strong> pattern, then the 
+					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)">
+					<em>transform()</em></a> method is called for each output.</li>
 			</ul>
 		</li>
 		<li>Your connector's class instance is destroyed</li>
@@ -142,15 +141,10 @@ public function run($message)
 	$instance = new $class_name();
 	
 	// 3) initialize
-	if( $instance instanceof com\busit\IConnector )
-		$instance-&gt;init($config, $inputs, $outputs);
+	$instance-&gt;init($config, $inputs, $outputs);
 	
 	// 4) pass the message in the connector
-	if( $instance instanceof com\busit\IConnector )
-		$instance-&gt;setInput($message, $interfaceId);
-	else if( $instance instanceof com\busit\Connector )
-		$instance-&gt;push($message, $in);
-	else if( $instance instanceof com\busit\Consumer )
+	if( $instance instanceof com\busit\Consumer )
 		$instance-&gt;consume($message, $in);
 	
 	// 5) get the result and pass it to the next connector
@@ -158,11 +152,7 @@ public function run($message)
 	{
 		if( hasConnectorsAfter($out) )
 		{
-			if( $instance instanceof com\busit\IConnector )
-				$new_message = $instance-&gt;getOutput($out);
-			else if( $instance instanceof com\busit\Connector )
-				$new_message = $instance-&gt;pull($out);
-			else if( $instance instanceof com\busit\Producer )
+			if( $instance instanceof com\busit\Producer )
 				$new_message = $instance-&gt;produce($message, $out);
 			else if( $instance instanceof com\busit\Transformer )
 				$new_message = $instance-&gt;transform($message, $in, $out);
@@ -361,9 +351,8 @@ foreach( $files as $f )
 $message-&gt;addAttachment($name, $data);
 </code></pre>
 		</li>
-	</ol>
-	<p>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
-	<em>com\busit\Connector</em></a>, there are 3 usefull method you can use to get a message class instance:</p>
+	</ol><br /><br />
+	<p>Moreover, there are 3 usefull method you can use to get a message class instance:</p>
 	<ul>
 		<li>To get a brand new empty message, just call the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#empty()">
 		<em>empty()</em></a> method from anywhere in your code.<pre><code class="php">$new_message = $this-&gt;empty();</code></pre></li>
@@ -390,38 +379,7 @@ $message-&gt;addAttachment($name, $data);
 		<li><strong>Name</strong>: <em>Bob's mail</em> (this is the friendly name set by the user)</li>
 		<li><strong>Value</strong>: <em>bob@example.com</em> (this is the value set by the user)</li>
 	</ul>
-	<p>So now, in your code, if you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
-		<em>com\busit\IConnector</em></a> (not recommended), you receive the interface <strong>name</strong> for every call to <em>cron()</em>,
-		<em>getInput()</em> or <em>setOutput()</em> and it's your logic that determines what to do.
-	</p>
-	<pre><code class="php">
-&lt;?php
-define("__CLASSNAME__", "\\NotRecommended");
-
-class NotRecommended implements com\busit\IConnector
-{
-	private $inputs = null;
-	
-	public function init($config, $inputs, $outputs) { $this-&gt;inputs = $inputs }
-	public function cron($message, $interfaceId) { ... }
-	public function setInput($message, $interfaceId)
-	{
-		if( !isset($this-&gt;inputs[$interfaceId]) )
-			throw new \Exception("Unknown output interface name");
-		
-		$key = $this-&gt;inputs[$interfaceId]['key']; // email
-		$name = $interfaceId; // Bob's mail
-		$value = $this-&gt;inputs[$interfaceId]['value']; // bob@example.com
-		...
-	}
-	public function getOutput($interfaceId) { ... }
-}
-
-?&gt;
-	</code></pre>
-	<p>
-		On the other hand, if you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
-		<em>com\busit\Connector</em></a> (recommended), then you receive a populated <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html">
+	<p>So now, in your code, you receive a populated <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html">
 		<em>com\busit\Interface</em></a> object with the 3 properties <em>key</em>, <em>name</em> and <em>value</em>.
 	</p>
 	<pre><code class="php">
@@ -455,54 +413,6 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 		coordinate every minute"</em>.</li>
 	</ul>
 	<p>Conceptually, the regular <a href="#lifecycle">lifecycle</a> is more or less followed except that the input data is fixed and does not change (set by the user).</p>
-	<p>If you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html"><em>com\busit\IConnector</em></a>, then:</p>
-	<ol>
-		<li>The	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#cron(com.busit.IMessage,%20java.lang.String)"><em>cron()</em></a> 
-		method is called first (instead of <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#setInput(com.busit.IMessage,%20java.lang.String)">
-		<em>setInput()</em></a>)</li>
-		<li>Then
-			<ul><li>If the automatic interface is an <strong>output</strong> and there are other connectors linked to that particular output, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)">
-			<em>getOutput()</em></a> method is called for that output interface <strong>only</strong>.</li>
-			<li>If the automatic interface is an <strong>input</strong>, the normal lifecycle applies and triggers the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#getOutput(java.lang.String)">
-			<em>getOutput()</em></a> method for <strong>all</strong> connected outputs.</li>
-			</ul>
-		</li>
-	</ol>
-<pre><code class="php">
-if( $instance instanceof com\busit\IConnector )
-{
-	$instance-&gt;cron($message, $interfaceId);
-
-	if( isOutput($interfaceId) )
-		$instance-&gt;getOutput($interfaceId);
-
-	if( isInput($interfaceId) )
-		foreach( $outputs as $out )
-			$instance-&gt;getOutput($out);
-}
-</code></pre>
-	<p>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>, then:</p>
-	<ul>
-		<li>If the automatic interface is an <strong>output</strong> and there are other connectors linked to that particular output, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)">
-		<em>pull()</em></a> method is called for that output interface <strong>only</strong>.</li>
-		<li>If the automatic interface is an <strong>input</strong>, the normal lifecycle applies and first triggers the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>push()</em></a>
-		method, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#push(com.busit.IMessage,%20com.busit.Connector.Interface)">
-		<em>pull()</em></a> for <strong>all</strong> connected outputs.</li>
-	</ul>
-<pre><code class="php">
-if( $instance instanceof com\busit\Connector )
-{
-	if( isOutput($interfaceId) )
-		$instance-&gt;pull($interfaceId);
-
-	if( isInput($interfaceId) )
-	{
-		$instance-&gt;push($message, $interfaceId);
-		foreach( $outputs as $out )
-			$instance-&gt;getOutput($out);
-	}
-}
-</code></pre>
 	<p>If you implemented the <a href="#consumer"><em>Consumer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method is called as usual for that particular input interface.</p>
 <pre><code class="php">
 if( $instance instanceof com\busit\Consumer && isInput($interfaceId) )
@@ -525,26 +435,13 @@ if( $instance instanceof com\busit\Producer && isOutput($interfaceId) )
 <a name="configs"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>configurations</strong></h2></a>
 <div class="answer">
 	<p>The configuration parameters as you designed them in the <a href="settings.html">connector settings</a> -and later completed by the user- are
-	available in your code.</p>
-	<ul><li>If you implemented <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html">
-	<em>com\busit\IConnector</em></a>, then you get the configuration parameters at the same time as the input and output interfaces definition in the 
-	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IConnector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
-	<em>com\busit\IConnector.init()</em></a> method. It is up to you to decide what to do then. Note that the <strong>$config</strong> parameter is only
-	available in the <em>init()</em> method unless you save it in an internl property. The <strong>$config</strong> parameter is an 
-	associative array.
-	<pre><code class="php">
-public function init($config, $inputs, $outputs)
-{
-	// only in init() :
-	$value = $config['my_parameter'];
-}
-</code></pre></li>
-	<li>If you extended <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a> then
-	the configuration parameters are made available via the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#config(java.lang.String)">
+	available in your code. Those are automatically populated via the 
+	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
+	<em>com\busit\Connector.init()</em></a> method. And you can later use it anywhere in your code via the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#config(java.lang.String)">
 	<em>config()</em></a> method that returns the value of the desired configuration parameter. This method is available anywhere in the class.
 <pre><code class="php">
-	// anywhere in the code :
-	$value = $this-&gt;config('my_parameter');
+// anywhere in the code :
+$value = $this-&gt;config('my_parameter');
 </code></pre></li></ul>
 </div>
 
