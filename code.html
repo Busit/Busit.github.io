@@ -440,7 +440,7 @@ if( $instance instanceof com\busit\Producer && isOutput($interfaceId) )
 	available in your code. Those are automatically populated via the 
 	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
 	<em>com\busit\Connector.init()</em></a> method at the very beginning so you should not bother about it. 
-	You can thus use it anywhere in your code via the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#config(java.lang.String)">
+	You can thus retrieve it anywhere in your code via the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#config(java.lang.String)">
 	<em>config()</em></a> method that returns the value of the desired configuration parameter as a string.
 <pre><code class="php">
 $value = $this-&gt;config('my_parameter');
