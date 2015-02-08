@@ -112,8 +112,8 @@ class MyConnector extends com\busit\Connector implements com\busit\Transformer
 	<ol>
 		<li>The Busit broker detects that the message is targetting your connector.</li>
 		<li>Your code is retreived from the connector store and the class specified by the <strong>__CLASSNAME__</strong> define is instanciated using a parameterless constructor.</li>
-		<li>The user configuration, inputs and outputs are retreived and populated in your class via 
-			<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)"><em></em></a></li>
+		<li>The user configuration, inputs and outputs are retreived and populated internally in your class via the
+			<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)"><em>com\busit\Connector.init()</em></a> method.</li>
 		<li>If you implemented the <strong>Consumer</strong> pattern, then the 
 			<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)">
 			<em>consume()</em></a> method is called.</li>
