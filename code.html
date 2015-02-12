@@ -471,19 +471,8 @@ $value = $this-&gt;config('my_parameter');
 	<p class="we_say">Sure dude, step by step :</p>
 	
 	<h3>1) Principle</h3>
-	<p>Lets define a (simplified, fake) known type :</p>
-<pre><code class="json">
-{
-	"id": 42,
-	"name": "person",
-	"data":
-	{
-		"name": ...,
-		"birthday": ...
-	}
-}
-</code></pre>
-	<p>This says that a "person" has a "name" and a "birthday". So in your message content can be this JSON:</p>
+	<p>Lets define a (simplified, fake) known type that says that a "person" has a "name" and a "birthday".
+		<br />So your message content can be this JSON:</p>
 <pre><code class="json">
 {
 	"id": 42,
@@ -495,7 +484,10 @@ $value = $this-&gt;config('my_parameter');
 	}
 }
 </code></pre>
-	<p>Now in your code, you can directly retrieve it using <a href="http://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html#getKnownType()"><em>getKnownType()</em></a> and access the fields directly.</p>
+	<p>If you retrieve this message via <a href="http://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html#getContentUTF8()"><em>getContentUTF8()</em></a> you'll have the JSON string. However, if you retrieve it using <a href="http://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html#getKnownType()"><em>getKnownType()</em></a>, you'll get a 
+	<a href="http://www.busit.com/busit/doc/javadoc/com/busit/KnownType.html"><em>com\busit\KnownType</em></a> object that you can use.
+	Basically, the system recognizes that the content is a JSON string and that it contains a <strong>data</strong> property. Therefore,
+	it assumes that this is a known type. From this point, you can directly access the data fields.</p>
 <pre><code class="php">
 $knowntype = $message->getKnownType();
 $name = $knowntype['name'];

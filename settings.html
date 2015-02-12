@@ -134,8 +134,6 @@
 			only <em>output</em> interfaces can be automatic !</li>
 		<li>Whether or not the interface is <strong>hidden</strong> to the user... Why would it be ? Because then it can be used internally
 			for some reason.</li>
-		<li>The <strong>type</strong> of interface according to the <a href="#pattern">pattern</a> you have picked. This can be one of: 
-			<em>producer, consumer, transformer</em>.</li>
 	</ol>
 	<p>For the <em>description</em> of your interfaces, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 	<p>Example: A thermometer device can <a href="concepts.html#pushpull">push</a> data on my connector then I make it available to the user, 
@@ -162,16 +160,14 @@
 			"direction": 	"input",
 			"custom": 	false,
 			"automatic": 	false,
-			"hidden": 	true,
-			"type": 	"producer"
+			"hidden": 	true
 		},
 		{
 			"key": 		"temperature",
 			"direction": 	"output",
 			"custom": 	false,
 			"automatic": 	false,
-			"hidden": 	false,
-			"type": 	"producer"
+			"hidden": 	false
 		}
 	]
 }
@@ -228,7 +224,7 @@
 		it will show empty values instead.</p>
 	<p>Then, you can add as many translations sets as you need. Here is how it is structured :</p>
 	<p>Every translation set should be grouped with the <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">
-		2 letters ISO639-1 language code</a> and should contain be 3 subsections for :
+		2 letters ISO639-1 language code</a> and should contain be 3 subsections for :</p>
 	<ul>
 		<li>The <strong>general</strong> settings:
 			<ul>
