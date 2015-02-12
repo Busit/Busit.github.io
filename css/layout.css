@@ -44,6 +44,9 @@ a.javadoc {
 	color: #f7941e;
 }
 
+p.we_say { color: #BB8866; text-align: center; display: block; margin: 5px auto; width: 500px; border-left: 2px solid #BB8866; padding-left: 15px; }
+p.you_say { color: #66BB88; text-align: center; display: block; margin: 0 auto; width: 500px; border-left: 2px solid #66BB88; padding-left: 15px; }
+
  /* ================ SHORTCUT MENU ============= */
 #quick {
 	position: fixed;
