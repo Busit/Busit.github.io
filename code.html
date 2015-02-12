@@ -425,12 +425,14 @@ if( $instance instanceof com\busit\Consumer && isInput($interfaceId) )
 <pre><code class="php">
 if( $instance instanceof com\busit\Transformer && isInput($interfaceId) )
 	foreach( $outputs as $out )
-		$instance-&gt;transform($message, $interfaceId, $out);
+		if( hasConnectorsAfter($out) )
+			$instance-&gt;transform($message, $interfaceId, $out);
 </code></pre>
 	<p>If you implemented the <a href="#producer"><em>Producer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called for that output interface <strong>only</strong>.</p>
 <pre><code class="php">
 if( $instance instanceof com\busit\Producer && isOutput($interfaceId) )
-	$instance-&gt;produce($message, $interfaceId);
+	if( hasConnectorsAfter($interfaceId) )
+		$instance-&gt;produce($message, $interfaceId);
 </code></pre>
 </div>
 
