@@ -482,7 +482,7 @@ $value = $this-&gt;config('my_parameter');
 	"data":
 	{
 		"name": "Simon",
-		"birthday": "1984-10-30"
+		"birthday": 468021600
 	}
 }
 </code></pre>
@@ -492,7 +492,7 @@ $value = $this-&gt;config('my_parameter');
 	it assumes that this is a known type. From this point, you can directly access the data fields.</p>
 <pre><code class="php">
 $knowntype = $message->getKnownType();
-$name = $knowntype['name'];
+$birthday = $knowntype['birthday'];
 </code></pre>
 
 	<h3>2) Flexibility</h3>
@@ -530,8 +530,48 @@ else
 </code></pre>
 
 	<h3>3) Compatibility</h3>
-	<em>... in progress ... </em>
-
+	<p>Sometimes, using the allowed flexibility that known types offer, it happens that you have more data available, and your message might be compatible with multiple known types. For instance, you still want to expose a "person" using his "name" and "birthday",
+	but you also have his location available. And, good news, there is a specific (fake again) known type for "geolocation" :</p>
+<pre><code class="json">
+{
+	"id": 666,
+	"name": "geolocation",
+	"data":
+	{
+		"latitude": ...,
+		"longitude": ...
+	}
+}
+</code></pre>
+	<p>So you can expose the two known types at once using the <em>compatibility</em> array:</p>
+<pre><code class="json">
+{
+	"id": 42,
+	"name": "person",
+	"compatibility": [666],
+	"data":
+	{
+		"name": "Simon",
+		"birthday": 468021600,
+		"latitude": 13.1281452,
+		"longitude": -61.1771603
+	}
+}
+</code></pre>
+	<p>In your code, you can now check if a known type is compatible with another and behave accordingly:</p>
+<pre><code class="php">
+$kt = $message->getKnownType();
+if( $kt != null )
+{
+	if( $kt->isCompatibleWith(666) )
+		$latitude = $kt['latitude'];
+	if( $kt->isCompatibleWith(42) )
+		$birthday = $kt['birthday'];
+}
+</code></pre>
+	<p>Again, do not forget to check all values before using them, because some evil bad guy could misleadlingly mention that his forged
+		fake known type is compatible with some other whereas it is not !</p>
+	
 	<h3>4) Format (nice display)</h3>
 	<em>... in progress ... </em>
 </div>
