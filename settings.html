@@ -19,7 +19,7 @@
 			<header>
 				<div class="content">
 					<div class="logo">
-						<a href="https://www.busit.com"><img src="img/logo_white.png" alt="logo" /></a>
+						<a href="//www.busit.com"><img src="img/logo_white.png" alt="logo" /></a>
 						<em>Developer Portal</em>
 					</div>
 			<nav id="navigation">
@@ -42,7 +42,7 @@
 <div class="answer">
 	<p style="font-size: 1.4em;">You sould be familiar with the <a href="concepts.html">concepts</a> in order to understand the various key points and make educated choices about those.<br /><br /></p>
 	<p>Before writing some code, you need to define the properties and the behavior of your connector. You can do so in different manners, either
-	manually on your <a href="http://www.busit.com/developers/panel">developer panel</a> or by uploading a <a href="http://en.wikipedia.org/wiki/JSON">JSON</a> file containing all 
+	manually on your <a href="//www.busit.com/developers/panel">developer panel</a> or by uploading a <a href="//en.wikipedia.org/wiki/JSON">JSON</a> file containing all 
 	such parameters ; the latter is the recommended approach and the rest of this document will only provide JSON examples.</p>
 	<p>The following main properties are required to cover all aspects of your connector's settings:</p>
 <pre><code class="json">
@@ -62,14 +62,14 @@
 		<li><strong>Producer</strong>: If you gather data from devices or services that are external to Busit, you are then the 
 		first element in a user flow that will trigger the chain by feeding new messages in the system.
 			<div style="text-align: center; margin: 20px;">
-				<div class="connector"><img src="https://www.busit.com/busit/images/connectors/28.png" /></div>
+				<div class="connector"><img src="//images.busit.com/connectors/28.png" /></div>
 				<div class="arrow">&#xf061 </div>
 			</div>
 		</li>
 		<li><strong>Consumer</strong>: If you accept incomming data and send it to devices or services that are external to Busit, you are then the last element in a user flow and nothing will happen after.
 			<div style="text-align: center; margin: 20px;">
 				<div class="arrow">&#xf061 </div>
-				<div class="connector"><img src="https://www.busit.com/busit/images/connectors/10.png" /></div>
+				<div class="connector"><img src="//images.busit.com/connectors/10.png" /></div>
 			</div>
 		</li>
 		<li><strong>Transformer</strong>: If you accept incomming data, then make eventual modifications, decide to stop the chain or not,
@@ -77,7 +77,7 @@
 		then you are an intermediate element in a user flow.
 			<div style="text-align: center; margin: 20px;">
 				<div class="arrow">&#xf061 </div>
-				<div class="connector"><img src="https://www.busit.com/busit/images/connectors/24.png" /></div>
+				<div class="connector"><img src="//images.busit.com/connectors/24.png" /></div>
 				<div class="arrow">&#xf061 </div>
 			</div>
 		</li>
@@ -87,7 +87,7 @@
 
 <a name="general"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>General</strong> connector settings</h2></a>
 <div class="answer">
-	<p>The first thing to do is to declare your connector on your <a href="http://www.busit.com/developers/panel">developer panel</a> and to give
+	<p>The first thing to do is to declare your connector on your <a href="//www.busit.com/developers/panel">developer panel</a> and to give
 	it a meaningfull name. Then you can add more information. There are some basic element you should define for every connector:</p>
 	<ol>
 		<li>The <strong>programming language</strong> used. Currently, only <em>PHP</em> is allowed.</li>
@@ -98,9 +98,9 @@
 		<li>The <strong>use price</strong> that users will be charged for every message that is handled by your connector. This amount 
 			will be credited to your account.</li>
 		<li>The <strong>small logo</strong> as a 100x100 transparent PNG file. It should be 
-			<a href="http://en.wikipedia.org/wiki/Base64">base64</a>'d in the JSON file.</li>
+			<a href="//en.wikipedia.org/wiki/Base64">base64</a>'d in the JSON file.</li>
 		<li>The <strong>big logo</strong> as a 300x300 transparent PNG. It should also be 
-			<a href="http://en.wikipedia.org/wiki/Base64">base64</a>'d in the JSON file.</li>
+			<a href="//en.wikipedia.org/wiki/Base64">base64</a>'d in the JSON file.</li>
 	</ol>
 	<p>For the <em>description</em> of your connector, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 <pre><code class="json">
@@ -223,14 +223,14 @@
 		a common predefined language. Beware that if a translation set is provided but incomplete, there will not be any fallback,
 		it will show empty values instead.</p>
 	<p>Then, you can add as many translations sets as you need. Here is how it is structured :</p>
-	<p>Every translation set should be grouped with the <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">
+	<p>Every translation set should be grouped with the <a href="//en.wikipedia.org/wiki/List_of_ISO_639-1_codes">
 		2 letters ISO639-1 language code</a> and should contain be 3 subsections for :</p>
 	<ul>
 		<li>The <strong>general</strong> settings:
 			<ul>
 				<li>The displayed friendly <strong>name</strong> of your connector.</li>
 				<li>The <strong>description</strong> of your connector.</li>
-				<li>An optional special <strong>prevention</strong> message. <a href="http://www.bbcode.org/reference.php">BBCode</a> allowed.
+				<li>An optional special <strong>prevention</strong> message. <a href="//www.bbcode.org/reference.php">BBCode</a> allowed.
 					<br />If specified, this will prevent the users from adding this connector from the store. Why is that ? 
 					For instance, the iPhone connector will be added automatically when you install the app on your phone. Thus,
 					you cannot manually install it from the store.</li>
@@ -304,29 +304,29 @@
 		</div>
 		<footer>
 			<div class="social">
-				<a class="link" href="https://twitter.com/Bus_IT">
-					<img src="https://images.busit.com/social//twitter.png" alt="Twitter" />
+				<a class="link" href="//twitter.com/Bus_IT">
+					<img src="//images.busit.com/social//twitter.png" alt="Twitter" />
 				</a>
-				<a class="link" href="https://www.facebook.com/busit.net">
-					<img src="https://images.busit.com/social//facebook.png" alt="Facebook" />
+				<a class="link" href="//www.facebook.com/busit.net">
+					<img src="//images.busit.com/social//facebook.png" alt="Facebook" />
 				</a>
-				<a class="link" href="https://plus.google.com/+BusitFr" rel="publisher">
-					<img src="https://images.busit.com/social//google.png" alt="Google+" />
+				<a class="link" href="//plus.google.com/+BusitFr" rel="publisher">
+					<img src="//images.busit.com/social//google.png" alt="Google+" />
 				</a>
-				<a class="link" href="https://www.linkedin.com/company/5121205">
-					<img src="https://images.busit.com/social//linkedin.png" alt="LinkedIn" />
+				<a class="link" href="//www.linkedin.com/company/5121205">
+					<img src="//images.busit.com/social//linkedin.png" alt="LinkedIn" />
 				</a>
-				<a class="link" href="http://www.youtube.com/channel/UCvB9PQcyRzdf8n4AewdE_oA">
-					<img src="https://images.busit.com/social//youtube.png" alt="YouTube" />
+				<a class="link" href="//www.youtube.com/channel/UCvB9PQcyRzdf8n4AewdE_oA">
+					<img src="//images.busit.com/social//youtube.png" alt="YouTube" />
 				</a>
 			</div>
-			<div class="copyright">&copy; <a href='https://www.busit.com'>Busit</a> | 
-			<a style='font-weight: bold;' href='http://www.sys.as'>SYS Network</a></div>
+			<div class="copyright">&copy; <a href='//www.busit.com'>Busit</a> | 
+			<a style='font-weight: bold;' href='//www.sys.as'>SYS Network</a></div>
 		</footer>
 		<div id="help">
 			Is something unclear, you've spotted a mistake, or you need more details ?<br /><br />
-			Then please help us <a href="https://github.com/Busit/Busit.github.io/issues/new">improve this doc</a>.<br />
-			Or <a href="https://www.busit.com/about/contact">contact us</a> directly.
+			Then please help us <a href="//github.com/Busit/Busit.github.io/issues/new">improve this doc</a>.<br />
+			Or <a href="//www.busit.com/about/contact">contact us</a> directly.
 		</div>
 	</body>
 </html>
