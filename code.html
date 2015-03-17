@@ -19,7 +19,7 @@
 			<header>
 				<div class="content">
 					<div class="logo">
-						<a href="https://www.busit.com"><img src="img/logo_white.png" alt="logo" /></a>
+						<a href="//www.busit.com"><img src="img/logo_white.png" alt="logo" /></a>
 						<em>Developer Portal</em>
 					</div>
 			<nav id="navigation">
@@ -44,17 +44,17 @@
 		you can start the code part.<br /><br /></p>
 	<p>Busit supports multiple programming languages for connectors. 
 	However, only <strong>PHP 5</strong> is open for developers at this time. 
-	You can find the complete reference on <a href="http://php.net/">php.net</a>.<br />
-	It is highly recommended that you'd be familiar with <a href="http://en.wikipedia.org/wiki/Object-oriented_programming">OOP</a>.</p>
+	You can find the complete reference on <a href="//php.net/">php.net</a>.<br />
+	It is highly recommended that you'd be familiar with <a href="//en.wikipedia.org/wiki/Object-oriented_programming">OOP</a>.</p>
 	<ul>
 		<li>Connectors are <strong>stateless</strong> and must have a parameterless constructor, see <a href="#lifecycle">lifecycle</a> section for more details.</li>
-		<li>PHP connectors are using <a href="http://php.net/manual/en/language.namespaces.php">namespaces</a>. 
+		<li>PHP connectors are using <a href="//php.net/manual/en/language.namespaces.php">namespaces</a>. 
 			However, it is recommended that you leave your code in the default namespace.</li>
 		<li>PHP connectors are composed of at least one class <em>(and ideally only one)</em>.</li>
 		<li>Connectors must be <a href="publish.html">validated by Busit</a> prior to be available on the platform.</li>
 		<li>All programming languages supported share the same object model <em>(as close as possible)</em>, 
 			this may lead to unusual methods or structures for certain languages but allows to have a common meaningful documentation.</li>
-		<li>For most accurate class documentation, see the <a href="https://www.busit.com/busit/doc/javadoc/">javadoc</a></li>
+		<li>For most accurate class documentation, see the <a href="javadoc/">javadoc</a></li>
 	</ul>
 </div>
 
@@ -73,12 +73,12 @@
 		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
 		<li>There must be a <strong>class</strong> whose name matches the <strong>__CLASSNAME__</strong> define, and that:
 			<ol>
-				<li><strong>extends</strong> the abstract class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html">
+				<li><strong>extends</strong> the abstract class <a href="javadoc/com/busit/Connector.html">
 					<em>com\busit\Connector</em></a></li>
 				<li><strong>implements</strong> one of the patterns 
-					<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html"><em>com\busit\Producer</em></a>,
-					<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html"><em>com\busit\Consumer</em></a> or 
-					<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html"><em>com\busit\Transformer</em></a></li>
+					<a href="javadoc/com/busit/Connector.Producer.html"><em>com\busit\Producer</em></a>,
+					<a href="javadoc/com/busit/Connector.Consumer.html"><em>com\busit\Consumer</em></a> or 
+					<a href="javadoc/com/busit/Connector.Transformer.html"><em>com\busit\Transformer</em></a></li>
 			</ol>
 		</li>
 	</ol>
@@ -113,17 +113,17 @@ class MyConnector extends com\busit\Connector implements com\busit\Transformer
 		<li>The Busit broker detects that the message is targetting your connector.</li>
 		<li>Your code is retreived from the connector store and the class specified by the <strong>__CLASSNAME__</strong> define is instanciated using a parameterless constructor.</li>
 		<li>The user configuration, inputs and outputs are retreived and populated internally in your class via the
-			<a href="http://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)"><em>com\busit\Connector.init()</em></a> method.</li>
+			<a href="javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)"><em>com\busit\Connector.init()</em></a> method.</li>
 		<li>If you implemented the <strong>Consumer</strong> pattern, then the 
-			<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)">
+			<a href="javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)">
 			<em>consume()</em></a> method is called.</li>
 		<li>The Busit broker checks if there are any other connectors in the flow ; if there are any:
 			<ul>
 				<li>If you implemented the <strong>Producer</strong> pattern, then the 
-					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)">
+					<a href="javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)">
 					<em>produce()</em></a> method is called for each output.</li>
 				<li>If you implemented the <strong>Transformer</strong> pattern, then the 
-					<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)">
+					<a href="javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)">
 					<em>transform()</em></a> method is called for each output.</li>
 			</ul>
 		</li>
@@ -175,15 +175,15 @@ public function run($message)
 	from those at regular intervals (see <a href="#cron">automatic interfaces</a>)</p>
 	<p>There are 2 conditions to fulfill if you want to be a producer:</p>
 	<ol>
-		<li>Your class must <strong>extend</strong> the abstract class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
-		<li>Your class must <strong>implement</strong> the interface <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html"><em>com\busit\Producer</em></a>.</li>
+		<li>Your class must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
+		<li>Your class must <strong>implement</strong> the interface <a href="javadoc/com/busit/Connector.Producer.html"><em>com\busit\Producer</em></a>.</li>
 	</ol>
-	<p>The producer pattern provides a single <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method with the following signature:</p>
+	<p>The producer pattern provides a single <a href="javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method with the following signature:</p>
 	<pre><code class="php">public function produce($message, $out)</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and represents an 
+		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and represents an 
 			empty message container that is already initialized with the user credentials. <a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$out</strong> parameter is of type <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the output
+		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the output
 			interface that should produce data. <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method must return the same <strong>$message</strong> that was provided <em>(filled with data, of course)</em> or
 			<em>null</em> if there is no message content to be produced.</li>
@@ -222,15 +222,15 @@ class WeatherStation extends com\busit\Connector implements com\busit\Producer
 	<p>If your connector sends data to external devices or services, it is consuming data from Busit.</p>
 	<p>There are 2 conditions to fulfill if you want to be a consumer:</p>
 	<ol>
-		<li>Your class must <strong>extend</strong> the abstract class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
-		<li>Your class must <strong>implement</strong> the interface <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html"><em>com\busit\Consumer</em></a>.</li>
+		<li>Your class must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
+		<li>Your class must <strong>implement</strong> the interface <a href="javadoc/com/busit/Connector.Consumer.html"><em>com\busit\Consumer</em></a>.</li>
 	</ol>
-	<p>The consumer pattern provides a single <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method with the following signature:</p>
+	<p>The consumer pattern provides a single <a href="javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method with the following signature:</p>
 	<pre><code class="php">public function consume($message, $in)</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and contains the actual data. 
+		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$in</strong> parameter is of type <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the input
+		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the input
 			interface to which data should be sent. <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method does not return anything.</li>
 	</ul>
@@ -268,17 +268,17 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 	<p>If your connector aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
 	<p>There are 2 conditions to fulfill if you want to be a transformer:</p>
 	<ol>
-		<li>Your class must <strong>extend</strong> the abstract class <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
-		<li>Your class must <strong>implement</strong> the interface <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html"><em>com\busit\Transformer</em></a>.</li>
+		<li>Your class must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
+		<li>Your class must <strong>implement</strong> the interface <a href="javadoc/com/busit/Connector.Transformer.html"><em>com\busit\Transformer</em></a>.</li>
 	</ol>
-	<p>The transformer pattern provides a single <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a> method with the following signature:</p>
+	<p>The transformer pattern provides a single <a href="javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a> method with the following signature:</p>
 	<pre><code class="php">public function transform($message, $in, $out)</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and contains the actual data. 
+		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$in</strong> parameter is of type <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and gives you a hint on what data is comming in.
+		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and gives you a hint on what data is comming in.
 			 <a href="#interfaces">More about Interfaces</a>.</li>
-		<li>The <strong>$out</strong> parameter is of type <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and tells you what the user wants to come out.
+		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and tells you what the user wants to come out.
 			<a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method must return the same <strong>$message</strong> that was provided <em>(with its data transformed, of course)</em> or
 			<em>null</em> if you want to stop the flow and prevent further processing.</li>
@@ -326,14 +326,14 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 <a name="messages"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>messages</strong></h2></a>
 <div class="answer">
 	<p>The messages convey data across the connectors and make sure the content is encrypted with the user's identity. All messages are of type 
-	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a>. You can change the message content but
+	<a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a>. You can change the message content but
 	you <strong>cannot create new messages</strong> because it requires to be initialized with the user's identity which you don't have ! However, you can 
-	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html#duplicate()">
+	<a href="javadoc/com/busit/IMessage.html#duplicate()">
 	<em>duplicate()</em></a> an existing message if needed.<br />Anyhow, since your code's entry point is one of the <em>consume()</em>,
 	<em>produce()</em> or <em>transform()</em> methods, you'll already have a message at that point.</p>
 	<p>The content of the messages is split in 2 parts <em>(just like an email)</em> :</p>
 	<ol>
-		<li>The textual <strong>content</strong> can be set or retreived in <a href="http://en.wikipedia.org/wiki/UTF-8">UTF8</a> encoding or as raw
+		<li>The textual <strong>content</strong> can be set or retreived in <a href="//en.wikipedia.org/wiki/UTF-8">UTF8</a> encoding or as raw
 		binary.
 <pre><code class="php">
 $text = $message-&gt;getContentUTF8();
@@ -356,12 +356,12 @@ $message-&gt;addAttachment($name, $data);
 	</ol><br /><br />
 	<p>Moreover, there are 3 usefull method you can use to get a message class instance:</p>
 	<ul>
-		<li>To get a brand new clean message, just call the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#empty()">
+		<li>To get a brand new clean message, just call the <a href="javadoc/com/busit/Connector.html#empty()">
 		<em>clean()</em></a> method from anywhere in your code.<pre><code class="php">$new_message = $this-&gt;clean();</code></pre></li>
 		<li>To get a copy of the initial message with the same content, just call the 
-		<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#copy()"><em>copy()</em></a> method from anywhere in your code.
+		<a href="javadoc/com/busit/Connector.html#copy()"><em>copy()</em></a> method from anywhere in your code.
 		<pre><code class="php">$new_message = $this-&gt;copy();</code></pre></li>
-		<li>To get the actual real original message, just call the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#original()">
+		<li>To get the actual real original message, just call the <a href="javadoc/com/busit/Connector.html#original()">
 		<em>original()</em></a> method from anywhere in your code.<pre><code class="php">$the_message = $this-&gt;original();</code></pre>
 		Be careful with the original message, because if you modify it, you will not be able to get the original content back.</li>
 	</ul>
@@ -381,7 +381,7 @@ $message-&gt;addAttachment($name, $data);
 		<li><strong>Name</strong>: <em>Bob's mail</em> (this is the friendly name set by the user)</li>
 		<li><strong>Value</strong>: <em>bob@example.com</em> (this is the value set by the user)</li>
 	</ul>
-	<p>So now, in your code, you receive a populated <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Interface.html">
+	<p>So now, in your code, you receive a populated <a href="javadoc/com/busit/Connector.Interface.html">
 		<em>com\busit\Interface</em></a> object with the 3 properties <em>key</em>, <em>name</em> and <em>value</em>.
 	</p>
 	<pre><code class="php">
@@ -415,12 +415,12 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 		coordinate every minute"</em>.</li>
 	</ul>
 	<p>Conceptually, the regular <a href="#lifecycle">lifecycle</a> is more or less followed except that the input data is fixed and does not change (set by the user).</p>
-	<p>If you implemented the <a href="#consumer"><em>Consumer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method is called as usual for that particular input interface.</p>
+	<p>If you implemented the <a href="#consumer"><em>Consumer</em></a> pattern, then the <a href="javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method is called as usual for that particular input interface.</p>
 <pre><code class="php">
 if( $instance instanceof com\busit\Consumer && isInput($interfaceId) )
 	$instance-&gt;consume($message, $interfaceId);
 </code></pre>
-	<p>If you implemented the <a href="#transformer"><em>Transformer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)">
+	<p>If you implemented the <a href="#transformer"><em>Transformer</em></a> pattern, then the <a href="javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)">
 	<em>transform()</em></a> method is called as usual for <strong>all</strong> connected outputs.</p>
 <pre><code class="php">
 if( $instance instanceof com\busit\Transformer && isInput($interfaceId) )
@@ -428,7 +428,7 @@ if( $instance instanceof com\busit\Transformer && isInput($interfaceId) )
 		if( hasConnectorsAfter($out) )
 			$instance-&gt;transform($message, $interfaceId, $out);
 </code></pre>
-	<p>If you implemented the <a href="#producer"><em>Producer</em></a> pattern, then the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called for that output interface <strong>only</strong>.</p>
+	<p>If you implemented the <a href="#producer"><em>Producer</em></a> pattern, then the <a href="javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called for that output interface <strong>only</strong>.</p>
 <pre><code class="php">
 if( $instance instanceof com\busit\Producer && isOutput($interfaceId) )
 	if( hasConnectorsAfter($interfaceId) )
@@ -440,9 +440,9 @@ if( $instance instanceof com\busit\Producer && isOutput($interfaceId) )
 <div class="answer">
 	<p>The configuration parameters as you designed them in the <a href="settings.html">connector settings</a> -and later completed by the user- are
 	available in your code. Those are automatically populated via the 
-	<a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
+	<a href="javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
 	<em>com\busit\Connector.init()</em></a> method at the very beginning so you should not bother about it. 
-	You can thus retrieve them anywhere in your code via the <a href="https://www.busit.com/busit/doc/javadoc/com/busit/Connector.html#config(java.lang.String)">
+	You can thus retrieve them anywhere in your code via the <a href="javadoc/com/busit/Connector.html#config(java.lang.String)">
 	<em>config()</em></a> method that returns the value of the desired configuration parameter as a string.
 <pre><code class="php">
 $value = $this-&gt;config('my_parameter');
@@ -451,7 +451,7 @@ $value = $this-&gt;config('my_parameter');
 
 <a name="knowntype"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>Known Types</strong></h2></a>
 <div class="answer">
-	<p>A <a href="http://www.busit.com/busit/doc/javadoc/com/busit/KnownType.html"><em>com\busit\KnownType</em></a> is a special 
+	<p>A <a href="javadoc/com/busit/KnownType.html"><em>com\busit\KnownType</em></a> is a special 
 	structured <a href="#messages">message</a> content in JSON format. It provides information about the type of data that is contained
 	in the message and thus, your connector can behave accordingly. Using those, you can declare that
 	your message has several information contained, what is compatible with it and format a nice display-able output.<br />
@@ -486,8 +486,8 @@ $value = $this-&gt;config('my_parameter');
 	}
 }
 </code></pre>
-	<p>If you retrieve this message via <a href="http://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html#getContentUTF8()"><em>getContentUTF8()</em></a> you'll have the JSON string. However, if you retrieve it using <a href="http://www.busit.com/busit/doc/javadoc/com/busit/IMessage.html#getKnownType()"><em>getKnownType()</em></a>, you'll get a 
-	<a href="http://www.busit.com/busit/doc/javadoc/com/busit/KnownType.html"><em>com\busit\KnownType</em></a> object that you can use.
+	<p>If you retrieve this message via <a href="javadoc/com/busit/IMessage.html#getContentUTF8()"><em>getContentUTF8()</em></a> you'll have the JSON string. However, if you retrieve it using <a href="javadoc/com/busit/IMessage.html#getKnownType()"><em>getKnownType()</em></a>, you'll get a 
+	<a href="javadoc/com/busit/KnownType.html"><em>com\busit\KnownType</em></a> object that you can use.
 	Basically, the system recognizes that the content is a JSON string and that it contains a <strong>data</strong> property. Therefore,
 	it assumes that this is a known type. From this point, you can directly access the data fields.</p>
 <pre><code class="php">
@@ -582,28 +582,28 @@ if( $kt != null )
 		</div>
 		<footer>
 			<div class="social">
-				<a class="link" href="https://twitter.com/Bus_IT">
-					<img src="https://images.busit.com/social//twitter.png" alt="Twitter" />
+				<a class="link" href="//twitter.com/Bus_IT">
+					<img src="//images.busit.com/social//twitter.png" alt="Twitter" />
 				</a>
-				<a class="link" href="https://www.facebook.com/busit.net">
-					<img src="https://images.busit.com/social//facebook.png" alt="Facebook" />
+				<a class="link" href="//www.facebook.com/busit.net">
+					<img src="//images.busit.com/social//facebook.png" alt="Facebook" />
 				</a>
-				<a class="link" href="https://plus.google.com/+BusitFr" rel="publisher">
-					<img src="https://images.busit.com/social//google.png" alt="Google+" />
+				<a class="link" href="//plus.google.com/+BusitFr" rel="publisher">
+					<img src="//images.busit.com/social//google.png" alt="Google+" />
 				</a>
-				<a class="link" href="https://www.linkedin.com/company/5121205">
-					<img src="https://images.busit.com/social//linkedin.png" alt="LinkedIn" />
+				<a class="link" href="//www.linkedin.com/company/5121205">
+					<img src="//images.busit.com/social//linkedin.png" alt="LinkedIn" />
 				</a>
-				<a class="link" href="http://www.youtube.com/channel/UCvB9PQcyRzdf8n4AewdE_oA">
-					<img src="https://images.busit.com/social//youtube.png" alt="YouTube" />
+				<a class="link" href="//www.youtube.com/channel/UCvB9PQcyRzdf8n4AewdE_oA">
+					<img src="//images.busit.com/social//youtube.png" alt="YouTube" />
 				</a>
 			</div>
-			<div class="copyright">&copy; <a href='https://www.busit.com'>Busit</a> | <a style='font-weight: bold;' href='http://www.sys.as'>SYS Network</a></div>
+			<div class="copyright">&copy; <a href='//www.busit.com'>Busit</a> | <a style='font-weight: bold;' href='//www.sys.as'>SYS Network</a></div>
 		</footer>
 		<div id="help">
 			Is something unclear, you've spotted a mistake, or you need more details ?<br /><br />
-			Then please help us <a href="https://github.com/Busit/Busit.github.io/issues/new">improve this doc</a>.<br />
-			Or <a href="https://www.busit.com/about/contact">contact us</a> directly.
+			Then please help us <a href="//github.com/Busit/Busit.github.io/issues/new">improve this doc</a>.<br />
+			Or <a href="//www.busit.com/about/contact">contact us</a> directly.
 		</div>
 	</body>
 </html>
