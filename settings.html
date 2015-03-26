@@ -135,26 +135,35 @@
 		<li>The internal <strong>key</strong> which is an internal name that the user will not see (lower case, no spaces, 
 			no special characters).</li>
 		<li>The <strong>direction</strong> of the interface: <em>input</em> or <em>output</em>.</li>
+		<li>The <strong>pattern</strong> in which the interface is involved. An <em>input</em> interface can only be involved in the <em>consumer</em>
+			or <em>transformer</em> pattern whereas an <em>output</em> interface can only be involved in the <em>producer</em> or <em>transformer</em> pattern.
 		<li>Whether or not this is a <strong>custom</strong> interface.</li>
 		<li>Whether or not this is an <strong>automatic</strong> interface. <span style='text-decoration: underline;'>Important</span>: 
 			only <em>output</em> interfaces can be automatic !</li>
 		<li>Whether or not the interface is <strong>hidden</strong> to the user... Why would it be ? Because then it can be used internally
 			for some reason.</li>
+		<li>The default <strong>timer</strong> if applicable, <em>null</em> otherwise. The format is : <em>[year]-[month]-[day]-[hour]-[minute]</em> 
+			with corresponding numbers or the upper-case letter <em>E</em> (to mean <em>every</em>).<br />
+			Example: <pre>E-E-1-10-00</pre> means every 1st of each month at 10:00.<br />
+			Note that if you set stupid values such as 32nd of each month, then it will behave stupidly accordingly.<br />
+			Note that the minutes should ideally be a multiple of 5.</li>
 	</ol>
 	<p>For the <em>description</em> of your interfaces, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 	<p>Example: A thermometer device can <a href="concepts.html#pushpull">push</a> data on my connector then I make it available to the user, 
 		so my connector is a <em>Producer</em>.<br />
-		Because the device will push data, I need an <em>input</em> interface to receive it, but the user shouldn't see it, because it 
-		is only available to the device (lets not confuse the user about this).<br />
-		Then, I offer an <em>output</em> interface that will send the temperature to whatever the user connects to it...<br ><br />
+		Because the device will push data, I need an <em>input</em> interface to receive it (and therefore implement the <em>Consumer</em> pattern), 
+		but the user shouldn't see it, because it is only available to the device (lets not confuse the user about this).<br />
+		Then, I offer an <em>output</em> interface that will send the temperature to whatever the user connects to it... (and therefore implement
+		also the <em>Producer</em> pattern)<br ><br />
 		<span style="color: #d14;">In red, what happens behind the scenes, the user does not see it.</span><br />
 		<span style="color: #00d140;">In green, what the user can use.</span><br />
 		</p>
 	<div style="text-align: center; margin: 20px;">
 		<div class="connector" style="color: #d14;">The device</div>
-		<span style="font-size: 0.6em; color: #d14; display: inline-block;">(push data on the<br /> hidden input interface)</span>
+		<span style="font-size: 0.6em; color: #d14; display: inline-block;">(consume data on the<br /> hidden input interface)</span>
 		<div class="arrow" style="color: #d14;">&#xf061 </div>
 		<div class="connector" style="color: #00d140;">My connector</div>
+		<span style="font-size: 0.6em; color: #00d140; display: inline-block;">(produce data on the<br /> output interface)</span>
 		<div class="arrow" style="color: #00d140;">&#xf061 </div>
 	</div>
 <pre><code class="json">
@@ -164,15 +173,19 @@
 		{
 			"key": 		"receiver",
 			"direction": 	"input",
+			"pattern": 	"consumer",
 			"custom": 	false,
 			"automatic": 	false,
+			"timer": 	null,
 			"hidden": 	true
 		},
 		{
 			"key": 		"temperature",
 			"direction": 	"output",
+			"pattern": 	"producer",
 			"custom": 	false,
 			"automatic": 	false,
+			"timer": 	null,
 			"hidden": 	false
 		}
 	]
