@@ -147,6 +147,23 @@
 			Example: <pre>E-E-1-10-00</pre> means every 1st of each month at 10:00.<br />
 			Note that if you set stupid values such as 32nd of each month, then it will behave stupidly accordingly.<br />
 			Note that the minutes should ideally be a multiple of 5.</li>
+		<li>The validation <strong>rule</strong> that should be applied when <span style="text-decoration: underline;">the user enters</span> 
+			a value for the custom interface (it does not apply if the value is set programatically). 
+			It can be <em>null</em> if the interface is not custom or if all values are allowed. 
+			Otherwise, you can choose among various predefined rules or set your own custom regex:
+			<ul>
+				<li>domain : a domain name</li>
+				<li>email : an email address</li>
+				<li>ip : an ipv4 or ipv6 address</li>
+				<li>phone : phone number</li>
+				<li>url : a url</li>
+				<li>number : any digit number</li>
+				<li>text : any non-digit number</li>
+				<li>upper : only upper case characters</li>
+				<li>lower : only lower case characters</li>
+				<li>/.../ : any custom valid javascript regex</li>
+			</ul>
+			</li>
 	</ol>
 	<p>For the <em>description</em> of your interfaces, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 	<p>Example: A thermometer device can <a href="concepts.html#pushpull">push</a> data on my connector then I make it available to the user, 
@@ -177,7 +194,8 @@
 			"custom": 	false,
 			"automatic": 	false,
 			"timer": 	null,
-			"hidden": 	true
+			"hidden": 	true,
+			"rule": 	null
 		},
 		{
 			"key": 		"temperature",
@@ -186,7 +204,8 @@
 			"custom": 	false,
 			"automatic": 	false,
 			"timer": 	null,
-			"hidden": 	false
+			"hidden": 	false,
+			"rule": 	null
 		}
 	]
 }
@@ -208,6 +227,23 @@
 			to a URL to retreive data, it's best not to hardcode the URL in the code, but instead use a hidden configuration parameter
 			with the URL as default value such that whenever it changes, it is easy to adjust.</li>
 		<li>Whether or not it is <strong>bindable</strong>. <a href="concepts.html#binding">More about binding</a></li>
+		<li>The validation <strong>rule</strong> that should be applied when <span style="text-decoration: underline;">the user enters</span> 
+			a value for the configuration (it does not apply if the value is set programatically). 
+			It can be <em>null</em> if it is hidden or if all values are allowed. 
+			Otherwise, you can choose among various predefined rules or set your own custom regex:
+			<ul>
+				<li>domain : a domain name</li>
+				<li>email : an email address</li>
+				<li>ip : an ipv4 or ipv6 address</li>
+				<li>phone : phone number</li>
+				<li>url : a url</li>
+				<li>number : any digit number</li>
+				<li>text : any non-digit number</li>
+				<li>upper : only upper case characters</li>
+				<li>lower : only lower case characters</li>
+				<li>/.../ : any custom valid javascript regex</li>
+			</ul>
+			</li>
 	</ol>
 	<p>For the <em>description</em> of your parameters, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 <pre><code class="json">
@@ -218,13 +254,15 @@
 			"key": 		"url",
 			"hidden": 	true,
 			"default":	"http://example.com",
-			"bindable":	false
+			"bindable":	false,
+			"rule": 	null
 		},
 		{
 			"key": 		"something",
 			"hidden": 	false,
 			"default":	null,
-			"bindable":	false
+			"bindable":	false,
+			"rule": 	"number",
 		}
 	]
 }
@@ -267,12 +305,16 @@
 			<ul>
 				<li>The displayed friendly <strong>name</strong> of your interface.</li>
 				<li>The <strong>description</strong> of your interface.</li>
+				<li>The <strong>rule</strong> message that explains what the user should enter. Set it to <em>null</em> if the 
+					<em>rule</em> for that interface is <em>null</em></li>
 			</ul>
 		</li>
 		<li>All <strong>configs</strong> declared, and for each of them:
 			<ul>
 				<li>The displayed friendly <strong>name</strong> of your parameter.</li>
 				<li>The <strong>description</strong> of your parameter.</li>
+				<li>The <strong>rule</strong> message that explains what the user should enter. Set it to <em>null</em> if the 
+					<em>rule</em> for that parameter is <em>null</em></li>
 			</ul>
 		</li>
 	</ul>
@@ -297,7 +339,8 @@
 				"temperature":
 				{
 					"name": 	"The Outdoor Temperature",
-					"description": 	"The outdoor temperature in celcius degrees is gathered every 5 min"
+					"description": 	"The outdoor temperature in celcius degrees is gathered every 5 min",
+					"rule": 	null
 				},
 				"pressure": {...}
 			},
@@ -306,7 +349,8 @@
 				"something":
 				{
 					"name": 	"Anything Here",
-					"description": 	"Type in anyhing hoping it'll do something"
+					"description": 	"Type in anyhing hoping it'll do something",
+					"rule": 	"Please enter a number"
 				},
 				"another_thing": {...}
 			}
