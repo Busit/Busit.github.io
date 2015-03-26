@@ -151,10 +151,10 @@
 	<p>For the <em>description</em> of your interfaces, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 	<p>Example: A thermometer device can <a href="concepts.html#pushpull">push</a> data on my connector then I make it available to the user, 
 		so my connector is a <em>Producer</em>.<br />
-		Because the device will push data, I need an <em>input</em> interface to receive it (and therefore implement the <em>Consumer</em> pattern), 
-		but the user shouldn't see it, because it is only available to the device (lets not confuse the user about this).<br />
+		However, because the device will push data, I need an <em>input</em> interface to receive it (and therefore implement the <em>Consumer</em> pattern), 
+		but the user shouldn't see it, because it is only available to the device (lets not confuse the user about this and make it hidden).<br />
 		Then, I offer an <em>output</em> interface that will send the temperature to whatever the user connects to it... (and therefore implement
-		also the <em>Producer</em> pattern)<br ><br />
+		the <em>Producer</em> pattern)<br ><br />
 		<span style="color: #d14;">In red, what happens behind the scenes, the user does not see it.</span><br />
 		<span style="color: #00d140;">In green, what the user can use.</span><br />
 		</p>
@@ -207,6 +207,7 @@
 			to store values for internal usage that the user should not know about.<br />For instance: if my connector should connect
 			to a URL to retreive data, it's best not to hardcode the URL in the code, but instead use a hidden configuration parameter
 			with the URL as default value such that whenever it changes, it is easy to adjust.</li>
+		<li>Whether or not it is <strong>bindable</strong>. <a href="concepts.html#binding">More about binding</a></li>
 	</ol>
 	<p>For the <em>description</em> of your parameters, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 <pre><code class="json">
@@ -216,12 +217,14 @@
 		{
 			"key": 		"url",
 			"hidden": 	true,
-			"default":	"http://example.com"
+			"default":	"http://example.com",
+			"bindable":	false
 		},
 		{
 			"key": 		"something",
 			"hidden": 	false,
-			"default":	null
+			"default":	null,
+			"bindable":	false
 		}
 	]
 }
@@ -248,7 +251,8 @@
 		<li>The <strong>general</strong> settings:
 			<ul>
 				<li>The displayed friendly <strong>name</strong> of your connector.</li>
-				<li>The <strong>description</strong> of your connector.</li>
+				<li>The <strong>short description</strong> of your connector in a few words.</li>
+				<li>The <strong>long description</strong> of your connector a bit more complete. <a href="//www.bbcode.org/reference.php">BBCode</a> allowed.</li>
 				<li>An optional special <strong>prevention</strong> message. <a href="//www.bbcode.org/reference.php">BBCode</a> allowed.
 					<br />If specified, this will prevent the users from adding this connector from the store. Why is that ? 
 					For instance, the iPhone connector will be added automatically when you install the app on your phone. Thus,
@@ -281,7 +285,8 @@
 			"general": 
 			{
 				"name": 	"My Connector",
-				"description": 	"This is a test connector, and so on...",
+				"short_description": 	"This is a test connector",
+				"long_description": 	"This is a test connector, and so on...",
 				"prevention": 	null,
 				"config_url": 	null,
 				"panel_url": 	"http://example.com/?{INSTANCE}",
