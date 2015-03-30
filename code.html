@@ -264,46 +264,92 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 
 <a name="messages"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>messages</strong></h2></a>
 <div class="answer">
-	<p>The messages convey data across the connectors and make sure the content is encrypted with the user's identity. All messages are of type 
-	<a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a>. You can change the message content but
-	you <strong>cannot create new messages</strong> because it requires to be initialized with the user's identity which you don't have ! However, you can 
-	<a href="javadoc/com/busit/IMessage.html#duplicate()">
-	<em>duplicate()</em></a> an existing message if needed.<br />Anyhow, since your code's entry point is one of the <em>consume()</em>,
-	<em>produce()</em> or <em>transform()</em> methods, you'll already have a message at that point.</p>
-	<p>The content of the messages is split in 2 parts <em>(just like an email)</em> :</p>
-	<ol>
-		<li>The textual <strong>content</strong> can be set or retreived in <a href="//en.wikipedia.org/wiki/UTF-8">UTF8</a> encoding or as raw
-		binary.
-<pre><code class="php">
-$text = $message-&gt;getContentUTF8();
-$message-&gt;setContentUTF8('Hello World!');
-
-$bytes = $message-&gt;getContentBinary();
-$message-&gt;setContentBinary($data);
-</code></pre>
-		However, there is a possibility to format the message content in a structured way using a <strong>Known Type</strong>. <a href="#knowntype">More about Known Types</a>.<br /><br />
-		</li>
-		<li>The <strong>attachments</strong> that can contain pictures, files,...
-<pre><code class="php">
-$files = $message-&gt;getAttachmentNames();
-foreach( $files as $f )
-	$message-&gt;getAttachment($f);
-
-$message-&gt;addAttachment($name, $data);
-</code></pre>
-		</li>
-	</ol><br /><br />
-	<p>Moreover, there are 3 usefull method you can use to get a message class instance:</p>
+	<p>The <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> convey data across the connectors and make sure the 
+	content is encrypted with the user's identity... hopefully, this is all transparent for you.</p>
+	
+	<h3>1) IMessage</h3>
+	<p>Messages are composed of the following elements:</p>
 	<ul>
-		<li>To get a brand new clean message, just call the <a href="javadoc/com/busit/Connector.html#empty()">
-		<em>clean()</em></a> method from anywhere in your code.<pre><code class="php">$new_message = $this-&gt;clean();</code></pre></li>
-		<li>To get a copy of the initial message with the same content, just call the 
-		<a href="javadoc/com/busit/Connector.html#copy()"><em>copy()</em></a> method from anywhere in your code.
-		<pre><code class="php">$new_message = $this-&gt;copy();</code></pre></li>
-		<li>To get the actual real original message, just call the <a href="javadoc/com/busit/Connector.html#original()">
-		<em>original()</em></a> method from anywhere in your code.<pre><code class="php">$the_message = $this-&gt;original();</code></pre>
-		Be careful with the original message, because if you modify it, you will not be able to get the original content back.</li>
+		<li>The <strong>content</strong> exposed as a <a href="javadoc/com/busit/IContent.html"><em>com\busit\IContent</em></a> structure</li>
+		<li>The <strong>files</strong> that can contain pictures, attachments,...</li>
+		<li>The <strong>sender</strong> of the message as a <a href="//tools.ietf.org/rfc/rfc5280.txt">X509 name</a> DN string</li>
+		<li>The <strong>receiver</strong> of the message as a <a href="//tools.ietf.org/rfc/rfc5280.txt">X509 name</a> DN string</li>
 	</ul>
+<pre><code class="php">
+interface IMessage
+{
+	public function file($name, $data = null); 	// Get or Set a file for the message
+	public function files();	// Get all files attached to the message
+	
+	public function content($data = null); 	// Get or Set the content of the message
+	
+	public function from(); 	// Get the sender of the message
+	public function to(); 	// Get the receiver of the message
+	
+	public function clear(); 	// Clears the content and files of the message
+	public function copy(); 	// Get a shallow copy of the message (files content is referenced and not copied)
+}
+</code></pre>
+	<p>You can obtain a new <em>IMessage</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
+<pre><code class="php">
+$message = com\busit\Factory::message();
+</code></pre>
+
+	<h3>2) IMessageList</h3>
+	<p>In case you want to return multiple messages at once, you can use a <a href="javadoc/com/busit/IMessageList.html"><em>com\busit\IMessageList</em></a>
+	which is a wrapper around IMessage that behaves just like an array. Do not try to use it as such because it will throw at you... 
+	Simply append other messages to it.<br />Note that nested IMessageList is not supported.</p>
+<pre><code class="php">
+interface IMessageList extends IMessage, ArrayAccess, Countable, IteratorAggregate
+{
+}
+</code></pre>
+	<p>You can obtain a new <em>IMessageList</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
+<pre><code class="php">
+$list = com\busit\Factory::messageList();
+
+$list[] = $message1;
+$list[] = $message2;
+</code></pre>
+
+	<h3>3) IContent</h3>
+	<p>The actual content of the message is a very flexible structure that allows developers to strenghten compatibility accross connectors.
+		See it as a kind of high-level <em>Mime type</em> for data. A extensible set of predefined content types is available so that everyone 
+		can share common data structures. In the end, it behaves like an array in which you can put arbitrary key/value pairs.</p>
+	<p>IContent has:</p>
+	<ul>
+		<li>An <strong>id</strong> that uniquely identifies the <em>type</em> of content</li>
+		<li>A friendly <strong>name</strong> because it is always better than an id... but you should not rely on it !</li>
+		<li>A list of <strong>compatibility</strong> to share common values as another existing type</li>
+		<li>A <strong>text format</strong> template used to represent this content as simple text</li>
+		<li>A <strong>html format</strong> template used to represent this content as html</li>
+	</ul>
+<pre><code class="php">
+interface IContent
+{
+	public function id($value = null); 	// Get or Set the id
+	public function name($value = null);	// Get or Set the name
+	
+	public function compatible($id, $value = null); 	// Get or Set the compatibility with another content type
+	public function compatibility($list = null; 	// Get or Set the list of compatible content types
+	
+	public function textFormat($value = null); 	// Get or Set the text format template
+	public function toText($format = null); 	// Apply the text format to the data
+	
+	public function htmlFormat($value = null); 	// Get or Set the text format template
+	public function toHtml($format = null); 	// Apply the html format to the data
+	
+	public function toJson(); 	// Get a json representation of this entire content type including data
+	public function merge($content); 	// import another content's data into this one
+}
+</code></pre>
+	<p>You can obtain a new <em>IContent</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
+<pre><code class="php">
+$content = com\busit\Factory::content(42); // get content type with id 42
+$content['answer'] = 42;
+$content['question'] = 'undefined';
+</code></pre>
+	<p>For more info about content types compatibility, text and html formats,... See <a href="#icontent">deep into message content</a>.</p>
 </div>
 
 <a name="interfaces"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>interfaces</strong> (inputs and outputs)</h2></a>
@@ -320,14 +366,14 @@ $message-&gt;addAttachment($name, $data);
 		<li><strong>Name</strong>: <em>Bob's mail</em> (this is the friendly name set by the user)</li>
 		<li><strong>Value</strong>: <em>bob@example.com</em> (this is the value set by the user)</li>
 	</ul>
-	<p>So now, in your code, you receive a populated <a href="javadoc/com/busit/Connector.Interface.html">
+	<p>So now, in your code, you receive a populated <a href="javadoc/com/busit/Interface.html">
 		<em>com\busit\Interface</em></a> object with the 3 properties <em>key</em>, <em>name</em> and <em>value</em>.
 	</p>
 	<pre><code class="php">
 &lt;?php
-define("__CLASSNAME__", "\\Recommended");
+define("__CLASSNAME__", "\\Mailer");
 
-class Recommended extends com\busit\Connector implements com\busit\Consumer
+class Mailer extends com\busit\Connector implements com\busit\Consumer
 {
 	public function consume($message, $in)
 	{
@@ -340,57 +386,33 @@ class Recommended extends com\busit\Connector implements com\busit\Consumer
 
 ?&gt;
 	</code></pre>
-	<p>This means that now you know which input or output the message was targetting and you can behave accordingly.</p>
-</div>
-
-<a name="cron"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>automatic</strong> interfaces (cron)</h2></a>
-<div class="answer">
-	<p>Automatic interfaces are <strong>input</strong> or <strong>output</strong> <a href="#interfaces">interfaces</a> that are activated at 
-	given interval defined by the user.</p>
-	<ul>
-		<li>An automatic <strong>input</strong> can be for a <strong>Consumer</strong>, saying for instance <em>"Post this tweet (predefined) every day at 8AM"</em> ;
-		<br />Or for a <strong>Transformer</strong>, it could mean <em>"Change 1 (1 = the message data) euro (euro = the input interface) into dollars every hour, so I can follow the trends"</em>.</li>
-		<li>An automatic <strong>output</strong> only applies to a <strong>Producer</strong>, saying for instance <em>"I want to get the GPS 
-		coordinate every minute"</em>.</li>
-	</ul>
-	<p>Conceptually, the regular <a href="#lifecycle">lifecycle</a> is more or less followed except that the input data is fixed and does not change (set by the user).</p>
-	<p>If you implemented the <a href="#consumer"><em>Consumer</em></a> pattern, then the <a href="javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method is called as usual for that particular input interface.</p>
-<pre><code class="php">
-if( $instance instanceof com\busit\Consumer && isInput($interfaceId) )
-	$instance-&gt;consume($message, $interfaceId);
-</code></pre>
-	<p>If you implemented the <a href="#transformer"><em>Transformer</em></a> pattern, then the <a href="javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)">
-	<em>transform()</em></a> method is called as usual for <strong>all</strong> connected outputs.</p>
-<pre><code class="php">
-if( $instance instanceof com\busit\Transformer && isInput($interfaceId) )
-	foreach( $outputs as $out )
-		if( hasConnectorsAfter($out) )
-			$instance-&gt;transform($message, $interfaceId, $out);
-</code></pre>
-	<p>If you implemented the <a href="#producer"><em>Producer</em></a> pattern, then the <a href="javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method is called for that output interface <strong>only</strong>.</p>
-<pre><code class="php">
-if( $instance instanceof com\busit\Producer && isOutput($interfaceId) )
-	if( hasConnectorsAfter($interfaceId) )
-		$instance-&gt;produce($message, $interfaceId);
-</code></pre>
+	<p>This means that you know which input or output the message was targetting and you can behave accordingly.</p>
+	
+	<h3>About <strong>automatic</strong> interfaces (cron)</h3>
+	<p>Automatic interfaces are <strong>output</strong> <a href="#interfaces">interfaces</a> of the <strong>producer</strong> pattern that are activated at 
+	given interval defined by the user. I.e.: <em>"I want to get the GPS coordinate every minute"</em>.</p>
+	<p>Hence, the <a href="javadoc/com/busit/Producer.html#produce(com.busit.Interface)"><em>produce()</em></a> method will be called at defined interval for
+		that output interface only (even if other interfaces are connected).</p>
 </div>
 
 <a name="configs"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>configurations</strong></h2></a>
 <div class="answer">
 	<p>The configuration parameters as you designed them in the <a href="settings.html">connector settings</a> -and later completed by the user- are
-	available in your code. Those are automatically populated via the 
-	<a href="javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)">
-	<em>com\busit\Connector.init()</em></a> method at the very beginning so you should not bother about it. 
-	You can thus retrieve them anywhere in your code via the <a href="javadoc/com/busit/Connector.html#config(java.lang.String)">
-	<em>config()</em></a> method that returns the value of the desired configuration parameter as a string.
+	available in your code. You can thus retrieve them anywhere via the <a href="javadoc/com/busit/Connector.html#config(java.lang.String)">
+	<em>config()</em></a> method that returns the value of the desired configuration parameter as a string.</p>
 <pre><code class="php">
 $value = $this-&gt;config('my_parameter');
-</code></pre></li></ul>
+</code></pre>
+
+	<h3>Bindable config parameters</h3>
+	<p><a href="concepts.html#binding">Binding</a> will occur before your connector is created, so the bindable config parameters 
+		will already be populated with de proper value.<br />Keep in mind that binding is <em>optionnal</em> from the user's perspective 
+		so you should always check if the config contains the value you expect !</p>
 </div>
 
-<a name="knowntype"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>Known Types</strong></h2></a>
+<a name="icontent"><h2 onclick="return; $(this).next().slideToggle(500);">Deep into message <strong>content</strong></h2></a>
 <div class="answer">
-	<p>A <a href="javadoc/com/busit/KnownType.html"><em>com\busit\KnownType</em></a> is a special 
+	<!--p>A <a href="javadoc/com/busit/KnownType.html"><em>com\busit\KnownType</em></a> is a special 
 	structured <a href="#messages">message</a> content in JSON format. It provides information about the type of data that is contained
 	in the message and thus, your connector can behave accordingly. Using those, you can declare that
 	your message has several information contained, what is compatible with it and format a nice display-able output.<br />
@@ -511,7 +533,7 @@ if( $kt != null )
 	<p>Again, do not forget to check all values before using them, because some evil bad guy could misleadlingly mention that his forged
 		fake known type is compatible with some other whereas it is not !</p>
 	<p class="we_say">Ever heard about scam, spam, phishing, exploits and so on ?<br />Do not trust anyone...</p>
-	<h3>4) Format (nice display)</h3>
+	<h3>4) Format (nice display)</h3-->
 	<em>... in progress ... </em>
 </div>
 
