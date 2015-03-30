@@ -39,11 +39,7 @@
 			<h1>Let's <strong>Code</strong> a bit</h1>
 <a name="start"><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2></a>
 <div class="answer">
-	<p style="font-size: 1.4em;">Before writing the first line of code, you should be familiar with the <a href="settings.html">connector settings</a> and have a 
-		concrete idea on what your connector is going to do and what interfaces it has. Once you have setup your connector settings in the developer panel,
-		you can start the code part.<br /><br /></p>
-	<p>Busit supports multiple programming languages for connectors. 
-	However, only <strong>PHP 5</strong> is open for developers at this time. 
+	<p>Busit supports multiple programming languages for connectors. However, only <strong>PHP 5</strong> is open for developers at this time. 
 	You can find the complete reference on <a href="//php.net/">php.net</a>.<br />
 	It is highly recommended that you'd be familiar with <a href="//en.wikipedia.org/wiki/Object-oriented_programming">OOP</a>.</p>
 	<ul>
@@ -55,117 +51,73 @@
 		<li>All programming languages supported share the same object model <em>(as close as possible)</em>, 
 			this may lead to unusual methods or structures for certain languages but allows to have a common meaningful documentation.</li>
 		<li>For most accurate class documentation, see the <a href="javadoc/">javadoc</a></li>
+		<li>You should define the connector's capabilities and settings, name, description, translations, what interfaces it supports, what are
+			the configuration parameters,...This is done via the <a href="settings.html">configuration file</a>. Then, you can write the 
+			actual code of your connector according to the settings you have declared.</li>
 	</ul>
-</div>
-
-<a name="basic"><h2 onclick="return; $(this).next().slideToggle(500);">Basic <strong>structure</strong></h2></a>
-<div class="answer">
-	<p>Developping a connector is done in 2 phases :</p>
-	<ol>
-		<li>Define the connector's capabilities and settings, name, description, translations, what interfaces it supports, what are
-			the configuration parameters,...<br />This is done on the developer panel and not in the code. See the 
-			<a href="settings.html">connector settings</a> in order to have all details about this.</li>
-		<li>Write the actual code of your connector according to the settings you have declared.</li>
-	</ol>
-		
+	
+	<h3>1) Basic structure</h3>
 	<p>There are 2 basic requirements for a PHP connector:</p>
 	<ol>
-		<li>There must be a <strong>define</strong> statement for <strong>__CLASSNAME__</strong> to provide the name of the class to be instanciated.</li>
-		<li>There must be a <strong>class</strong> whose name matches the <strong>__CLASSNAME__</strong> define, and that:
-			<ol>
-				<li><strong>extends</strong> the abstract class <a href="javadoc/com/busit/Connector.html">
-					<em>com\busit\Connector</em></a></li>
-				<li><strong>implements</strong> one of the patterns 
-					<a href="javadoc/com/busit/Connector.Producer.html"><em>com\busit\Producer</em></a>,
-					<a href="javadoc/com/busit/Connector.Consumer.html"><em>com\busit\Consumer</em></a> or 
-					<a href="javadoc/com/busit/Connector.Transformer.html"><em>com\busit\Transformer</em></a></li>
-			</ol>
-		</li>
-	</ol>
-	
-	<pre><code class="php">
+		<li>You must define the <strong>__CLASSNAME__</strong> constant to provide the name of the connector class to be instanciated.</li>
+<pre><code class="php">
 &lt;?php
-define("__CLASSNAME__", "\\MyConnector");
-
-class MyConnector extends com\busit\Connector implements com\busit\Transformer
+define("__CLASSNAME__", "\\HelloWorld");
+</code></pre>
+		<li>You must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a> and 
+			<strong>implement</strong> <em>(at least)</em> one of the  
+					<a href="#producer"><em>com\busit\Producer</em></a>,
+					<a href="#consumer"><em>com\busit\Consumer</em></a> or 
+					<a href="#transformer"><em>com\busit\Transformer</em></a> patterns.
+		</li>
+<pre><code class="php">
+class HelloWorld extends com\busit\Connector implements com\busit\Producer
 {
+	...
 }
-
-?&gt;
-	</code></pre>
-</div>
-
-<a name="lifecycle"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Connector</strong> lifecycle</h2></a>
-<div class="answer">
-	<p>Everytime a connector is triggered, a new instance of the class is created. After processing the message, the class instance is destroyed. 
-	This means that there is no persistency nor any kind of state of the class: connectors are <strong>stateless</strong>.
-	If your connector absolutely requires an internal state or some sort of history, you should setup one of your own using external services or you 
-	should have a <em>premium developer account</em> so that Busit provides such mechanism to you.</p>
-	<p>Context:</p>
-	<ol>
-		<li>You create a connector and publish it on the Busit store.</li>
-		<li>A user adds your connector to one of his own flows.</li>
-		<li>The user configures his copy of your connector, this is stored in the Busit database.</li>
-		<li>The user sends a message to his flow...</li>
+</code></pre>
 	</ol>
-	<p>Server side:</p>
+	<p>The <strong>Connector</strong> abstract class implements a bunch of behaviors to help you, don't bother about it. If you want to know what is
+	available for you to use safely, look at the <a href="javadoc/com/busit/ConnectorHelper.html"><em>ConnectorHelper</em><a> interface:</p>
+<pre><code class="php">
+interface ConnectorHelper
+{
+	public function config($key); 	// returns the matching config parameter (or all if $key == null)
+	public function input($key); 	// returns the matching input interface (or all if $key == null)
+	public function output($key); 	// returns the matching output interface (or all if $key == null)
+	
+	public function id(); 	// returns a unique id for the user instance of the connector
+	public function locale(); 	// returns the preferred language of the user
+	
+	public function notifyUser($message); 	// send warnings to the user (use sparsely)
+	public function notifyOwner($message, $data); 	// send warnings to the developper (aka: you) (use sparsely)
+}
+</code></pre>
+
+	<h3>2) Lifecycle</h3>
+	<p>Everytime a connector is triggered, a new instance of the class is created. After processing the message, the class instance is destroyed. 
+	This means that there is no persistency nor any kind of state of the class once the lifecycle is complete: connectors are <strong>stateless</strong>.</p>
+	<p class="we_say">If your connector absolutely requires an internal state or some sort of history, you should setup one of your own using external services or you 
+	should have a <em>premium developer account</em> so that Busit provides such mechanism to you.</p>
 	<ol>
-		<li>The Busit broker detects that the message is targetting your connector.</li>
-		<li>Your code is retreived from the connector store and the class specified by the <strong>__CLASSNAME__</strong> define is instanciated using a parameterless constructor.</li>
-		<li>The user configuration, inputs and outputs are retreived and populated internally in your class via the
-			<a href="javadoc/com/busit/Connector.html#init(java.util.Map,%20java.util.Map,%20java.util.Map)"><em>com\busit\Connector.init()</em></a> method.</li>
+		<li>The class specified by the <strong>__CLASSNAME__</strong> constant is instanciated using a parameterless constructor.</li>
 		<li>If you implemented the <strong>Consumer</strong> pattern, then the 
-			<a href="javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)">
-			<em>consume()</em></a> method is called.</li>
+			<a href="javadoc/com/busit/Consumer.html#consume(com.busit.IMessage,%20com.busit.Interface)">
+			<em>consume()</em></a> method is called once for the targetted interface only.</li>
 		<li>The Busit broker checks if there are any other connectors in the flow ; if there are any:
 			<ul>
 				<li>If you implemented the <strong>Producer</strong> pattern, then the 
-					<a href="javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)">
-					<em>produce()</em></a> method is called for each output.</li>
+					<a href="javadoc/com/busit/Producer.html#produce(com.busit.IMessage,%20com.busit.Interface)">
+					<em>produce()</em></a> method is called once for each connected output.</li>
 				<li>If you implemented the <strong>Transformer</strong> pattern, then the 
-					<a href="javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)">
-					<em>transform()</em></a> method is called for each output.</li>
+					<a href="javadoc/com/busit/Transformer.html#transform(com.busit.IMessage,%20com.busit.Interface,%20com.busit.Interface)">
+					<em>transform()</em></a> method is called once for each connected output.</li>
 			</ul>
 		</li>
 		<li>Your connector's class instance is destroyed</li>
 	</ol>
-	<p>Pseudo code:</p><pre><code class="php">
-public function run($message)
-{
-	// 1) detect your connector
-	$connector_id = getTargetConnector($message);
-	
-	// 2) get the code and create a class instance
-	loadCode($connector_id);
-	$class_name = __CLASSNAME__;
-	$instance = new $class_name();
-	
-	// 3) initialize
-	$instance-&gt;init($config, $inputs, $outputs);
-	
-	// 4) pass the message in the connector
-	if( $instance instanceof com\busit\Consumer )
-		$instance-&gt;consume($message, $in);
-	
-	// 5) get the result and pass it to the next connector
-	foreach( $outputs as $out )
-	{
-		if( hasConnectorsAfter($out) )
-		{
-			if( $instance instanceof com\busit\Producer )
-				$new_message = $instance-&gt;produce($message, $out);
-			else if( $instance instanceof com\busit\Transformer )
-				$new_message = $instance-&gt;transform($message, $in, $out);
-			
-			if( $new_message != null )
-				run($new_message);
-		}
-	}
-	
-	// 6) destroy the instance
-	$instance = null;
-}
-</code></pre>
+	<p>This means that internal variables will be maintained between <strong>consume()</strong> and subsequent <strong>produce()</strong> or 
+		<strong>transform()</strong> calls.</p>
 </div>
 
 <a name="producer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Producer</strong> pattern</h2></a>
@@ -173,20 +125,14 @@ public function run($message)
 	<p>If your connector brings data from external devices or services, it is producing data for Busit.<br />
 	External devices or services can <strong>push</strong> data directly on your connector, or your connector can <strong>pull</strong>
 	from those at regular intervals (see <a href="#cron">automatic interfaces</a>)</p>
-	<p>There are 2 conditions to fulfill if you want to be a producer:</p>
-	<ol>
-		<li>Your class must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
-		<li>Your class must <strong>implement</strong> the interface <a href="javadoc/com/busit/Connector.Producer.html"><em>com\busit\Producer</em></a>.</li>
-	</ol>
-	<p>The producer pattern provides a single <a href="javadoc/com/busit/Connector.Producer.html#produce(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>produce()</em></a> method with the following signature:</p>
-	<pre><code class="php">public function produce($message, $out)</code></pre>
+	<p>The producer pattern provides a single <a href="javadoc/com/busit/Producer.html#produce(com.busit.Interface)"><em>produce()</em></a> 
+		method with the following signature:</p>
+	<pre><code class="php">public function produce($out);</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and represents an 
-			empty message container that is already initialized with the user credentials. <a href="#messages">More about Messages</a>.</li>
 		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the output
 			interface that should produce data. <a href="#interfaces">More about Interfaces</a>.</li>
-		<li>The method must return the same <strong>$message</strong> that was provided <em>(filled with data, of course)</em> or
-			<em>null</em> if there is no message content to be produced.</li>
+		<li>The method must return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> or <em>null</em> 
+		if there is no content to be produced.</li>
 	</ul>
 	<pre><code class="php">
 &lt;?php
@@ -194,16 +140,17 @@ define("__CLASSNAME__", "\\WeatherStation");
 
 class WeatherStation extends com\busit\Connector implements com\busit\Producer
 {
-	public function produce($message, $out)
+	public function produce($out)
 	{
 		if( !$this-&gt;hasData() )
 			return null;
-			
+		
+		$message = com\busit\Factory::message();
+		$content = $message->content();
 		if( $out-&gt;key == 'pressure' )
-			$message-&gt;setContentUTF8("Pressure is " . $this-&gt;getPressure());
-			
-		if( $out-&gt;key == 'temperature' )
-			$message-&gt;setContentUTF8("Temperature is " . $this-&gt;getTemperature());
+			content['data'] = $this-&gt;getPressure();
+		else if( $out-&gt;key == 'temperature' )
+			content['data'] = $this-&gt;getTemperature();
 			
 		return $message;
 	}
@@ -220,17 +167,13 @@ class WeatherStation extends com\busit\Connector implements com\busit\Producer
 <a name="consumer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Consumer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your connector sends data to external devices or services, it is consuming data from Busit.</p>
-	<p>There are 2 conditions to fulfill if you want to be a consumer:</p>
-	<ol>
-		<li>Your class must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
-		<li>Your class must <strong>implement</strong> the interface <a href="javadoc/com/busit/Connector.Consumer.html"><em>com\busit\Consumer</em></a>.</li>
-	</ol>
-	<p>The consumer pattern provides a single <a href="javadoc/com/busit/Connector.Consumer.html#consume(com.busit.IMessage,%20com.busit.Connector.Interface)"><em>consume()</em></a> method with the following signature:</p>
-	<pre><code class="php">public function consume($message, $in)</code></pre>
+	<p>The consumer pattern provides a single <a href="javadoc/com/busit/Consumer.html#consume(com.busit.IMessage,%20com.busit.Interface)"><em>consume()</em></a> 
+		method with the following signature:</p>
+	<pre><code class="php">public function consume($message, $in);</code></pre>
 	<ul>
 		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the input
+		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Interface.html"><em>com\busit\Interface</em></a> and represents the input
 			interface to which data should be sent. <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method does not return anything.</li>
 	</ul>
@@ -242,16 +185,17 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 {
 	public function consume($message, $in)
 	{
+		$content = $message-&gt;content():
 		if( $in-&gt;key == 'state' )
 		{
-			if( $message-&gt;getContentUTF8() == 'ON' )
+			if( $content['data'] == 'ON' )
 				$this-&gt;turnOn();
 			else
 				$this-&gt;turnOff();
 		}
 		
 		if( $in-&gt;key == 'color' )
-			$this-&gt;changeColor($message-&gt;getContentUTF8());
+			$this-&gt;changeColor($content['data']);
 	}
 	
 	private function turnOn() { ... }
@@ -266,13 +210,9 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 <a name="transformer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Transformer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your connector aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
-	<p>There are 2 conditions to fulfill if you want to be a transformer:</p>
-	<ol>
-		<li>Your class must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a>.</li>
-		<li>Your class must <strong>implement</strong> the interface <a href="javadoc/com/busit/Connector.Transformer.html"><em>com\busit\Transformer</em></a>.</li>
-	</ol>
-	<p>The transformer pattern provides a single <a href="javadoc/com/busit/Connector.Transformer.html#transform(com.busit.IMessage,%20com.busit.Connector.Interface,%20com.busit.Connector.Interface)"><em>transform()</em></a> method with the following signature:</p>
-	<pre><code class="php">public function transform($message, $in, $out)</code></pre>
+	<p>The transformer pattern provides a single <a href="javadoc/com/busit/Transformer.html#transform(com.busit.IMessage,%20com.busit.Interface,%20com.busit.Interface)"><em>transform()</em></a> 
+	method with the following signature:</p>
+	<pre><code class="php">public function transform($message, $in, $out);</code></pre>
 	<ul>
 		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
@@ -280,8 +220,8 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 			 <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and tells you what the user wants to come out.
 			<a href="#interfaces">More about Interfaces</a>.</li>
-		<li>The method must return the same <strong>$message</strong> that was provided <em>(with its data transformed, of course)</em> or
-			<em>null</em> if you want to stop the flow and prevent further processing.</li>
+		<li>The method must return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> <em>(ideally the same with its data transformed)</em> 
+			or <em>null</em> if you want to stop the flow and prevent further processing.</li>
 	</ul>
 	<pre><code class="php">
 &lt;?php
@@ -297,17 +237,16 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 			return $message;
 		}
 		
+		$content = $message->content();
 		if( $in-&gt;key == 'french' && $out-&gt;key == 'english' )
 		{
-			$text = $this-&gt;FRtoEN($message-&gt;getContentUTF8());
-			$message-&gt;setContentUTF8($text);
+			$content['data'] = $this-&gt;FRtoEN($content['data']);
 			return $message;
 		}
 		
 		if( $in-&gt;key == 'english' && $out-&gt;key == 'french' )
 		{
-			$text = $this-&gt;ENtoFR($message-&gt;getContentUTF8());
-			$message-&gt;setContentUTF8($text);
+			$content['data'] = $this-&gt;ENtoFR($content['data']);
 			return $message;
 		}
 		
