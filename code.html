@@ -411,86 +411,57 @@ $value = $this-&gt;config('my_parameter');
 
 <a name="icontent"><h2 onclick="return; $(this).next().slideToggle(500);">Deep into message <strong>content</strong></h2></a>
 <div class="answer">
-	<!--p>A <a href="javadoc/com/busit/KnownType.html"><em>com\busit\KnownType</em></a> is a special 
-	structured <a href="#messages">message</a> content in JSON format. It provides information about the type of data that is contained
-	in the message and thus, your connector can behave accordingly. Using those, you can declare that
-	your message has several information contained, what is compatible with it and format a nice display-able output.<br />
-	Behind the scenes, Known Types are composed of:</p>
-	<ul>
-		<li>A unique <strong>ID</strong> to easily reference it.</li>
-		<li>A friendly <strong>name</strong> to display to the user.</li>
-		<li>An eventual list of <strong>compatibility</strong> that reference other Known Types' ID that are compatible with it.</li>
-		<li>A display <strong>format</strong> that transforms data into something nice.</li>
-		<li>Any sort of <strong>fields</strong> that contain data.</li>
-	</ul>
 	<p>Busit offers an growing list of data structures that anyone can use or enhance. Thus, we
-	strongly encourage all developers to acknowledge and use those for maximum compatibility between connectors. Meanwhile, Known Types 
+	strongly encourage all developers to acknowledge and use those for maximum compatibility between connectors. Meanwhile, content types 
 	are not a constraint, they are not immutable and not restrictive... they are only a kind of very flexible indication on what 
 	sort of data is contained inside a message.</p>
-	<p class="you_say">Whaaaat... too much info at once here...<br />
-		Though this is very important !<br />
-		Have an example for me ?</p>
-	<p class="we_say">Sure dude, step by step :</p>
 	
 	<h3>1) Principle</h3>
 	<p>Lets define a (simplified, fake) known type that says that a "person" has a "name" and a "birthday".
-		<br />So your message content can be this JSON:</p>
+		<br />So your <em>IContent</em> can be represented with this JSON:</p>
 <pre><code class="json">
 {
 	"id": 42,
 	"name": "person",
 	"data":
 	{
-		"name": "Simon",
-		"birthday": 468021600
+		"name": null,
+		"birthday": null
 	}
 }
 </code></pre>
-	<p>If you retrieve this message via <a href="javadoc/com/busit/IMessage.html#getContentUTF8()"><em>getContentUTF8()</em></a> you'll have the JSON string. However, if you retrieve it using <a href="javadoc/com/busit/IMessage.html#getKnownType()"><em>getKnownType()</em></a>, you'll get a 
-	<a href="javadoc/com/busit/KnownType.html"><em>com\busit\KnownType</em></a> object that you can use.
-	Basically, the system recognizes that the content is a JSON string and that it contains a <strong>data</strong> property. Therefore,
-	it assumes that this is a known type. From this point, you can directly access the data fields.</p>
 <pre><code class="php">
-$knowntype = $message->getKnownType();
-$birthday = $knowntype['birthday'];
+$content = com\busit\Factory::content(42);
+$content['name'] = 'Simon';
+$content['birthday'] = 468021600;
 </code></pre>
 
 	<h3>2) Flexibility</h3>
-	<p>As stated at the beginning, known types are just an <em>indication</em> on the <em>intent</em> of what 
+	<p>As stated at the beginning, content types are just an <em>indication</em> on the <em>intent</em> of what 
 	<em>maybe</em> the message <em>might</em> contain, <em>probably</em>.</p>
 	<p class="we_say">Noticed how much care was put in this sentence !?</p>
 	<p>This means that you can overload it and put more info inside it, ommit some that you do not have, or totally screw up everything:</p>
 	<p class="you_say">"name" is now a number, why not,<br />
 	"birthday", not any clue,<br />
 	but hey, i've got his "favourite color" !</p>
-<pre><code class="json">
-{
-	"id": 42,
-	"name": "person",
-	"data":
-	{
-		"name": 123.456,
-		"favourite_color": "blue"
-	}
-}
+<pre><code class="php">
+$content = com\busit\Factory::content(42);
+$content['name'] = 123;
+$content['favourite_color'] = 'blue';
 </code></pre>
 	<p>The point is that you do not know what the user (or other connectors) will send you, so you <strong>must check</strong> 
 	and anticipate to recieve anything ! However, in general, you can expect to have a minimum of trust, because other developers
-	should offer proper known types when they can, and so should you. Nevertheless, with great flexibility comes great responsibility...</p>
+	should offer proper content types when they can, and so should you. Nevertheless, with great flexibility comes great responsibility...</p>
 <pre><code class="php">
-$knowntype = $message->getKnownType();
-if( $knowntype != null ) // because it can just be some regular text content
-	if( $knowntype->wkid() == 42 ) // because it could be any other known type
-		if( $knowntype['birthday'] != null ) // because it may be empty
-			$birthday = $knowntype['birthday'];
-
-// if really you tried everything, you can still forfeit
-else
-	throw new \Exception("I cannot deal with this data");
+$content = $message->content();
+if( $content->id() == 42 ) // because it could be any other content type
+	if( $content['birthday'] != null && is_numeric($content['birthday']) ) // because it may be empty or crap
+		$birthday = date('m/d/Y', $content['birthday']);
 </code></pre>
 
 	<h3>3) Compatibility</h3>
-	<p>Sometimes, using the allowed flexibility that known types offer, it happens that you have more data available, and your message might be compatible with multiple known types. For instance, you still want to expose a "person" using his "name" and "birthday",
+	<p>Sometimes, using the allowed flexibility that content types offer, it happens that you have more data available, and your message 
+	might be compatible with multiple other content types. For instance, you still want to expose a "person" using his "name" and "birthday",
 	but you also have his location available. And, good news, there is a specific (fake again) known type for "geolocation" :</p>
 <pre><code class="json">
 {
@@ -498,8 +469,8 @@ else
 	"name": "geolocation",
 	"data":
 	{
-		"latitude": ...,
-		"longitude": ...
+		"latitude": null,
+		"longitude": null
 	}
 }
 </code></pre>
@@ -511,29 +482,85 @@ else
 	"compatibility": [666],
 	"data":
 	{
-		"name": "Simon",
-		"birthday": 468021600,
-		"latitude": 13.1281452,
-		"longitude": -61.1771603
+		"name": null,
+		"birthday": null,
+		"latitude": null,
+		"longitude": null
 	}
 }
 </code></pre>
 	<p>In your code, you can now check if a known type is compatible with another and behave accordingly:</p>
 <pre><code class="php">
-$kt = $message->getKnownType();
-if( $kt != null )
+$content = $message->content();
+if( $content->compatible(666) )
 {
-	if( $kt->isCompatibleWith(666) )
-		$latitude = $kt['latitude'];
-	if( $kt->isCompatibleWith(42) )
-		$birthday = $kt['birthday'];
+	$content['latitude'] = 13.1281452;
+	$content['longitude'] = -61.177160;
 }
 </code></pre>
-	<p>Again, do not forget to check all values before using them, because some evil bad guy could misleadlingly mention that his forged
-		fake known type is compatible with some other whereas it is not !</p>
-	<p class="we_say">Ever heard about scam, spam, phishing, exploits and so on ?<br />Do not trust anyone...</p>
-	<h3>4) Format (nice display)</h3-->
-	<em>... in progress ... </em>
+
+	<h3>4) Format (nice display)</h3>
+	<p>There are 2 different format templates that can be applied to the content when necessary: text and html. Depending on the needs,
+		one may want to display the data (i.e.) in a file so there should be some kind of representation of that data.</p>
+<pre><code class="json">
+{
+	"textFormat": "Name: {{name}}, Birthday: {{birthday}}",
+	"htmlFormat": "Name: &lt;/em>{{name}}&lt;em>, Birthday: &lt;em>{{birthday}}&lt;/em>",
+}
+</code></pre>
+<pre><code class="php">
+file_put_contents("profile.html", $content->toHtml());
+</code></pre>
+	<p>The content type format can be modified according to your needs. Therefore, if you overload the content type, you can modify its representation as well.</p>
+<pre><code class="php">
+$content['favourite_color'] = 'blue';
+$content->textFormat($content->textFormat() . ", Favourite Color: {{favourite_color}}");
+</code></pre>
+	<p>Data properties can be enclosed in double curly braces <strong>{{</strong>property<strong>}}</strong> so they will be replaced when required.<br />
+		If a matching data property cannot be found, the tag is ignored and removed.<br />
+		In order to access nested properties, you can use the dot as separator. Array elements can be accessed with numeric 0-based index:</p>
+<pre><code class="json">
+{
+	"data":
+	{
+		"name": null,
+		"address":
+		{
+			"street": null,
+			"city": null
+		},
+		"colors": []
+	}
+	"textFormat": "Name: {{name}}, City: {{address.city}}, Favourite color: {{colors.0}}"
+}
+</code></pre>
+	<p>Powerful yet incomplete because there is no current way of defining a simple format that implies loops or conditions,... If you really want to have
+		total control over the representation, then consider implementing it directly in your connector.</p>
+	<p>Note that for the html format, some tags are not allowed (stripped): <em>script, object, embed,...</em></p>
+	
+	<h3>5) Obtain a content type</h3>
+	<p>As shown before, you can request a content type by its id using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>. Then,
+		you receive a pre-filled content type with all data properties set to null.</p>
+	<p>If you specify a wrong (unknown) id, then it will fallback on the default content type with id zero:</p>
+<pre><code class="json">
+{
+	"id": 0,
+	"name": "Data",
+	"compatibility": [],
+	"data": { "data": null },
+	"textFormat": "{{data}}",
+	"htmlFormat": "&lt;pre>{{data}}&lt;/pre>"
+}
+</code></pre>
+	<p>When sending a new message to Busit, you can send the json representation of the content type and it will be automatically interpreted. If it fails,
+		it will create a default content type with the data property set to whatever you sent.</p>
+	<p>If you want to completely forge a content type and not use the default, you can use the <em>Factory</em> with a <strong>negative</strong> id (whichever).
+		This will return a completely empty <em>IContent</em> (no id, no name, no format,...).</p>
+	<p>The message <em>content()</em> method will always return a valid content type. It will eventually fallback on the default if it cannot resolve it.</p>
+<pre><code class="php">
+$message->content(null);
+echo $message->$content()->id(); // will echo '0' (default content type)
+</code></pre>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
