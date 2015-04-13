@@ -43,13 +43,13 @@
 	You can find the complete reference on <a href="//php.net/">php.net</a>.<br />
 	It is highly recommended that you'd be familiar with <a href="//en.wikipedia.org/wiki/Object-oriented_programming">OOP</a>.</p>
 	<ul>
-		<li>Connectors are <strong>stateless</strong> and must have a parameterless constructor, see <a href="#lifecycle">lifecycle</a> section for more details.</li>
+		<li>Connectors are <strong>stateless</strong> and must have a parameterless constructor, see lifecycle below for more details.</li>
 		<li>PHP connectors are using <a href="//php.net/manual/en/language.namespaces.php">namespaces</a>. 
 			However, it is recommended that you leave your code in the default namespace.</li>
 		<li>PHP connectors are composed of at least one class <em>(and ideally only one)</em>.</li>
 		<li>Connectors must be <a href="publish.html">validated by Busit</a> prior to be available on the platform.</li>
 		<li>All programming languages supported share the same object model <em>(as close as possible)</em>, 
-			this may lead to unusual methods or structures for certain languages but allows to have a common meaningful documentation.</li>
+			this may lead to unusual methods or structures for PHP but allows to have a common meaningful documentation for all programming languages.</li>
 		<li>For most accurate class documentation, see the <a href="javadoc/">javadoc</a></li>
 		<li>You should define the connector's capabilities and settings, name, description, translations, what interfaces it supports, what are
 			the configuration parameters,...This is done via the <a href="settings.html">configuration file</a>. Then, you can write the 
