@@ -124,7 +124,7 @@ interface ConnectorHelper
 	<p>If your connector brings data from external devices or services, it is producing data for Busit.<br />
 	External devices or services can <strong>push</strong> data directly on your connector, or your connector can <strong>pull</strong>
 	from those at regular intervals (see <a href="#cron">automatic interfaces</a>)</p>
-	<p>The producer pattern provides a single <a href="javadoc/com/busit/Producer.html#produce(com.busit.Interface)"><em>produce()</em></a> 
+	<p>The producer pattern provides a <a href="javadoc/com/busit/Producer.html#produce(com.busit.Interface)"><em>produce()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function produce($out);</code></pre>
 	<ul>
@@ -132,6 +132,21 @@ interface ConnectorHelper
 			interface that should produce data. <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method must return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> or <em>null</em> 
 		if there is no content to be produced.</li>
+	</ul>
+	<p>Moreover, it provides a <a href="javadoc/com/busit/Producer.html#sample(com.busit.Interface)"><em>sample()</em></a> 
+		method with the following signature:</p>
+	<pre><code class="php">public function sample($out);</code></pre>
+	<ul>
+		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the output
+			interface for which to get sample data. <a href="#interfaces">More about Interfaces</a>.</li>
+		<li>The method should return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> or <em>null</em> 
+		if there no data can be produced from that interface.</li>
+	</ul>
+	<p>Finally, it provides a <a href="javadoc/com/busit/Producer.html#test()"><em>test()</em></a> 
+		method with the following signature:</p>
+	<pre><code class="php">public function test();</code></pre>
+	<ul>
+		<li>The method should return a boolean value indicating if the connector is working properly. This is where you should check any possible dependency.</li>
 	</ul>
 	<pre><code class="php">
 &lt;?php
@@ -166,7 +181,7 @@ class WeatherStation extends com\busit\Connector implements com\busit\Producer
 <a name="consumer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Consumer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your connector sends data to external devices or services, it is consuming data from Busit.</p>
-	<p>The consumer pattern provides a single <a href="javadoc/com/busit/Consumer.html#consume(com.busit.IMessage,%20com.busit.Interface)"><em>consume()</em></a> 
+	<p>The consumer pattern provides <a href="javadoc/com/busit/Consumer.html#consume(com.busit.IMessage,%20com.busit.Interface)"><em>consume()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function consume($message, $in);</code></pre>
 	<ul>
@@ -175,6 +190,12 @@ class WeatherStation extends com\busit\Connector implements com\busit\Producer
 		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Interface.html"><em>com\busit\Interface</em></a> and represents the input
 			interface to which data should be sent. <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method does not return anything.</li>
+	</ul>
+	<p>Moreover, it provides a <a href="javadoc/com/busit/Consumer.html#test()"><em>test()</em></a> 
+		method with the following signature:</p>
+	<pre><code class="php">public function test();</code></pre>
+	<ul>
+		<li>The method should return a boolean value indicating if the connector is working properly. This is where you should check any possible dependency.</li>
 	</ul>
 	<pre><code class="php">
 &lt;?php
@@ -209,7 +230,7 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 <a name="transformer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Transformer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your connector aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
-	<p>The transformer pattern provides a single <a href="javadoc/com/busit/Transformer.html#transform(com.busit.IMessage,%20com.busit.Interface,%20com.busit.Interface)"><em>transform()</em></a> 
+	<p>The transformer pattern provides <a href="javadoc/com/busit/Transformer.html#transform(com.busit.IMessage,%20com.busit.Interface,%20com.busit.Interface)"><em>transform()</em></a> 
 	method with the following signature:</p>
 	<pre><code class="php">public function transform($message, $in, $out);</code></pre>
 	<ul>
@@ -221,6 +242,12 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 			<a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method must return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> <em>(ideally the same with its data transformed)</em> 
 			or <em>null</em> if you want to stop the flow and prevent further processing.</li>
+	</ul>
+	<p>Moreover, it provides a <a href="javadoc/com/busit/Transformer.html#test()"><em>test()</em></a> 
+		method with the following signature:</p>
+	<pre><code class="php">public function test();</code></pre>
+	<ul>
+		<li>The method should return a boolean value indicating if the connector is working properly. This is where you should check any possible dependency.</li>
 	</ul>
 	<pre><code class="php">
 &lt;?php
