@@ -169,6 +169,21 @@ class WeatherStation extends com\busit\Connector implements com\busit\Producer
 		return $message;
 	}
 	
+	public function sample($out)
+	{
+		$message = com\busit\Factory::message();
+		$content = $message->content();
+		content['data'] = 42;
+		
+		return $message;
+	}
+	
+	public function test()
+	{
+		...
+		return true;
+	}
+	
 	private function hasData() { ... }
 	private function getPressure() { ... }
 	private function getTemperature() { ... }
@@ -216,6 +231,12 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 		
 		if( $in-&gt;key == 'color' )
 			$this-&gt;changeColor($content['data']);
+	}
+	
+	public function test()
+	{
+		...
+		return true;
 	}
 	
 	private function turnOn() { ... }
@@ -278,6 +299,12 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 		
 		// we do not support another translation so break the flow
 		return null;
+	}
+	
+	public function test()
+	{
+		...
+		return true;
 	}
 	
 	private function FRtoEN($text) { ... }
