@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Busit - Developers</title>
+		<meta name="description" content="Busit Developer Portal" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="cache-control" content="no-cache, must-revalidate" /> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" /> 
+		<link rel="shortcut icon" href="img/favicon.ico" />
+		<link rel="stylesheet" href="css/main.css" type="text/css" />
+		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		
+		<link class="codestyle" rel="stylesheet" href="css/github.css">
+		<script type="text/javascript" src="js/highlight.pack.js"></script>
+		<style>
+			#content em { font-family: monospace; font-style: normal; background-color: #eeeeee; padding: 2px; border: 1px solid #cccccc; }
+		</style>
+	</head>
+	<body>
+		<div id="footerfix">
+			<header>
+				<div class="content">
+					<div class="logo">
+						<a href="//www.busit.com"><img src="img/logo_white.png" alt="logo" /></a>
+						<em>Developer Portal</em>
+					</div>
+			<nav id="navigation">
+				<ul id="mainmenu">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="concepts.html">Learn</a></li>
+					<li><a href="settings.html">Think</a></li>
+					<li><a href="code.html">Code</a></li>
+					<li><a href="publish.html">Publish</a></li>
+				</ul>
+			</nav>
+			
+				</div>
+			</header>
+			<div id="content">
+			
+			<h1>Busit REST API</h1>
+<a name="concepts"><h2 onclick="return; $(this).next().slideToggle(500);">Concepts</h2></a>
+<div class="answer">
+	<p>The entire Busit platform relies on a cental REST API. The user panel, routing of messages,... all are handled via this endpoint.<br />
+	Here are the main characteristics of the Busit REST API:
+	</p>
+	<ul>
+		<li>The URL is <a href="https://api.busit.com/?f=html"><strong>https://api.busit.com</strong></a>
+		<li>It is <strong>verb agnostic</strong>. This means that you can use any HTTP verb (POST, GET, PUT,...) for any operation. 
+			However, in order to avoid problems with too long URLs, we recommend to use POST all the time.</li>
+		<li>It is <strong>return code agnostic</strong>. This means that it will always return <em>200 OK</em>. 
+			You may encounter another return code from an upstream proxy but it will never come from the API itself.</li>
+		<li>Everything is <strong>explicit</strong>, you can use the API without messing with headers, generators,... just type it in the URL.</li>
+		<li>There are many <strong>alias</strong> for most operations to simplify your guesses. I.e.: <em>/user/list</em> is the same as <em>/user/select</em>.</li>
+		<li>You can speficy the <strong>output format</strong> using the <em>f</em> parameter (or <em>format</em>, or <em>output</em> or <em>out</em> as you like).
+			Supported output formats are: <em>json</em> (default), <em>pjson</em> (pretty json), <em>xml</em> and <em>html</em>.</li>
+		<li>Using the <em>html</em> format, a quick <strong>documentation</strong> is generated automatically.</li>
+		<li>When <strong>uploading files</strong>, you should use a <em>multipart/form-data</em> encoding.</li>
+		<li>The api structure is in <strong>Big Endian</strong> which means that most important thing comes first. I.e.: <em>/system/group/user/delete</em> means: the main system, for the
+			given group, the specified user, delete him !</li>
+		<li>The API may have new <strong>releases and versions</strong> may differ. The version is named after spices or condiments and appears first in the URL.</li>
+	</ul>
+</div>
+
+<a name="auth"><h2 onclick="return; $(this).next().slideToggle(500);">Authentication</h2></a>
+<div class="answer">
+	<p>Most operations requires specific grants. Those grants are associated with a user token.</p>
+	<ul>
+		<li>The token is in the <strong>form</strong> <em>user:token</em>. The user is the user ID and the token is a 32 hexadecimal character string.</li>
+		<li>It can be passed as a <strong>parameter</strong> with the request as either of <em>auth</em>, <em>credentials</em> or <em>api_key</em>.<br />
+			<pre>?auth=1234:1234567890abcdef1234567890abcdef</pre></li>
+		<li>Alternatively, you may specify the token in the <em>Authorization</em> <strong>header</strong>, either as <em>Basic</em> or as <em>Bearer</em>. 
+			When using <em>Basic</em>, it should be encoded in base64.<br />
+			<pre>Authorization: Bearer 1234:1234567890abcdef1234567890abcdef</pre></li>
+		<li>Tokens may <strong>expire</strong> at a certain point, but some of them are permanent.</li>
+		<li>Special <strong>application</strong> tokens can be issued for specific limited actions and may take another form, but you can use them just like a regular token.</li>
+	</ul>
+</div>
+
+<a name="self"><h2 onclick="return; $(this).next().slideToggle(500);">Self</h2></a>
+<div class="answer">
+	<p>When the user needs to perform an action on his own behalf, you should use the <em>/self</em> prefix in the URL. This forces the <em>user</em> parameter to be
+		that of the matching token.</p>
+	<p>The <em>/self</em> prefix also allows privilegied actions that would otherwise not be granted. It is usually enforced by <em>SELF_*</em> grants.</p>
+	<p>Example: <br />
+		The endpoint <em>/system/user/delete</em> requires an elevated <em>USER_DELETE</em> grant that regular users cannot use.<br />
+		However, the endpoint <em>/self/system/user/delete</em> allows a <em>SELF_USER_DELETE</em> grant that is available to the current user authenticated with his token.</p>
+</div>
+
+<a name="errors"><h2 onclick="return; $(this).next().slideToggle(500);">Errors</h2></a>
+<div class="answer">
+	<p>Every API error is composed of a <strong>message</strong> in English, a <strong>code</strong> to indicate the nature of the error, and some optional <strong>data</strong>
+		that provide more detail about the error.</p>
+	<p>Possible error codes:</p>
+	<ul>
+		<li>400 : Generic error caused by the input parameters. More detail may be provided in the message.</li>
+		<li>401 : Authentication is required but was not provided</li>
+		<li>402 : Precondition related to quotas, limits, or user subscription plan was not met</li>
+		<li>403 : Invalid authentication or unsufficient privileges</li>
+		<li>404 : The API endpoint exists but the targetted item does not exist or is not available for the user</li>
+		<li>405 : The API endpoint does not exist</li>
+		<li>406 : Unsupported output format</li>
+		<li>412 : Parameters do not pass validation or preconditions</li>
+		<li>415 : Request encoding not supported</li>
+		<li>500 : Generic internal error</li>
+		<li>501 : Not implemented or deprecated</li>
+		<li>503 : Internal resource dependency error (Database, SecurityStore, CryptoEngine,...)</li>
+	</ul>
+</div>
+
+<a name="rate"><h2 onclick="return; $(this).next().slideToggle(500);">Rate limit</h2></a>
+<div class="answer">
+	<p>There are many internal limits and quotas about a bunch of things. Starting with the number of requests to the API itself.</p>
+	<p>A <strong>quota</strong> is a fixed increment counter. If it is reached, it can only be decremented by removing items.</p>
+	<p>A <strong>limit</strong> is a time-based increment counter. It is not reset at specific interval, it is a sliding window. Most of the time, waiting some time will solve it.</p>
+	<p>When a limit is exceeded, a <em>402</em> error is raised and the response will contain a <em>X-Rate-Limit-Next</em> header with an approximation of when the next request
+		may be accepted in milliseconds.</p>
+	<pre>X-Rate-Limit-Next: api=3600000</pre>
+</div>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>createShortcutMenu();</script>
+			</div>
+		</div>
+		<footer>
+			<div class="social">
+				<a class="link" href="//twitter.com/Bus_IT">
+					<img src="img/twitter.png" alt="Twitter" />
+				</a>
+				<a class="link" href="//www.facebook.com/busit.net">
+					<img src="img/facebook.png" alt="Facebook" />
+				</a>
+				<a class="link" href="//plus.google.com/+BusitFr" rel="publisher">
+					<img src="img/google.png" alt="Google+" />
+				</a>
+				<a class="link" href="//www.linkedin.com/company/5121205">
+					<img src="img/linkedin.png" alt="LinkedIn" />
+				</a>
+				<a class="link" href="//www.youtube.com/channel/UCvB9PQcyRzdf8n4AewdE_oA">
+					<img src="img/youtube.png" alt="YouTube" />
+				</a>
+			</div>
+			<div class="copyright">&copy; <a href='//www.busit.com'>Busit</a></div>
+		</footer>
+		<div id="help">
+			Is something unclear, you've spotted a mistake, or you need more details ?<br /><br />
+			Then please help us <a href="//github.com/Busit/Busit.github.io/issues/new">improve this doc</a>.<br />
+			Or <a href="//www.busit.com/about/contact">contact us</a> directly.
+		</div>
+	</body>
+</html>
