@@ -76,6 +76,8 @@
 		<li>Tokens may <strong>expire</strong> at a certain point, but some of them are permanent.</li>
 		<li>Special <strong>application</strong> tokens can be issued for specific limited actions and may take another form, but you can use them just like a regular token.</li>
 	</ul>
+	<p>If multiple tokens are provided using different methods, the order of preference is first the query parameter, then the Authorization Bearer header, then the Authorization Basic header.<br />
+		If multiple tokens are provided using different query parameters, then the peference is undefined.</p>
 </div>
 
 <a name="self"><h2 onclick="return; $(this).next().slideToggle(500);">Self</h2></a>
@@ -117,6 +119,20 @@
 	<p>When a limit is exceeded, a <em>402</em> error is raised and the response will contain a <em>X-Rate-Limit-Next</em> header with an approximation of when the next request
 		may be accepted in milliseconds.</p>
 	<pre>X-Rate-Limit-Next: api=3600000</pre>
+</div>
+
+<a name="language"><h2 onclick="return; $(this).next().slideToggle(500);">Localization</h2></a>
+<div class="answer">
+	<p>For some actions, the response or processing may be adjusted to match the <strong>user language</strong>. Hence, you may always set the user preferred language as either:</p>
+	<ul>
+		<li>Using a <em>lang</em> or <em>language</em> or <em>locale</em> query parameter.</li>
+		<li>Using the <em>Accept-Language</em> header.</li>
+	</ul>
+	<p>If both the query parameter and the header are specified, the query parameter has precedence.<br />
+		If multiple languages are provided in different query parameters, the precedence is undefined.</p>
+	<p>In any case, the language code considered will be transformed to stick to <a href="http://www.iso.org/iso/home/standards/language_codes.htm">ISO_639-1</a>.<br />
+		This implies that any unordered language preference set in the <em>Accept-Language</em> header will not be considered.</p>
+	<p>Note that the error messages issued by the API will not be localized.</p>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
