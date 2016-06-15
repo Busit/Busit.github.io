@@ -56,7 +56,7 @@
 		<li>You can speficy the <strong>output format</strong> using the <em>f</em> parameter (or <em>format</em>, or <em>output</em> or <em>out</em> as you like).
 			Supported output formats are: <em>json</em> (default), <em>pjson</em> (pretty json), <em>xml</em> and <em>html</em>.</li>
 		<li>Using the <em>html</em> format, a quick <strong>documentation</strong> is generated automatically.</li>
-		<li>When <strong>uploading files</strong>, you should use a <em>multipart/form-data</em> encoding.</li>
+		<li>When <strong>uploading files</strong>, you should use a <em>multipart/form-data</em> encoding. Moreover, the expected request character encoding and response encoding is <em>UTF-8</em>.</li>
 		<li>The api structure is in <strong>Big Endian</strong> which means that most important thing comes first. I.e.: <em>/system/group/user/delete</em> means: the main system, for the
 			given group, the specified user, delete him !</li>
 		<li>The API may have new <strong>releases and versions</strong> may differ. The version is named after spices or condiments and appears first in the URL.</li>
