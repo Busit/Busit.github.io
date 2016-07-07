@@ -47,20 +47,47 @@
 	</p>
 	<ul>
 		<li>The URL is <a href="https://api.busit.com/?f=html"><strong>https://api.busit.com</strong></a>
-		<li>It is <strong>verb agnostic</strong>. This means that you can use any HTTP verb (POST, GET, PUT,...) for any operation. 
-			However, in order to avoid problems with too long URLs, we recommend to use POST all the time.</li>
-		<li>It is <strong>return code agnostic</strong>. This means that it will always return <em>200 OK</em>. 
-			You may encounter another return code from an upstream proxy but it will never come from the API itself.</li>
 		<li>Everything is <strong>explicit</strong>, you can use the API without messing with headers, generators,... just type it in the URL.</li>
 		<li>There are many <strong>alias</strong> for most operations to simplify your guesses. I.e.: <em>/user/list</em> is the same as <em>/user/select</em>.</li>
-		<li>You can speficy the <strong>output format</strong> using the <em>f</em> parameter (or <em>format</em>, or <em>output</em> or <em>out</em> as you like).
-			Supported output formats are: <em>json</em> (default), <em>pjson</em> (pretty json), <em>xml</em> and <em>html</em>.</li>
-		<li>Using the <em>html</em> format, a quick <strong>documentation</strong> is generated automatically.</li>
-		<li>When <strong>uploading files</strong>, you should use a <em>multipart/form-data</em> encoding. Moreover, the expected request character encoding and response encoding is <em>UTF-8</em>.</li>
 		<li>The api structure is in <strong>Big Endian</strong> which means that most important thing comes first. I.e.: <em>/system/group/user/delete</em> means: the main system, for the
 			given group, the specified user, delete him !</li>
 		<li>The API may have new <strong>releases and versions</strong> may differ. The version is named after spices or condiments and appears first in the URL.</li>
 	</ul>
+</div>
+
+<a name="request"><h2 onclick="return; $(this).next().slideToggle(500);">Request / Response</h2></a>
+<div class="answer">
+	<ul>
+		<li>It is <strong>verb agnostic</strong>. This means that you can use any HTTP verb (POST, GET, PUT,...) for any operation. 
+			However, in order to avoid problems with too long URLs, we recommend to use POST all the time.</li>
+		<li>It is <strong>return code agnostic</strong>. This means that it will always return <em>200 OK</em>. 
+			You may encounter another return code from an upstream proxy but it will never come from the API itself.</li>
+		<li>You can speficy the <strong>output format</strong> using the <em>f</em> parameter (or <em>format</em>, or <em>output</em> or <em>out</em> as you like).<br />
+			Alternatively, you may specify the <em>Accept</em> <strong>header</strong>.<br />
+			Supported output formats are:
+			<ul>
+				<li><strong>json</strong> (default) : <em>json</em>, <em>j</em>, <em>application/json</em></li>
+				<li><strong>pretty json</strong> : <em>pjson</em>, <em>jsonp</em>, <em>jp</em>, <em>pj</em>, <em>application/pjson</em></li>
+				<li><strong>xml</strong> : <em>xml</em>, <em>x</em>, <em>application/xml</em>, <em>text/xml</em></li>
+				<li><strong>html</strong> : <em>html</em>, <em>h</em>, <em>text/html</em></li>
+			</ul>
+		</li>
+		<li>Using the <em>html</em> format, a quick <strong>documentation</strong> is generated automatically.</li>
+		<li>When <strong>uploading files</strong>, you should use a <em>multipart/form-data</em> encoding. Moreover, the expected request character encoding and response encoding is <em>UTF-8</em>.</li>
+		<li>The response will either be an <a href="#">error</a> or a content. Responses in JSON will be wrapped as a "response" object.
+<pre><code class="json">
+{
+	"response":
+	{
+		"user_name":"test",
+		"user_id":"2"
+	}
+}
+</code></pre>
+		</li>
+	</ul>
+	<p>If multiple output formats are provided using different methods, the order of preference is first the query parameter, then the Accept header.<br />
+		If multiple output formats are provided using different query parameters, then the peference is undefined.</p>
 </div>
 
 <a name="auth"><h2 onclick="return; $(this).next().slideToggle(500);">Authentication</h2></a>
@@ -109,6 +136,16 @@
 		<li>501 : Not implemented or deprecated</li>
 		<li>503 : Internal resource dependency error (Database, SecurityStore, CryptoEngine,...)</li>
 	</ul>
+<pre><code class="json">
+{
+	"error":
+	{
+		"message": "Unsufficient privileges",
+		"data": {"grants":["access"]},
+		"code":401
+	}
+}
+</code></pre>
 </div>
 
 <a name="rate"><h2 onclick="return; $(this).next().slideToggle(500);">Rate limit</h2></a>
