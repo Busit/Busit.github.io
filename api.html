@@ -58,12 +58,14 @@
 <a name="request"><h2 onclick="return; $(this).next().slideToggle(500);">Request / Response</h2></a>
 <div class="answer">
 	<ul>
-		<li>It is <strong>verb agnostic</strong>. This means that you can use any HTTP verb (POST, GET, PUT,...) for any operation. 
+		<li>The request is <strong>verb agnostic</strong>. This means that you can use any HTTP verb (POST, GET, PUT,...) for any operation. 
 			However, in order to avoid problems with too long URLs, we recommend to use POST all the time.</li>
-		<li>It is <strong>return code agnostic</strong>. This means that it will always return <em>200 OK</em>. 
+		<li>The request character encoding should be <em>UTF-8</em>, if another charset is used, it will be treated as UTF-8 without conversion and accents or special characters may be displayed incorrectly.</li>
+		<li>The response is <strong>return code agnostic</strong>. This means that it will always return <em>200 OK</em>. 
 			You may encounter another return code from an upstream proxy but it will never come from the API itself.</li>
-		<li>You can speficy the <strong>output format</strong> using the <em>f</em> parameter (or <em>format</em>, or <em>output</em> or <em>out</em> as you like).<br />
-			Alternatively, you may specify the <em>Accept</em> <strong>header</strong>.<br />
+		<li>The response character encoding is <em>UTF-8</em>.</li>
+		<li>You can speficy the <strong>output format</strong> using the <em>f</em> parameter (or <em>format</em>, or <em>output</em> or <em>out</em> as you like).
+			Alternatively, you may use the <em>Accept</em> <strong>header</strong>.<br />
 			Supported output formats are:
 			<ul>
 				<li><strong>json</strong> (default) : <em>json</em>, <em>j</em>, <em>application/json</em></li>
@@ -73,7 +75,7 @@
 			</ul>
 		</li>
 		<li>Using the <em>html</em> format, a quick <strong>documentation</strong> is generated automatically.</li>
-		<li>When <strong>uploading files</strong>, you should use a <em>multipart/form-data</em> encoding. Moreover, the expected request character encoding and response encoding is <em>UTF-8</em>.</li>
+		<li>When <strong>uploading files</strong>, you should use a <em>multipart/form-data</em> encoding.</li>
 		<li>The response will either be an <a href="#">error</a> or a content. Responses in JSON will be wrapped as a "response" object.
 <pre><code class="json">
 {
