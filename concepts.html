@@ -34,9 +34,9 @@
 			<div id="content">
 
 <h1><strong>Learn</strong> the basic concepts</h1>
-<a name="connector"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>connector</strong> ?</h2></a>
+<a name="BusApp"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>BusApp</strong> ?</h2></a>
 <div class="answer">
-	A connector is a little piece of code that can <em>do</em> stuff. See them as independant boxes that users can link to each 
+	A BusApp is a little piece of code that can <em>do</em> stuff. See them as independant boxes that users can link to each 
 	other in order to create scenarios (aka: <a href="#flow">flows</a>).
 	<div style="text-align: center; margin: 20px;">
 		<em>For instance: <ol><li>Collect news from CNN</li>
@@ -51,30 +51,26 @@
 		<div class="arrow">&#xf061 </div>
 		<div class="connector"><img src="//images.busit.com/connectors/10.png" /></div>
 	</div>
-	As you can guess, there are 3 distinct types of connectors:
+	As you can guess, there are 3 distinct types of BusApps:
 	<ol>
 		<li>Data <strong>producers</strong> usually bring data from your devices or services into Busit. <em>(i.e.: CNN)</em></li>
 		<li>Data <strong>transformers</strong> usually modify or enhance data it receives and passes it on if necessary. <em>(i.e.: translate)</em></li>
 		<li>Data <strong>consumers</strong> usually send data it receives to your devices or services. <em>(i.e.: email)</em></li>
 	</ol>
-	Note that some connectors can be of several types at once, for instance, the <em>twitter</em> connector allows to gather tweets 
-	(and thus act as a data <strong>producer</strong> because it brings those into Busit) but also to post new tweets (and thus act 
-	as a data <strong>consumer</strong> because it sends information out of Busit). This depends on the <a href='#interface'>interfaces</a> 
-	defined for that connector.
 </div>
 
 <a name="instance"><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>instance</strong> ?</h2></a>
 <div class="answer">
-	An instance of a connector is a user's copy of that connector whereas the connector itself is more like a template.
+	An instance of a BusApp is a user's copy of that BusApp whereas the BusApp itself is more like a template.
 	Instances are usually <a href="#config">configured</a> and linked in a <a href="#flow">flow</a> 
 	so they are ready to be used.
-	Users can have multiple instances of the same connector and of course, instances of different connectors as well.<br /><br />
-	We speak about <em>connectors</em> when it is not bound to a user, and about <em>instances</em> when it is.
+	Users can have multiple instances of the same BusApp and of course, instances of different BusApps as well.<br /><br />
+	We speak about <em>BusApps</em> when it is not bound to a user, and about <em>instances</em> when it is.
 </div>
 
 <a name="flow"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>flow</strong> ?</h2></a>
 <div class="answer">
-	A flow is the actual scenario that a user creates when linking instances of different connectors. 
+	A flow is the actual scenario that a user creates when linking instances of different BusApps. 
 	A flow usually starts with a <em>producer</em> in order to get data, then any number of <em>transformers</em>, then a <em>consumer</em>.
 	<p>Users can create as many flows as they want by reusing existing instances or new ones.</p>
 	<div style="text-align: center; margin: 20px;">
@@ -98,25 +94,25 @@
 	using the API to <a href="#pushpull">push</a> data directly on an instance.</p>
 </div>
 
-<a name="interface"><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>interface</strong> ?</h2></a>
+<a name="channel"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>channel</strong> ?</h2></a>
 <div class="answer">
-	Every connector have one or more interfaces that can emit or receive data. See them as different doors that allows to enter 
-	or exit the connector.
+	Every BusApp have one or more channels that can emit or receive data. See them as different doors that allows to enter 
+	or exit the BusApp.
 	<ol>
-		<li>Producers have <strong>output</strong> interfaces because you get data from them, data comes out of the connector.</li>
-		<li>Consumers have <strong>input</strong> interfaces because you send data to it, data gets inside the connector.</li>
-		<li>Transformers have both <strong>input</strong> and <strong>output</strong> interfaces because you put data in them and 
-		they return it after transformation, data gets in and then out of the connector.</li>
+		<li>Producers have <strong>output</strong> channels because you get data from them, data comes out of the BusApp.</li>
+		<li>Consumers have <strong>input</strong> channels because you send data to it, data gets inside the BusApp.</li>
+		<li>Transformers have both <strong>input</strong> and <strong>output</strong> channels because you put data in them and 
+		they return it after transformation, data gets in and then out of the BusApp.</li>
 	</ol>
-	<p>Meanwhile, since connectors can be multiple things at once (consumer and producer) they may have input and output 
-	interfaces and thus look like a transformer... In that case, simply refer to the logical behavior of the connector: 
-	the <em>twitter</em> connector has an input interface to post tweets and also an independant output interface to get new 
-	tweets, though, it does not <em>transform</em> tweets; whereas the <em>translation</em> connector has both an input and 
-	an output interface so the text that goes in is directly translated and comes out, this is a transformer.</p>
-	<p>There can be multiple input or output interfaces on a single connector, so in order to make it clear each have a name 
+	<p>Meanwhile, since BusApps can be multiple things at once (consumer and producer) they may have input and output 
+	channels and thus look like a transformer... In that case, simply refer to the logical behavior of the BusApp: 
+	the <em>twitter</em> BusApp has an input channel to post tweets and also an independant output channel to get new 
+	tweets, though, it does not <em>transform</em> tweets; whereas the <em>translation</em> BusApp has both an input and 
+	an output channel so the text that goes in is directly translated and comes out, this is a transformer.</p>
+	<p>There can be multiple input or output channels on a single BusApp, so in order to make it clear each have a name 
 	and a description.</p>
 	<div style="text-align: center; margin: 20px;">
-		<em>For instance, the Netatmo connector has 3 output interfaces:</em><br /><br />
+		<em>For instance, the Netatmo BusApp has 3 output channels:</em><br /><br />
 		<div class="device">
 			<div class="main">
 				<span class="logo"><img src="//images.busit.com/connectors/146.png" /></span>
@@ -137,38 +133,11 @@
 			</div>
 		</div>
 	</div>
-	<p>Note that there are some special interfaces that the user can <a href='#custom'>customize</a> or that can be triggered 
-	<a href='#cron'>automatically</a>.</p>
-</div>
-
-<a name="custom"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>custom</strong> interface ?</h2></a>
-<div class="answer">
-	A custom interface can be any input or output that require user configuration to work properly. Hence, you can have multiple 
-	time the same interface with different configuration.
-	<div style="text-align: center; margin: 20px;">
-		<em>For instance, the email connector has a single custom input interface that requires an email address as configuration.
-		<br />Therefore, users can add several email addresses if needed:</em><br /><br />
-		<div class="device">
-			<div class="main">
-				<span class="logo"><img src="//images.busit.com/connectors/10.png" /></span>
-				<span class="title">Send an email to <input type="text" placeholder="email@address" /></span>
-				<span class="down">&#xf078 </span>
-			</div>
-			<div class="interface">
-				<div class="name">bob@example.com</div>
-				<div class="description">Send to this email address</div>
-			</div>
-			<div class="interface">
-				<div class="name">alice@example.com</div>
-				<div class="description">Send to this email address</div>
-			</div>
-		</div>
-	</div>
 </div>
 	
-<a name="cron"><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>automatic</strong> interface ?</h2></a>
+<a name="cron"><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>automatic</strong> channel ?</h2></a>
 <div class="answer">
-	An automatic (or <a href='//en.wikipedia.org/wiki/Cron'>cron</a>) interface will be activated at regular interval. It is 
+	An automatic (or <a href='//en.wikipedia.org/wiki/Cron'>cron</a>) channel will be activated at regular interval. It is 
 	typically designed for <strong>producers</strong> that <a href='#pushpull'>pull</a> data from your devices or services. 
 	Moreover, it can have multiple applications for time related matters: birthdays, alarm clock, reminders,...
 </div>
@@ -194,7 +163,7 @@
 			</div>
 		</li>
 		<li>When the device that has the data keeps it and waits for Busit to collect it every once in a while 
-		(see <a href='#'>automatic</a> interfaces) then we say that Busit <strong>pulls</strong> the data from that device.
+		(see <a href='#'>automatic</a> channels) then we say that Busit <strong>pulls</strong> the data from that device.
 			<div style="text-align: center; margin: 20px;">
 				<em>Busit <strong>pulls</strong> the data from my phone.<br />Do you have some data ?</em><br />
 				<div class="connector"><img src="//images.busit.com/connectors/27.png" /></div>
@@ -218,13 +187,13 @@
 
 <a name="config"><h2 onclick="return; $(this).next().slideToggle(500);">How to <strong>configure</strong> an instance ?</h2></a>
 <div class="answer">
-	Some connectors require configuration parameters to work properly. For instance, the Facebook connector needs your security token to be
+	Some BusApps require configuration parameters to work properly. For instance, the Facebook BusApp needs your security token to be
 	able to post or read messages.<br />
 	There are 2 distinct ways to configure an instance:
 	<ol>
 		<li>If the configuration is basic, a simple form is automatically generated such that the user can set the value 
 		<strong>manually</strong>.</li>
-		<li>If the configuration is more complex, then the developer of the connector can use an <strong>external</strong>
+		<li>If the configuration is more complex, then the developer of the BusApp can use an <strong>external</strong>
 		configuration website that will guide the user through the process.</li>
 	</ol>
 </div>
