@@ -39,53 +39,52 @@
 			<h1>Let's <strong>Code</strong> a bit</h1>
 <a name="start"><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2></a>
 <div class="answer">
-	<p>Busit supports multiple programming languages for connectors. However, only <strong>PHP 5</strong> is open for developers at this time. 
+	<p>Busit supports multiple programming languages for BusApps. However, only <strong>PHP 5</strong> is open for developers at this time. 
 	You can find the complete reference on <a href="//php.net/">php.net</a>.<br />
 	It is highly recommended that you'd be familiar with <a href="//en.wikipedia.org/wiki/Object-oriented_programming">OOP</a>.</p>
 	<ul>
-		<li>Connectors are <strong>stateless</strong> and must have a parameterless constructor, see lifecycle below for more details.</li>
-		<li>PHP connectors are using <a href="//php.net/manual/en/language.namespaces.php">namespaces</a>. 
+		<li>BusApps are <strong>stateless</strong> and must have a parameterless constructor, see lifecycle below for more details.</li>
+		<li>PHP BusApps are using <a href="//php.net/manual/en/language.namespaces.php">namespaces</a>. 
 			However, it is recommended that you leave your code in the default namespace.</li>
-		<li>PHP connectors are composed of at least one class <em>(and ideally only one)</em>.</li>
-		<li>Connectors must be <a href="publish.html">validated by Busit</a> prior to be available on the platform.</li>
+		<li>PHP BusApps are composed of at least one class <em>(and ideally only one)</em>.</li>
+		<li>BusApps must be <a href="publish.html">validated by Busit</a> prior to be available on the platform.</li>
 		<li>All programming languages supported share the same object model <em>(as close as possible)</em>, 
 			this may lead to unusual methods or structures for PHP but allows to have a common meaningful documentation for all programming languages.</li>
 		<li>For most accurate class documentation, see the <a href="javadoc/">javadoc</a></li>
-		<li>You should define the connector's capabilities and settings, name, description, translations, what interfaces it supports, what are
+		<li>You should define the BusApp's capabilities and settings, name, description, translations, what interfaces it supports, what are
 			the configuration parameters,...This is done via the <a href="settings.html">configuration file</a>. Then, you can write the 
-			actual code of your connector according to the settings you have declared.</li>
+			actual code of your BusApp according to the settings you have declared.</li>
 	</ul>
 	
 	<h3>1) Basic structure</h3>
-	<p>There are 2 basic requirements for a PHP connector:</p>
+	<p>There are 2 basic requirements for a PHP BusApp:</p>
 	<ol>
-		<li>You must define the <strong>__CLASSNAME__</strong> constant to provide the name of the connector class to be instanciated.</li>
+		<li>You must define the <strong>__CLASSNAME__</strong> constant to provide the name of the BusApp class to be instanciated.</li>
 <pre><code class="php">
 define("__CLASSNAME__", "\\HelloWorld");
 </code></pre>
-		<li>You must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/Connector.html"><em>com\busit\Connector</em></a> and 
+		<li>You must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/App.html"><em>com\busit\App</em></a> and 
 			<strong>implement</strong> <em>(at least)</em> one of the  
 					<a href="#producer"><em>com\busit\Producer</em></a>,
 					<a href="#consumer"><em>com\busit\Consumer</em></a> or 
 					<a href="#transformer"><em>com\busit\Transformer</em></a> patterns.
 		</li>
 <pre><code class="php">
-class HelloWorld extends com\busit\Connector implements com\busit\Producer
+class HelloWorld extends com\busit\App implements com\busit\Producer
 {
 	...
 }
 </code></pre>
 	</ol>
-	<p>The <strong>Connector</strong> abstract class implements a bunch of behaviors to help you, don't bother about it. If you want to know what is
-	available for you to use safely, look at the <a href="javadoc/com/busit/ConnectorHelper.html"><em>ConnectorHelper</em></a> interface:</p>
+	<p>The <strong>App</strong> abstract class implements a bunch of behaviors to help you:</p>
 <pre><code class="php">
-interface ConnectorHelper
+abstract class App
 {
 	public function config($key); 	// returns the matching config parameter (or all if $key == null)
 	public function input($key); 	// returns the matching input interface (or all if $key == null)
 	public function output($key); 	// returns the matching output interface (or all if $key == null)
 	
-	public function id(); 		// returns a unique id for the user instance of the connector
+	public function id(); 		// returns a unique id for the user instance of the BusApp
 	public function locale(); 	// returns the preferred language of the user
 	
 	public function notifyUser($message); 		// send warnings to the user (use sparsely)
@@ -94,16 +93,16 @@ interface ConnectorHelper
 </code></pre>
 
 	<h3>2) Lifecycle</h3>
-	<p>Everytime a connector is triggered, a new instance of the class is created. After processing the message, the class instance is destroyed. 
-	This means that there is no persistency nor any kind of state of the class once the lifecycle is complete: connectors are <strong>stateless</strong>.</p>
-	<p class="we_say">If your connector absolutely requires an internal state or some sort of history, you should setup one of your own using external services or you 
+	<p>Everytime a BusApp is triggered, a new instance of the class is created. After processing the message, the class instance is destroyed. 
+	This means that there is no persistency nor any kind of state of the class once the lifecycle is complete: BusApps are <strong>stateless</strong>.</p>
+	<p class="we_say">If your BusApp absolutely requires an internal state or some sort of history, you should setup one of your own using external services or you 
 	should have a <em>premium developer account</em> so that Busit provides such mechanism to you.</p>
 	<ol>
 		<li>The class specified by the <strong>__CLASSNAME__</strong> constant is instanciated using a parameterless constructor.</li>
 		<li>If you implemented the <strong>Consumer</strong> pattern, then the 
 			<a href="javadoc/com/busit/Consumer.html#consume(com.busit.IMessage,%20com.busit.Interface)">
 			<em>consume()</em></a> method is called once for the targetted interface only.</li>
-		<li>The Busit broker checks if there are any other connectors in the flow ; if there are any:
+		<li>The Busit broker checks if there are any other BusApps in the flow ; if there are any:
 			<ul>
 				<li>If you implemented the <strong>Producer</strong> pattern, then the 
 					<a href="javadoc/com/busit/Producer.html#produce(com.busit.IMessage,%20com.busit.Interface)">
@@ -113,7 +112,7 @@ interface ConnectorHelper
 					<em>transform()</em></a> method is called once for each connected output.</li>
 			</ul>
 		</li>
-		<li>Your connector's class instance is destroyed</li>
+		<li>Your BusApp's class instance is destroyed</li>
 	</ol>
 	<p>This means that internal variables will be maintained between <strong>consume()</strong> and subsequent <strong>produce()</strong> or 
 		<strong>transform()</strong> calls.</p>
@@ -121,14 +120,14 @@ interface ConnectorHelper
 
 <a name="producer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Producer</strong> pattern</h2></a>
 <div class="answer">
-	<p>If your connector brings data from external devices or services, it is producing data for Busit.<br />
-	External devices or services can <strong>push</strong> data directly on your connector, or your connector can <strong>pull</strong>
+	<p>If your BusApp brings data from external devices or services, it is producing data for Busit.<br />
+	External devices or services can <strong>push</strong> data directly on your BusApp, or your BusApp can <strong>pull</strong>
 	from those at regular intervals (see <a href="#cron">automatic interfaces</a>)</p>
 	<p>The producer pattern provides a <a href="javadoc/com/busit/Producer.html#produce(com.busit.Interface)"><em>produce()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function produce($out);</code></pre>
 	<ul>
-		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the output
+		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Interface</em></a> and represents the output
 			interface that should produce data. <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method must return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> or <em>null</em> 
 		if there is no content to be produced.</li>
@@ -137,7 +136,7 @@ interface ConnectorHelper
 		method with the following signature:</p>
 	<pre><code class="php">public function sample($out);</code></pre>
 	<ul>
-		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and represents the output
+		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Interface</em></a> and represents the output
 			interface for which to get sample data. <a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method should return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> or <em>null</em> 
 		if there no data can be produced from that interface.</li>
@@ -146,13 +145,13 @@ interface ConnectorHelper
 		method with the following signature:</p>
 	<pre><code class="php">public function test();</code></pre>
 	<ul>
-		<li>The method should return a boolean value indicating if the connector is working properly. This is where you should check any possible dependency.</li>
+		<li>The method should return a boolean value indicating if the BusApp is working properly. This is where you should check any possible dependency.</li>
 	</ul>
 	<pre><code class="php">
 &lt;?php
 define("__CLASSNAME__", "\\WeatherStation");
 
-class WeatherStation extends com\busit\Connector implements com\busit\Producer
+class WeatherStation extends com\busit\App implements com\busit\Producer
 {
 	public function produce($out)
 	{
@@ -195,7 +194,7 @@ class WeatherStation extends com\busit\Connector implements com\busit\Producer
 
 <a name="consumer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Consumer</strong> pattern</h2></a>
 <div class="answer">
-	<p>If your connector sends data to external devices or services, it is consuming data from Busit.</p>
+	<p>If your BusApp sends data to external devices or services, it is consuming data from Busit.</p>
 	<p>The consumer pattern provides <a href="javadoc/com/busit/Consumer.html#consume(com.busit.IMessage,%20com.busit.Interface)"><em>consume()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function consume($message, $in);</code></pre>
@@ -210,13 +209,13 @@ class WeatherStation extends com\busit\Connector implements com\busit\Producer
 		method with the following signature:</p>
 	<pre><code class="php">public function test();</code></pre>
 	<ul>
-		<li>The method should return a boolean value indicating if the connector is working properly. This is where you should check any possible dependency.</li>
+		<li>The method should return a boolean value indicating if the BusApp is working properly. This is where you should check any possible dependency.</li>
 	</ul>
 	<pre><code class="php">
 &lt;?php
 define("__CLASSNAME__", "\\Light");
 
-class Light extends com\busit\Connector implements com\busit\Consumer
+class Light extends com\busit\App implements com\busit\Consumer
 {
 	public function consume($message, $in)
 	{
@@ -250,16 +249,16 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 
 <a name="transformer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Transformer</strong> pattern</h2></a>
 <div class="answer">
-	<p>If your connector aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
+	<p>If your BusApp aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
 	<p>The transformer pattern provides <a href="javadoc/com/busit/Transformer.html#transform(com.busit.IMessage,%20com.busit.Interface,%20com.busit.Interface)"><em>transform()</em></a> 
 	method with the following signature:</p>
 	<pre><code class="php">public function transform($message, $in, $out);</code></pre>
 	<ul>
 		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and gives you a hint on what data is comming in.
+		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Interface</em></a> and gives you a hint on what data is comming in.
 			 <a href="#interfaces">More about Interfaces</a>.</li>
-		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Connector.Interface.html"><em>com\busit\Interface</em></a> and tells you what the user wants to come out.
+		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Interface</em></a> and tells you what the user wants to come out.
 			<a href="#interfaces">More about Interfaces</a>.</li>
 		<li>The method must return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> <em>(ideally the same with its data transformed)</em> 
 			or <em>null</em> if you want to stop the flow and prevent further processing.</li>
@@ -268,13 +267,13 @@ class Light extends com\busit\Connector implements com\busit\Consumer
 		method with the following signature:</p>
 	<pre><code class="php">public function test();</code></pre>
 	<ul>
-		<li>The method should return a boolean value indicating if the connector is working properly. This is where you should check any possible dependency.</li>
+		<li>The method should return a boolean value indicating if the BusApp is working properly. This is where you should check any possible dependency.</li>
 	</ul>
 	<pre><code class="php">
 &lt;?php
 define("__CLASSNAME__", "\\Translator");
 
-class Translator extends com\busit\Connector implements com\busit\Transformer
+class Translator extends com\busit\App implements com\busit\Transformer
 {
 	public function transform($message, $in, $out)
 	{
@@ -317,7 +316,7 @@ class Translator extends com\busit\Connector implements com\busit\Transformer
 
 <a name="messages"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>messages</strong></h2></a>
 <div class="answer">
-	<p>The <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> conveys data across the connectors and make sure the 
+	<p>The <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> conveys data across the BusApps and make sure the 
 	content is encrypted with the user's identity... hopefully, this is all transparent for you.</p>
 	
 	<h3>1) IMessage</h3>
@@ -366,7 +365,7 @@ $list[] = $message2;
 </code></pre>
 
 	<h3>3) IContent</h3>
-	<p>The actual content of the message is a very flexible structure that allows developers to strenghten compatibility accross connectors.
+	<p>The actual content of the message is a very flexible structure that allows developers to strenghten compatibility accross BusApps.
 		See it as a kind of high-level <em>Mime type</em> for data. A extensible set of predefined content types is available so that everyone 
 		can share common data structures. In the end, it behaves like an array in which you can put arbitrary key/value pairs.</p>
 	<p>IContent has:</p>
@@ -407,12 +406,12 @@ $content['question'] = 'undefined';
 
 <a name="interfaces"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>interfaces</strong> (inputs and outputs)</h2></a>
 <div class="answer">
-	<p>Interfaces <em>(do not confuse with OOP class interface)</em> are either inputs or outputs from your connector.
-		When publishing your connector, you should mention the different inputs and outputs that your connector accepts and
+	<p>Interfaces <em>(do not confuse with OOP class interface)</em> are either inputs or outputs from your BusApp.
+		When publishing your BusApp, you should mention the different inputs and outputs that your BusApp accepts and
 		give each of them an internal name (the interface <strong>key</strong>) that will never change. 
 		Then, the user can give it a friendly <strong>name</strong>.
 		Eventually, for custom interfaces, the user can also specify a <strong>value</strong> for it.</p>
-	<p>Example: The mail sender connector has only one input interface with internal key <em>email</em>.<br />
+	<p>Example: The mail sender BusApp has only one input interface with internal key <em>email</em>.<br />
 		When the user adds it to his flow, he can add several of those, and thus give them a name and a value:</p>
 	<ul>
 		<li><strong>Key</strong>: <em>email</em> (this cannot change, the user does not see it, this is only for you, the developer)</li>
@@ -426,7 +425,7 @@ $content['question'] = 'undefined';
 &lt;?php
 define("__CLASSNAME__", "\\Mailer");
 
-class Mailer extends com\busit\Connector implements com\busit\Consumer
+class Mailer extends com\busit\App implements com\busit\Consumer
 {
 	public function consume($message, $in)
 	{
@@ -450,15 +449,15 @@ class Mailer extends com\busit\Connector implements com\busit\Consumer
 
 <a name="configs"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>configurations</strong></h2></a>
 <div class="answer">
-	<p>The configuration parameters as you designed them in the <a href="settings.html">connector settings</a> -and later completed by the user- are
-	available in your code. You can thus retrieve them anywhere via the <a href="javadoc/com/busit/Connector.html#config(java.lang.String)">
+	<p>The configuration parameters as you designed them in the <a href="settings.html">BusApp settings</a> -and later completed by the user- are
+	available in your code. You can thus retrieve them anywhere via the <a href="javadoc/com/busit/App.html#config(java.lang.String)">
 	<em>config()</em></a> method that returns the value of the desired configuration parameter as a string.</p>
 <pre><code class="php">
 $value = $this-&gt;config('my_parameter');
 </code></pre>
 
 	<h3>Bindable config parameters</h3>
-	<p><a href="concepts.html#binding">Binding</a> will occur before your connector is created, so the bindable config parameters 
+	<p><a href="concepts.html#binding">Binding</a> will occur before your BusApp is created, so the bindable config parameters 
 		will already be populated with the proper value.<br />Keep in mind that binding is <em>optionnal</em> from the user's perspective 
 		so you should always check if the config contains the value you expect !</p>
 </div>
@@ -466,7 +465,7 @@ $value = $this-&gt;config('my_parameter');
 <a name="icontent"><h2 onclick="return; $(this).next().slideToggle(500);">Deep into message <strong>content</strong></h2></a>
 <div class="answer">
 	<p>Busit offers an growing list of data structures that anyone can use or enhance. Thus, we
-	strongly encourage all developers to acknowledge and use those for maximum compatibility between connectors. Meanwhile, content types 
+	strongly encourage all developers to acknowledge and use those for maximum compatibility between BusApps. Meanwhile, content types 
 	are not a constraint, they are not immutable and not restrictive... they are only a kind of very flexible indication on what 
 	sort of data is contained inside a message.</p>
 	
@@ -503,7 +502,7 @@ $content = com\busit\Factory::content(42);
 $content['name'] = 123;
 $content['favourite_color'] = 'blue';
 </code></pre>
-	<p>The point is that you do not know what the user (or other connectors) will send you, so you <strong>must check</strong> 
+	<p>The point is that you do not know what the user (or other BusApps) will send you, so you <strong>must check</strong> 
 	and anticipate to recieve anything ! However, in general, you can expect to have a minimum of trust, because other developers
 	should offer proper content types when they can, and so should you. Nevertheless, with great flexibility comes great responsibility...</p>
 <pre><code class="php">
@@ -589,7 +588,7 @@ $content->textFormat($content->textFormat() . ", Favourite Color: {{favourite_co
 }
 </code></pre>
 	<p>Powerful yet incomplete because there is no current way of defining a simple format that implies loops or conditions,... If you really want to have
-		total control over the representation, then consider implementing it directly in your connector.</p>
+		total control over the representation, then consider implementing it directly in your BusApp.</p>
 	<p>Note that for the html format, some tags are not allowed (stripped): <em>script, object, embed,...</em></p>
 	
 	<h3>5) Obtain a content type</h3>

@@ -41,119 +41,102 @@
 <a name="start"><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2></a>
 <div class="answer">
 	<p style="font-size: 1.4em;">You sould be familiar with the <a href="concepts.html">concepts</a> in order to understand the various key points and make educated choices about those.<br /><br /></p>
-	<p>Before writing some code, you need to define the properties and the behavior of your connector by uploading a <a href="//en.wikipedia.org/wiki/JSON">JSON</a> file containing all required parameters.</p>
-	<p>The following main properties are required to cover all aspects of your connector's settings:</p>
+	<p>Before writing some code, you need to define the properties and the behavior of your BusApp by uploading a <a href="//en.wikipedia.org/wiki/JSON">JSON</a> file containing all required parameters.</p>
+	<p>The following main properties are required to cover all aspects of your BusApp's settings:</p>
 <pre><code class="json">
 {
-	"general": {...},
-	"interfaces": [...],
+	"channels": {...},
 	"configs": [...],
 	"translation": {...}
 }
 </code></pre>
 </div>
 
-<a name="general"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>General</strong> connector settings</h2></a>
+<a name="channels"><h2 onclick="return; $(this).next().slideToggle(500);">List your <strong>Channels</strong></h2></a>
 <div class="answer">
-	<p>The first thing to do is to declare your connector on your <a href="//www.busit.com/developers/panel">developer panel</a> and to give
-	it a meaningfull name. Then you can add more information. There are some basic element you should define for every connector:</p>
-	<ol>
-		<li>The <strong>programming language</strong> used. Currently, only <em>PHP</em> is allowed.</li>
-		<li>The <strong>category</strong> in which it will appear in the store. One of <em>Business, Communication, Entertainment, Health,
-			Home automation, Industry, News, Productivity, Social, Storage, Technology, Utilities</em>.</li>
-	</ol>
-	<p>For the <em>description</em> of your connector, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
+	<p>BusApps are composed of input and output <a href="concepts.html#channels">channels</a>. Those allow messages to come in or go out of your BusApp
+		depending on the case. Here are the parameters you need to specify to configure channels:</p>
 <pre><code class="json">
 {
-	"general":
+	"channels":
 	{
-		"language": 	"PHP",
-		"category": 	"Social"
+		"key":
+		{
+			"pattern": 	string,
+			"direction":	string,
+			"timer": 	string,
+			"types": 	[string, string, ...],
+			"properties": 	[string, string, ...],
+			"change_type": 	boolean
+		},
+		...
 	}
 }
 </code></pre>
-</div>
-
-<a name="interfaces"><h2 onclick="return; $(this).next().slideToggle(500);">List your <strong>Interfaces</strong></h2></a>
-<div class="answer">
-	<p>After you've declared the <a href="#general">general</a> settings, you should proceed with the input and output 
-	<a href="concepts.html#interface">interfaces</a> your connector has. This way, you can give a hint to users about what your connector
-	does.<br />The interfaces settings have 6 mandatory parameters:</p>
 	<ol>
-		<li>The internal <strong>key</strong> which is an internal name that the user will not see (lower case, no spaces, 
-			no special characters).</li>
-		<li>The <strong>direction</strong> of the interface: <em>input</em> or <em>output</em>.</li>
-		<li>The <strong>pattern</strong> in which the interface is involved. An <em>input</em> interface can only be involved in the <em>consumer</em>
-			or <em>transformer</em> pattern whereas an <em>output</em> interface can only be involved in the <em>producer</em> or <em>transformer</em> pattern.</li>
-		<li>Whether or not this is a <strong>custom</strong> interface. (See <a href="concepts.html#custom">concepts</a>)</li>
-		<li>Whether or not this is an <strong>automatic</strong> interface. <span style='text-decoration: underline;'>Important</span>: 
-			only <em>output</em> interfaces can be automatic !</li>
-		<li>Whether or not the interface is <strong>hidden</strong> to the user... <p class="you_say">Why would it be ?</p>
-			<p class="we_say">Because then it can be used internally for some reason.</p></li>
-		<li>The default <strong>timer</strong> if applicable, <em>null</em> otherwise. The format is : <em>[year]-[month]-[day]-[hour]-[minute]</em> 
+		<li>The <strong>key</strong> is the internal name that the user will not see (lower case, no spaces, no special characters).</li>
+		<li>The <strong>pattern</strong> in which the interface is involved. One of <em>producer</em>, <em>consumer</em>, or <em>transformer</em>.</li>
+		<li>The <strong>direction</strong> is optionnal but must be specified when the pattern is <em>transformer</em>.<br />
+			<p class="we_say">A producer is always an <em>output</em> because messages produced are going out of your BusApp.</p>
+			<p class="we_say">A consumer is always an <em>input</em> because messages consumed are going into your BusApp.</p>
+			<p class="you_say">A transformer can be either <em>input</em> or <em>output</em>, thus it must be specified.</p></li>
+		<li>The automatic <strong>timer</strong> is optionnal and only applicable for a <em>producer</em>.<br />
+			When specified, it will trigger your BusApp at regular interval to produce messages. (see <a href="concepts.html#pushpull">Push & Pull</a>)<br />
+			The format is : <em>[year]-[month]-[day]-[hour]-[minute]</em> 
 			with corresponding numbers or the upper-case letter <em>E</em> (to mean <em>every</em>).<br />
 			Example: <pre>E-E-1-10-00</pre> means every 1st of each month at 10:00.<br />
 			<p class="we_say">Note that if you set stupid values such as 32nd of each month, then it will behave stupidly accordingly.</p>
-			<p class="we_say">Note that the minutes should ideally be a multiple of 5.</p></li>
-		<li>The validation <strong>rule</strong> that should be applied when <span style="text-decoration: underline;">the user enters</span> 
-			a value for the custom interface (it does not apply if the value is set programatically). 
-			It can be <em>null</em> if the interface is not custom or if all values are allowed. 
-			Otherwise, you can choose among various predefined rules or set your own custom regex:
-			<ul>
-				<li>domain : a domain name</li>
-				<li>email : an email address</li>
-				<li>ip : an ipv4 or ipv6 address</li>
-				<li>phone : phone number</li>
-				<li>url : a url</li>
-				<li>number : any digit number</li>
-				<li>text : any non-digit number</li>
-				<li>upper : only upper case characters</li>
-				<li>lower : only lower case characters</li>
-				<li>/.../ : any custom valid javascript regex</li>
-			</ul>
+			<p class="we_say">Minutes should ideally be a multiple of 5.</p>
+			<p class="we_say">Year should be using 4 digits.</p></li>
+		<li>The <strong>types</strong> are optionnal and reference ontologies that give a hint on the message content.
+			<ul><li>For a <em>producer</em>, it specified what your BusApp will produce.</li>
+			<li>For a <em>consumer</em> or an <em>input transformer</em>, it specified what messages you natively understand.</li>
+			<li>For a <em>output transformer</em>, it specifies what additionnal content the message will have after processing.</li></ul>
+			</li>
+		<li>The <strong>properties</strong> are optionnal and reference additionnal properties (not part of the specified <em>types</em>) 
+			that will be included in the message content.
+			<ul><li>For a <em>producer</em>, it specified what your BusApp will produce.</li>
+			<li>For a <em>consumer</em> or an <em>input transformer</em>, it specified what messages you natively understand.</li>
+			<li>For a <em>output transformer</em>, it specifies what additionnal content the message will have after processing.</li></ul>
+			</li>
+		<li>The <strong>change_type</strong> is optionnal and only applicable in the case of an <em>output transformer</em> in order to specify if
+			the <em>types</em> and <em>properties</em> will replace the message content (value true) or will be added aside the existing content (value false by default).
 			</li>
 	</ol>
-	<p>For the <em>description</em> of your interfaces, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
-	<p>Example: A thermometer device can <a href="concepts.html#pushpull">push</a> data on my connector then I make it available to the user, 
-		so my connector is a <em>Producer</em>.<br />
-		However, because the device will push data, I need an <em>input</em> interface to receive it (and therefore implement the <em>Consumer</em> pattern), 
-		but the user shouldn't see it, because it is only available to the device (lets not confuse the user about this and make it hidden).<br />
-		Then, I offer an <em>output</em> interface that will send the temperature to whatever the user connects to it... (and therefore implement
-		the <em>Producer</em> pattern)<br ><br />
-		<span style="color: #d14;">In red, what happens behind the scenes, the user does not see it.</span><br />
-		<span style="color: #00d140;">In green, what the user can use.</span><br />
-		</p>
-	<div style="text-align: center; margin: 20px;">
-		<div class="connector" style="color: #d14;">The device</div>
-		<span style="font-size: 0.6em; color: #d14; display: inline-block;">(consume data on the<br /> hidden input interface)</span>
-		<div class="arrow" style="color: #d14;">&#xf061 </div>
-		<div class="connector" style="color: #00d140;">My connector</div>
-		<span style="font-size: 0.6em; color: #00d140; display: inline-block;">(produce data on the<br /> output interface)</span>
-		<div class="arrow" style="color: #00d140;">&#xf061 </div>
-	</div>
+	
+	<p>Example: A thermometer device can produce data: the temperature but can also mention the battery status</p>
 <pre><code class="json">
 {
-	"interfaces":
-	[
+	"channels":
+	{
+		"temp"
 		{
-			"key": 		"receiver",
-			"direction": 	"input",
-			"pattern": 	"consumer",
-			"custom": 	false,
-			"automatic": 	false,
-			"timer": 	null,
-			"hidden": 	true,
-			"rule": 	null
-		},
-		{
-			"key": 		"temperature",
-			"direction": 	"output",
 			"pattern": 	"producer",
-			"custom": 	false,
-			"automatic": 	false,
-			"timer": 	null,
-			"hidden": 	false,
-			"rule": 	null
+			"types": 	["temperature"]
+		},
+		"battery"
+		{
+			"pattern": 	"producer",
+			"types": 	["battery"]
+		}
+	]
+}
+</code></pre>
+
+	<p>Example: A translator will accept data in input and transform it to the output</p>
+<pre><code class="json">
+{
+	"channels":
+	{
+		"chinese"
+		{
+			"pattern": 	"transformer",
+			"direction":	"input"
+		},
+		"english"
+		{
+			"pattern": 	"transformer",
+			"direction":	"output"
 		}
 	]
 }
@@ -162,56 +145,52 @@
 
 <a name="config"><h2 onclick="return; $(this).next().slideToggle(500);">Specify your <strong>configuration</strong> settings</h2></a>
 <div class="answer">
-	<p>If your connector needs some authentication or some extra parameters in order to work properly, then those are 
-		<strong>configuration</strong> parameters that the user will set at the beginning, before using your connector. In short,
+	<p>If your BusApp needs some authentication or some extra parameters in order to work properly, then those are 
+		<strong>configuration</strong> parameters that the user will set at the beginning, before using your BusApp. In short,
 		those are just containers for user settings.<br />
 		Configuration prameters are composed of:</p>
-	<ol>
-		<li>An internal <strong>key</strong> which is an internal name that the user will not see (lower case, no spaces, 
-			no special characters).</li>
-		<li>Whether or not it is <strong>hidden</strong> to the user. <p class="you_say">Why would it be ?</p>
-			<p class="we_say">Because then you can set sensitive values that the user will not see.</p></li>
-		<li>An optionnal <strong>default</strong> value just in case... Combined with a <em>hidden</em> interface, this allows
-			to store values for internal usage that the user should not know about.<br />For instance: if my connector should connect
-			to a URL to retreive data, it's best not to hardcode the URL in the code, but instead use a hidden configuration parameter
-			with the URL as default value such that whenever it changes, it is easy to adjust.</li>
-		<li>Whether or not it is <strong>bindable</strong>. <a href="concepts.html#binding">More about binding</a></li>
-		<li>The validation <strong>rule</strong> that should be applied when <span style="text-decoration: underline;">the user enters</span> 
-			a value for the configuration (it does not apply if the value is set programatically). 
-			It can be <em>null</em> if it is hidden or if all values are allowed. 
-			Otherwise, you can choose among various predefined rules or set your own custom regex:
-			<ul>
-				<li>domain : a domain name</li>
-				<li>email : an email address</li>
-				<li>ip : an ipv4 or ipv6 address</li>
-				<li>phone : phone number</li>
-				<li>url : a url</li>
-				<li>number : any digit number</li>
-				<li>text : any non-digit number</li>
-				<li>upper : only upper case characters</li>
-				<li>lower : only lower case characters</li>
-				<li>/.../ : any custom valid javascript regex</li>
-			</ul>
-			</li>
-	</ol>
-	<p>For the <em>description</em> of your parameters, the visible <em>name</em> and so on, see the <a href="#translation">translation</a> section.</p>
 <pre><code class="json">
 {
 	"configs":
-	[
+	{
+		"key"
 		{
-			"key": 		"url",
-			"hidden": 	true,
-			"default":	"http://example.com",
-			"bindable":	false,
+			"input": 	string,
+			"hidden": 	boolean,
+			"default":	string,
 			"rule": 	null
 		},
+		...
+	}
+}
+</code></pre>
+	<ol>
+		<li>An internal <strong>key</strong> which is an internal name that the user will not see (lower case, no spaces, 
+			no special characters).</li>
+		<li>The html <strong>input</strong> type that should be displayed to the user. (text, password, radio, select, number,...) (see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-type">the MDN reference</a>)
+		<li>Whether or not it is <strong>hidden</strong> to the user. (default false)
+			<p class="you_say">Why would it be ?</p>
+			<p class="we_say">Because then you can set sensitive values that the user will not see.</p></li>
+		<li>An optionnal <strong>default</strong> value just in case.</li>
+		<li>An optionnal validation <strong>rule</strong> that should be applied when <span style="text-decoration: underline;">the user enters</span> 
+			a value for the configuration (it does not apply if the value is set programatically).<br />
+			It should be a valid regular expression according to the HTML5 specification. (see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-pattern">the MDN reference</a>)
+			</li>
+	</ol>
+	
+<pre><code class="json">
+{
+	"configs":
+	{
+		"url":
 		{
-			"key": 		"something",
-			"hidden": 	false,
-			"default":	null,
-			"bindable":	false,
-			"rule": 	"number",
+			"input": 	"url",
+			"default":	"http://example.com"
+		},
+		"number":
+		{
+			"input":	"number",
+			"rule": 	"^[0-5]{2,4}$", // RegExp for : 2 to 4 digits from 0 to 5
 		}
 	]
 }
@@ -221,14 +200,14 @@
 		not be hidden. <br />However, with the second option, you can redirect the user to an <a href="#external">external configuration</a> 
 		website that you should host and maintain
 		unless you have a <em>premium developer account</em> ; then, you have the possibility to provide a nicer way to configure your 
-		connector (OAuth,...) and therefore, your configuration parameters are kind of hidden (per-se) to the user.</p>
+		BusApp (OAuth,...) and therefore, your configuration parameters are kind of hidden (per-se) to the user.</p>
 </div>
 
 <a name="translation"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Translate</strong> everything</h2></a>
 <div class="answer">
 	<p>After setting all your different parameters, you now need to make sure they will be understood by everyone with a properly
 		translated name, description and more. There is one <strong>mandatory</strong> language that you must support : <strong>
-		english</strong>. So that if the user selects a language that is not supported by your connector, we can fallback on
+		english</strong>. So that if the user selects a language that is not supported by your BusApp, we can fallback on
 		a common predefined language. Beware that if a translation set is provided but incomplete, there will not be any fallback,
 		it will show empty values instead.</p>
 	<p>Then, you can add as many translations sets as you need. Here is how it is structured :</p>
@@ -237,34 +216,27 @@
 	<ul>
 		<li>The <strong>general</strong> settings:
 			<ul>
-				<li>The displayed friendly <strong>name</strong> of your connector.</li>
-				<li>The <strong>short description</strong> of your connector in a few words.</li>
-				<li>The <strong>long description</strong> of your connector a bit more complete. <a href="//www.bbcode.org/reference.php">BBCode</a> allowed.</li>
-				<li>An optional special <strong>prevention</strong> message. <a href="//www.bbcode.org/reference.php">BBCode</a> allowed.
-					<br />If specified, this will prevent the users from adding this connector from the store. 
-					<p class="you_say">Why is that ?</p>
-					<p class="we_say">For instance, the iPhone connector will be added automatically when you install the app on your phone. Thus,
-					you cannot manually install it from the store.</p></li>
+				<li>The displayed friendly <strong>name</strong> of your BusApp.</li>
+				<li>The <strong>description</strong> of your BusApp in a few words.</li>
 				<li>An optional external <strong>config url</strong>. <a href="#external">More about external websites</a>.</li>
 				<li>An optional external <strong>panel url</strong>. <a href="#external">More about external websites</a>.</li>
-				<li>An optional <strong>product url</strong> that redirects to the official device (or service, software,...) 
-					that the user must acquire prior to using the connector.</li>
+				<li>An optional <strong>documentation url</strong> that explains in detail how to use your BusApp or configure the device,...</li>
 			</ul>
 		</li>
-		<li>All <strong>interfaces</strong> declared, and for each of them:
+		<li>All <strong>channels</strong> declared, and for each of them:
 			<ul>
-				<li>The displayed friendly <strong>name</strong> of your interface.</li>
-				<li>The <strong>description</strong> of your interface.</li>
-				<li>The <strong>rule</strong> message that explains what the user should enter. Set it to <em>null</em> if the 
-					<em>rule</em> for that interface is <em>null</em> as well.</li>
+				<li>The <strong>display</strong> name.<br />The name may contain some specific keywords: when a config parameter name is included in double curly brackets,
+					the value of the config will be showed to the user.<br />Example: <pre>Send email to {{address}}</pre> will grab the <em>address</em> config and display : <pre>Send email to name@domain.com</pre></li>
+				<li>The <strong>description</strong> of your channel.</li>
 			</ul>
 		</li>
 		<li>All <strong>configs</strong> declared, and for each of them:
 			<ul>
-				<li>The displayed friendly <strong>name</strong> of your parameter.</li>
+				<li>The <strong>display</strong> name of your parameter.</li>
 				<li>The <strong>description</strong> of your parameter.</li>
-				<li>The <strong>rule</strong> message that explains what the user should enter. Set it to <em>null</em> if the 
-					<em>rule</em> for that parameter is <em>null</em> as well.</li>
+				<li>An optionnal HTML <strong>placeholder</strong> for the input field.</li>
+				<li>An explanation of the <strong>rule</strong> that the user will understand better than a RegExp !</li>
+				<li>The <strong>values</strong> as key/value pairs in case the input type is <em>radio</em> or <em>select</em></li>
 			</ul>
 		</li>
 	</ul>
@@ -276,33 +248,25 @@
 		{
 			"general": 
 			{
-				"name": 	"My Connector",
-				"short_description": 	"This is a test connector",
-				"long_description": 	"This is a test connector, and so on...",
-				"prevention": 	null,
-				"config_url": 	null,
-				"panel_url": 	"http://example.com/?{INSTANCE}",
-				"product_url": 	null
+				"name": 	"My BusApp",
+				"description": 	"This is a test BusApp"
 			},
-			"interfaces": 
+			"channels": 
 			{
 				"temperature":
 				{
 					"name": 	"temperature",
-					"description": 	"The outdoor temperature in celcius degrees is gathered every 5 min",
-					"rule": 	null
-				},
-				"pressure": {...}
+					"description": 	"The outdoor temperature in celcius degrees is gathered every 5 min"
+				}
 			},
 			"configs": 
 			{
 				"something":
 				{
 					"name": 	"anything",
-					"description": 	"Type in anyhing hoping it'll do something",
-					"rule": 	"Please enter a number"
-				},
-				"another_thing": {...}
+					"description": 	"Type in anything hoping it'll do something",
+					"placeholder": 	"Anything"
+				}
 			}
 		},
 		"fr": {...}
