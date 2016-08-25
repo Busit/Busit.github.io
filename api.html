@@ -46,7 +46,7 @@
 	Here are the main characteristics of the Busit REST API:
 	</p>
 	<ul>
-		<li>The URL is <a href="https://api.busit.com/?f=html"><strong>https://api.busit.com</strong></a>
+		<li>The URL is <a href="https://api.busit.com/?f=html"><strong>https://api.busit.com</strong></a></li>
 		<li>Everything is <strong>explicit</strong>, you can use the API without messing with headers, generators,... just type it in the URL.</li>
 		<li>There are many <strong>alias</strong> for most operations to simplify your guesses. I.e.: <em>/user/list</em> is the same as <em>/user/select</em>.</li>
 		<li>The api structure is in <strong>Big Endian</strong> which means that most important thing comes first. I.e.: <em>/system/group/user/delete</em> means: the main system, for the
@@ -172,6 +172,79 @@
 	<p>In any case, the language code considered will be transformed to stick to <a href="http://www.iso.org/iso/home/standards/language_codes.htm">ISO_639-1</a>.<br />
 		This implies that any unordered language preference set in the <em>Accept-Language</em> header will not be considered.</p>
 	<p>Note that the error messages issued by the API will not be localized.</p>
+</div>
+
+<a name="oauth"><h2 onclick="return; $(this).next().slideToggle(500);">BusApp Autorization</h2></a>
+<div class="answer">
+	<p>Third party applications that want to gain control over a user BusApp instance can perform an OAuth-like autorization process.</p>
+	<ol>
+		<li>In an iframe, a new window or in the current window, call the url <em>https://apps.busit.com/auth</em></li>
+		<li>You should provide a single query string parameter called <em>data</em> that contains the following JSON:
+		<ul>
+			<li><strong>instance</strong>: A numeric BusApp instance id</li>
+			<li><strong>grants</strong>: A list of specific grant names separated by colon, if missing, empty or null, full control will be requested</li>
+			<li><strong>requestor</strong>: The name of your service that will be displayed to the user</li>
+			<li><strong>referer</strong>: The callback URL to your service</li>
+			<li><strong>lease</strong>: The lifetime of the generated token in seconds. If <em>0</em>, missing, empty or null, the token will never expire</li>
+		</ul>
+		Example: (decomposed for clarity)
+<pre><code class="json">
+https://apps.busit.com/auth?data=
+{
+	"instance": 12345,
+	"grants": null,
+	"requestor": "My Service",
+	"referer": "https://my.domain.com/callback",
+	"lease": 3600
+}
+</code></pre>
+		</li>
+		<li>The end user will be presented a login screen and a validation to autorize access to his BusApp</li>
+		<li>Upon approval, the URL provided by the <em>referer</em> parameter will be called with a query string parameter called <em>token</em> 
+		that contains a token you can use to perform API calls on the user bahalf concerning that specific BusApp<br />
+		Example:
+<pre>
+https://my.domain.com/callback?token=abcdef123456
+</pre>
+		</li>
+	</ol>
+	<p>When using a BusApp token to perform requests to the API, the <em>auth</em> parameter MUST be formatted as follows : <em>i:[instance_id]:[token]</em><br />
+		Example:
+<pre>
+https://api.busit.com/?auth=i:12345:abcdef123456
+</pre>
+	Any <em>user</em> API parameter will be automatically induced and should be omitted.<br />
+	Any <em>instance</em> API parameter will be automatically induced and should be omitted.</p>
+	<p>Note that to ensure the security of the user information, you MUST use <em>https</em> communications</p>
+</div>
+
+<a name="forwardauth"><h2 onclick="return; $(this).next().slideToggle(500);">Forward Autorization</h2></a>
+<div class="answer">
+	<p>Third party applications that want to gain control over a user external service via Busit can perform an OAuth-like autorization process.<br />
+		Example: <br />
+		External service <strong>My Service</strong> wants to get the user token for his <strong>Third Party Service</strong> account that is compatible and supported by <strong>Busit</strong>.
+	</p>
+	<p>Each external service have a distinct URL endpoint of the form <em>https://apps.busit.com/[service]/[...]</em></p>
+	<ol>
+		<li>In an iframe, a new window or in the current window, call the endpoint URL</li>
+		<li>You should provide a single query string parameter called <em>redirect_uri</em> that contains the callback URL to your service<br />
+		Example:
+<pre>
+https://apps.busit.com/service/config?redirect_uri=https://my.domain.com/callback
+</pre>
+		</li>
+		<li>The end user will proceed through the external authentication mechanism</li>
+		<li>Upon success, the URL provided by the <em>redirect_uri</em> parameter will be called with service-dependent query string parameters<br />
+		Example:
+<pre>
+https://my.domain.com/callback?auth_key=abcd&secret=1234
+</pre>
+		</li>
+	</ol>
+	<p>When using this mechanism, you are bound to the third party service's Terms and Conditions as well as Busit's Tems and Conditions.
+		If you do not fully understand those, do not use this procedure.
+	</p>
+	<p>Note that to ensure the security of the user information, you MUST use <em>https</em> communications</p>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
