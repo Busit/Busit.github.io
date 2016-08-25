@@ -174,10 +174,10 @@
 	<p>Note that the error messages issued by the API will not be localized.</p>
 </div>
 
-<a name="oauth"><h2 onclick="return; $(this).next().slideToggle(500);">BusApp Autorization</h2></a>
+<a name="oauth"><h2 onclick="return; $(this).next().slideToggle(500);">BusApp Authorization</h2></a>
 <div class="answer">
-	<p>Third party applications that want to gain control over a user BusApp instance can perform an OAuth-like autorization process.</p>
-	<p class="we_say">In order to use BusApp Autorization, you should register with Busit in order to authorize your requestor and referer.</p>
+	<p>Third party applications that want to gain control over a user BusApp instance can perform an OAuth-like authorization process.</p>
+	<p class="we_say">In order to use BusApp Authorization, you should register with Busit in order to authorize your requestor and referer.</p>
 	<p class="you_say">Contact us !</p>
 	<ol>
 		<li>In an iframe, a new window or in the current window, call the url <em>https://apps.busit.com/auth</em></li>
@@ -201,7 +201,7 @@ https://apps.busit.com/auth?data=
 }
 </code></pre>
 		</li>
-		<li>The end user will be presented a login screen and a validation to autorize access to his BusApp</li>
+		<li>The end user will be presented a login screen and a validation to authorize access to his BusApp</li>
 		<li>Upon approval, the URL provided by the <em>referer</em> parameter will be called with a query string parameter called <em>token</em> 
 		that contains a token you can use to perform API calls on the user bahalf concerning that specific BusApp<br />
 		Example:
@@ -220,14 +220,14 @@ https://api.busit.com/?auth=i:12345:abcdef123456
 	<p>Note that to ensure the security of the user information, you MUST use <em>https</em> communications</p>
 </div>
 
-<a name="forwardauth"><h2 onclick="return; $(this).next().slideToggle(500);">Forward Autorization</h2></a>
+<a name="forwardauth"><h2 onclick="return; $(this).next().slideToggle(500);">Forward Authorization</h2></a>
 <div class="answer">
-	<p>Third party applications that want to gain control over a user external service via Busit can perform an OAuth-like autorization process.<br />
+	<p>Third party applications that want to gain control over a user external service via Busit can perform an OAuth-like authorization process.<br />
 		Example: <br />
 		External service <strong>My Service</strong> wants to get the user token for his <strong>Third Party Service</strong> account that is compatible and supported by <strong>Busit</strong>.
 	</p>
 	<p>Each external service have a distinct URL endpoint of the form <em>https://apps.busit.com/[service]/[...]</em></p>
-	<p class="we_say">In order to use Forward Autorization, you should register with Busit in order to get the endpoint URL and authorize your redirect_uri.</p>
+	<p class="we_say">In order to use Forward Authorization, you should register with Busit in order to get the endpoint URL and authorize your redirect_uri.</p>
 	<p class="you_say">Contact us !</p>
 	<ol>
 		<li>In an iframe, a new window or in the current window, call the endpoint URL</li>
