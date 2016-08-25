@@ -177,6 +177,8 @@
 <a name="oauth"><h2 onclick="return; $(this).next().slideToggle(500);">BusApp Autorization</h2></a>
 <div class="answer">
 	<p>Third party applications that want to gain control over a user BusApp instance can perform an OAuth-like autorization process.</p>
+	<p class="we_say">In order to use BusApp Autorization, you should register with Busit in order to authorize your requestor and referer.</p>
+	<p class="you_say">Contact us !</p>
 	<ol>
 		<li>In an iframe, a new window or in the current window, call the url <em>https://apps.busit.com/auth</em></li>
 		<li>You should provide a single query string parameter called <em>data</em> that contains the following JSON:
@@ -225,6 +227,8 @@ https://api.busit.com/?auth=i:12345:abcdef123456
 		External service <strong>My Service</strong> wants to get the user token for his <strong>Third Party Service</strong> account that is compatible and supported by <strong>Busit</strong>.
 	</p>
 	<p>Each external service have a distinct URL endpoint of the form <em>https://apps.busit.com/[service]/[...]</em></p>
+	<p class="we_say">In order to use Forward Autorization, you should register with Busit in order to get the endpoint URL and authorize your redirect_uri.</p>
+	<p class="you_say">Contact us !</p>
 	<ol>
 		<li>In an iframe, a new window or in the current window, call the endpoint URL</li>
 		<li>You should provide a single query string parameter called <em>redirect_uri</em> that contains the callback URL to your service<br />
@@ -274,7 +278,7 @@ https://my.domain.com/callback?auth_key=abcd&secret=1234
 		<div id="help">
 			Is something unclear, you've spotted a mistake, or you need more details ?<br /><br />
 			Then please help us <a href="//github.com/Busit/Busit.github.io/issues/new">improve this doc</a>.<br />
-			Or <a href="//www.busit.com/about/contact">contact us</a> directly.
+			Or <a href="//www.busit.com/contact">contact us</a> directly.
 		</div>
 	</body>
 </html>
