@@ -75,7 +75,7 @@
 			</ul>
 		</li>
 		<li>Using the html format, a quick <strong>documentation</strong> is generated automatically.</li>
-		<li>When <strong>uploading files</strong>, you should use a <em>multipart/form-data</em> encoding.</li>
+		<li>When <strong>uploading files</strong>, you should use a <em>multipart/form-data</em> encoding. Otherwise, use <em>application/x-www-form-urlencoded</em></li>
 		<li>The response will either be an <a href="#errors">error</a> or a content. Responses in JSON will be wrapped as a "response" object.
 <pre><code class="json">
 {
@@ -218,6 +218,21 @@ https://api.busit.com/?auth=i:12345:abcdef123456
 	Any <em>user</em> API parameter will be automatically induced and should be omitted.<br />
 	Any <em>instance</em> API parameter will be automatically induced and should be omitted.</p>
 	<p>Note that to ensure the security of the user information, you MUST use <em>https</em> communications</p>
+<pre>
+  USER         YOUR SERVICE        BUSIT
+    |               |                |
+    |-------------->|                |
+    |               | (1) iframe to /auth
+    |               |--------------->|
+    |                                |
+	|    (2) user login              |
+	|<-------------------------------|
+	|------------------------------->|
+    |                                |
+	|                  (3) token     |
+	|   (4) done    |<---------------|
+	|<--------------|                |
+</pre>
 </div>
 
 <a name="forwardauth"><h2 onclick="return; $(this).next().slideToggle(500);">Forward Authorization</h2></a>
@@ -249,6 +264,27 @@ https://my.domain.com/callback?auth_key=abcd&secret=1234
 		If you do not fully understand those, do not use this procedure.
 	</p>
 	<p>Note that to ensure the security of the user information, you MUST use <em>https</em> communications</p>
+<pre>
+  USER         YOUR SERVICE        BUSIT             THIRD PARTY
+    |               |                |                    |
+    |-------------->|                |                    |
+    |               | (1) iframe to service               |
+    |               |--------------->|                    |
+    |                                |                    |
+	|    (2) user busit login        |                    |
+	|<-------------------------------|                    |
+	|------------------------------->|                    |
+    |                                | (3) redirect to OAuth
+	|                                |------------------->|
+    |    (4) user third party login                       |
+	|<----------------------------------------------------|
+	|---------------------------------------------------->|
+    |                                                     |
+    |                                   (5) token         |
+    |                  (6) token     |<-------------------|
+	|   (7) done    |<---------------|                    |
+	|<--------------|                |                    |
+</pre>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
