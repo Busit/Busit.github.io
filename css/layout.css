@@ -12,13 +12,13 @@ header .logo { padding-top: 15px; margin-left: 100px; display: inline-block; }
 header .logo em { color: #9cc5ea; font-size: 30px; cursor: default; vertical-align: top; line-height: 50px; }
 header nav { display: inline-block; float: right; font-weight: bold; margin-right: 100px; margin-top: 25px;}
 
-footer { background-color: #f0f0f0; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15) inset; padding: 20px 0 10px; text-align: center; color: #999999;
-	position: relative; height: 150px; margin-top: -150px; clear: both; overflow: hidden; }
+footer { background-color: #f0f0f0; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15) inset; padding: 20px; text-align: center; color: #999999;
+	position: relative; height: 55px; margin-top: -55px; clear: both; overflow: hidden; }
 footer a { color: #999999; }
 footer a:hover { color: #4d4d4d; }
 footer a img { opacity: 0.4; transition: all 0.2s ease 0s; }
 footer a:hover img { opacity: 1; }
-footer .copyright { margin-top: 40px; }
+footer .copyright { margin-top: 0px; }
 
 #footerfix { min-height: 100%; }
 #content { overflow: auto; padding: 20px 0px; padding-bottom: 180px; box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.15) inset; }

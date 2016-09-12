@@ -33,30 +33,110 @@
 			</header>
 			<div id="content">
         
-<h1><strong>Publish</strong> your work</h1>
+			<h1><strong>Publish</strong> your work</h1>
 
-... We're working on this ...
+<a name="deploy"><h2 onclick="return; $(this).next().slideToggle(500);">Deploy your app</h2></a>
+<div class="answer">
+	<p>When your <a href="settings.html">config file</a> and your <a href="code.html">code file</a> are ready, you can <strong>deploy</strong> you app on the developer panel.<br />
+		You will also need 2 pictures that represents your app.
+		<ul>
+			<li>Small picture: PNG image of 100px x 100px ideally with transparent background</li>
+			<li>Large picture: PNG image of 300px x 300px ideally with transparent background</li>
+		</ul>
+	</p>
+	<p>You can have one <strong>online version</strong>, and eventually one <strong>draft version</strong> of your code.</p>
+	<p>There are different <strong>states</strong> that determine if your app is online or not. One part it for <strong>you</strong> to decide, and the other part is for <strong>Busit</strong> to approve.
+		<br />The validation process ensures that your code does not harm the system. 
+		Whether or not it does what it should, is pretty or ugly or full of mistakes is not (really) considered.</p>
+</div>
 
+<a name="states"><h2 onclick="return; $(this).next().slideToggle(500);">App states</h2></a>
+<div class="answer">
+	<p>There are 3 flags that can be combined to build the state of your app:
+		<ul>
+			<li><strong>Disabled</strong>: the app is not available for users. However, existing instances will continue to work</li>
+			<li><strong>Pending</strong>: the app is in draft mode and thus not yet available</li>
+			<li><strong>Online</strong>: the app is active</li>
+			<li><strong>Disabled</strong> and <strong>Pending</strong>: the current draft version is pending but is already disabled in advance</li>
+			<li><strong>Disabled</strong> and <strong>Online</strong>: the current version is active (not draft) but currently disabled</li>
+			<li><strong>Online</strong> and <strong>Pending</strong>: the current version is active and there is a draft version pending</li>
+			<li><strong>Disabled</strong> and <strong>Online</strong> and <strong>Pending</strong>: the current version is active (not draft) and is currently disabled 
+				and there is a draft version pending</li>
+		</ul>
+	</p>
+	<p>Remember that there is a state for you, and one for Busit. Together, they determine if your app is available to the users.<br />
+		The condition for the app to be available to users is : </p>
+		<p class="we_say">Both your state and Busit state must be 'Online'<br />and neither should be 'Disabled'.</p>
+	</p>
+	<p>There are different <strong>states</strong> that determine if your app is online or not. one part it for <strong>you</strong> to decide, and the other part is for <strong>Busit</strong> to approve</p>
+</div>
+
+<a name="draft"><h2 onclick="return; $(this).next().slideToggle(500);">Draft or not draft ?</h2></a>
+<div class="answer">
+	<p>
+		The draft status is only applicable to the <strong>code</strong> of you app.<br />
+		Both the <strong>config</strong> and the <strong>pictures</strong> are directly applicable and do not require going through validation again.
+	</p>
+	<p class="we_say">This means that you should be really careful when you change things !</p>
+	<p class="you_say">You know what you are doing, right !?</p>
+	<p><strong>Important:</strong> What you do will affect existing user instances !<br />
+		This means that if you change the config, it will change for all existing instances of all users.<br />
+		If you upload a new version of the code, it will change the code for all instances of all users.<br />
+		This implies that every change you make <strong>must be backward compatible</strong> to make sure that existing user scenarios still work.
+	</p>
+	<p>If a drastic change in your app makes it totally different, consider creating a <strong>new</strong> app instead</p>
+</div>
+
+<a name="workflow"><h2 onclick="return; $(this).next().slideToggle(500);">Workflow</h2></a>
+<div class="answer">
+	<p>Here are the typical workflows you will encounter:</p>
+	<ol>
+		<li>You have nothing yet</li>
+		<li>You create an app by uploading your code, config and pictures.
+			<p class="you_say">Your state : 'Pending'<br />Because it is waiting for your approval before being submitted</p>
+			<p class="we_say">Busit state : none</p>
+		</li>
+		<li>You think your app is ready and you ask Busit to validate it.
+			<p class="you_say">Your state : 'Online'<br />Because for you, it's all good</p>
+			<p class="we_say">Busit state : 'Pending'<br />Because it needs to be validated</p>
+		</li>
+		<li>Busit checks your code and validates your app. It is available to users.
+			<p class="you_say">Your state : 'Online'</p>
+			<p class="we_say">Busit state : 'Online'</p>
+		</li>
+	</ol>
+	<br /><br />
+	<p>Later, you have a new version of your app:</p>
+	<ol>
+		<li>Your app is currently online.
+			<p class="you_say">Your state : 'Online'</p>
+			<p class="we_say">Busit state : 'Online'</p>
+		</li>
+		<li>You upload a new version of your code as a draft.
+			<p class="you_say">Your state : 'Online' and 'Pending'<br />The current version is still available to users</p>
+			<p class="we_say">Busit state : 'Online'</p>
+		</li>
+		<li>You request validation of your new draft version.
+			<p class="you_say">Your state : 'Online'</p>
+			<p class="we_say">Busit state : 'Online' and 'Pending'<br />The current version is still available to users</p>
+		</li>
+		<li>Busit checks your code and validates the new version. The new version replaces the previous one, even in existing user instances.
+			<p class="you_say">Your state : 'Online'</p>
+			<p class="we_say">Busit state : 'Online'</p>
+		</li>
+	</ol>
+</div>
+
+<a name="notes"><h2 onclick="return; $(this).next().slideToggle(500);">General notes</h2></a>
+<div class="answer">
+	<p>You cannot delete your app if it is in use by any user.</p>
+	<p>When you submit your app for validation or for any concerns, please contact us. This will speed up things.</p>
+</div>
+
+<script>createShortcutMenu();</script>
 			</div>
 		</div>
 		<footer>
-			<div class="social">
-				<a class="link" href="//twitter.com/Bus_IT">
-					<img src="img/twitter.png" alt="Twitter" />
-				</a>
-				<a class="link" href="//www.facebook.com/busit.net">
-					<img src="img/facebook.png" alt="Facebook" />
-				</a>
-				<a class="link" href="//plus.google.com/+BusitFr" rel="publisher">
-					<img src="img/google.png" alt="Google+" />
-				</a>
-				<a class="link" href="//www.linkedin.com/company/5121205">
-					<img src="img/linkedin.png" alt="LinkedIn" />
-				</a>
-				<a class="link" href="//www.youtube.com/channel/UCvB9PQcyRzdf8n4AewdE_oA">
-					<img src="img/youtube.png" alt="YouTube" />
-				</a>
-			</div>
 			<div class="copyright">&copy; <a href='//www.busit.com'>Busit</a></div>
 		</footer>
 		<div id="help">
