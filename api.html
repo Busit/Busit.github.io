@@ -287,6 +287,104 @@ https://my.domain.com/callback?auth_key=abcd&secret=1234
 </pre>
 </div>
 
+<a name="security"><h2 onclick="return; $(this).next().slideToggle(500);">Internal Security Considerations</h2></a>
+<div class="answer">
+	<p>All messages are encrypted with a <strong>2048 bit asymetric keypair</strong> specific to each user. 
+		This guarantees integrity, confidentiality and non-repudiation of the messages. 
+		Moreover, if any user key is compromised, it does not affect other users.</p>
+	<p>All tokens and passwords are in the form of <strong>128 bit</strong> hexadecimal strings (32 characters) derived from the <strong>MD5</strong> hash function.</p>
+	<p class="you_say">How safe is this ?</p>
+	<ul>
+		<li>When used as a <strong>token</strong>: it does not matter which hash algorithm is used because the original string has no meaning. We are interrested in sufficient randomness (distribution),
+			speed of generation, and compatibility which are all fulfilled by MD5.</li>
+		<li>When used to match a <strong>password</strong>: we are using a multiple MD5 rehash function that combines itself with conditionnal fragments of the previous hash round.
+			What we want to avoid in this case is (1) that an attacker retreives the original password based on the hash, and (2) to limit as much as possible collision attacks.
+			This is fulfilled using MD5 rehash because it is (close to) uniformly distributed. Thus applying an MD5 will produce hashes over its entire space that is used as an input to
+			produce another hash over its entire space. Multiple times. With added entropy.<br />
+			Cracking this would require 27000000000000 billion computers working for 1 year for one single hash.<br />
+			<span style="font-size: 10px; color: #999;">An NVIDIA GeForce 8800 Ultra can calculate more than 200 million hashes per second. 
+				This is 6.3e15 per year. In the case of uniform distribution, the probability to find a match is 1/2.
+				So in order to cover only half of the 128bit space, it requires (1.7e38 / 6.3e15 = 2.7e13) computers for one year.
+				Those graphics cards consume 105W. So if you make them all run in India for 8 cents per kWh, it will only cost 1.9e9 billion dollars.
+				If this ever happens, we will increase the hash length to 256 bits...
+			</span>
+		</li>
+	</ul>
+	<p>Wherever applicable, encrypted communications should be used. As such, all requests to the API happen in <strong>HTTPS</strong>.</p>
+</div>
+
+<a name="json"><h2 onclick="return; $(this).next().slideToggle(500);">Comprehensive JSON</h2></a>
+<div class="answer">
+	<p>Anywhere <strong>JSON</strong> parsing is required, an efficient <strong>loose parsing</strong> is performed. 
+		This allows to circumvent common mistakes, trailing characters, comments and deviation from
+		strict JSON. Some example of accepted syntax are shown below but there are more subtle things. If you ever encounter an
+		issue with the way JSON is parsed by the API and you truly believe the system should handle it, please let us know.</p>
+	<p>Strict JSON example:</p>
+<pre><code class="json">
+{
+	"key1": "value", 
+	"key2": ["string", false, null, 42]
+}
+</code></pre>
+	<p>Loose JSON parser allows comments:</p>
+<pre><code class="json">
+{
+	"key1": "value", // this is a line comment
+	"key2": ["string", false, null, 42]
+	/*
+		block comments
+		can spawn on multiple lines
+	*/
+}
+</code></pre>
+	<p>Loose JSON parser allows double quotes, single quotes or no quotes:</p>
+<pre><code class="json">
+{
+	"key1": 'value', 
+	key2: [string, false, null, 42]
+}
+</code></pre>
+	<p>Loose JSON parser allows trailing separator and case-insensitive raw types:</p>
+<pre><code class="json">
+{
+	"key1": "value", 
+	"key2": ["string", False, NULL, 42,],
+}
+</code></pre>
+	<p>Loose JSON parser allows unterminated objects or arrays:</p>
+<pre><code class="json">
+{
+	"key1": "value", 
+	"key2": ["string", false, null, 42
+</code></pre>
+	<p>Loose JSON parser does not require colon between key and value or it may be an equal sign eventually followed by a greater than sign:</p>
+<pre><code class="json">
+{
+	"key1" "value",
+	"key2"=>["string", false, null, 42]
+}
+</code></pre>
+	<p>Loose JSON parser allows coma, semicolon or space to separate elements:</p>
+<pre><code class="json">
+{
+	"key1": "value";
+	"key2": ["string"; false null, 42]
+}
+</code></pre>
+	<p>Loose JSON parser substitutes missing values with null:</p>
+<pre><code class="json">
+{
+	"key1": "value", 
+	"key2": ["string", false, , 42]
+}
+</code></pre>
+	<p>Altogether:</p>
+<pre><code class="json">
+Strict : { "key1": "value", "key2": ["string", false, null, 42] }
+Loose :  { key1'value'/*comment*/key2[string fAlSE;;42
+</code></pre>
+</div>
+
 <script>hljs.initHighlightingOnLoad();</script>
 <script>createShortcutMenu();</script>
 			</div>
