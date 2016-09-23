@@ -259,11 +259,11 @@ https://apps.busit.com/service/config?redirect_uri=https://my.domain.com/callbac
 </pre>
 		</li>
 		<li>The end user will proceed through the external authentication mechanism</li>
-		<li>Upon success, the URL provided by the <em>redirect_uri</em> parameter will be called with service-dependent query string parameters
-			as well as the <em>state</em> parameter that you provided in the initial request.<br />
+		<li>Upon success, the URL provided by the <em>redirect_uri</em> parameter will be called with a query string parameter <em>access_token</em> that contains
+			the json-encoded response from the third party; and the <em>state</em> query string parameter that you provided in the initial request.<br />
 		Example:
 <pre>
-https://my.domain.com/callback?auth_key=abcd&secret=1234&state=session_12345
+https://my.domain.com/callback?access_token={...}&state=session_12345
 </pre>
 		</li>
 	</ol>
