@@ -94,7 +94,7 @@
 
 <a name="auth"><h2 onclick="return; $(this).next().slideToggle(500);">Authentication</h2></a>
 <div class="answer">
-	<p>Most operations requires specific grants. Those grants are associated with a user token.</p>
+	<p>Most operations require specific grants. Those grants are associated with a user token.</p>
 	<ul>
 		<li>The token is in the <strong>form</strong> <em>user:token</em>. The user is the user ID and the token is a 32 hexadecimal character string.</li>
 		<li>It can be passed as a <strong>parameter</strong> with the request as either of <em>auth</em>, <em>credentials</em> or <em>api_key</em>.<br />
@@ -188,6 +188,7 @@
 			<li><strong>requestor</strong>: The name of your service that will be displayed to the user</li>
 			<li><strong>referer</strong>: The callback URL to your service</li>
 			<li><strong>lease</strong>: The lifetime of the generated token in seconds. If <em>0</em>, missing, empty or null, the token will never expire</li>
+			<li><strong>state</strong>: An internal state parameter that you choose that allows you to identify the return request</li>
 		</ul>
 		Example: (decomposed for clarity)
 <pre><code class="json">
@@ -197,16 +198,18 @@ https://apps.busit.com/auth?data=
 	"grants": null,
 	"requestor": "My Service",
 	"referer": "https://my.domain.com/callback",
-	"lease": 3600
+	"lease": 3600,
+	"state": "session_12345"
 }
 </code></pre>
 		</li>
 		<li>The end user will be presented a login screen and a validation to authorize access to his BusApp</li>
-		<li>Upon approval, the URL provided by the <em>referer</em> parameter will be called with a query string parameter called <em>token</em> 
-		that contains a token you can use to perform API calls on the user bahalf concerning that specific BusApp<br />
+		<li>Upon approval, the URL provided by the <em>referer</em> parameter will be called with both a query string parameter called <em>token</em> 
+		that contains a token you can use to perform API calls on the user bahalf concerning that specific BusApp; and the <em>state</em> parameter that
+		you provided in the initial request.<br />
 		Example:
 <pre>
-https://my.domain.com/callback?token=abcdef123456
+https://my.domain.com/callback?token=abcdef123456&state=session_12345
 </pre>
 		</li>
 	</ol>
@@ -217,7 +220,9 @@ https://api.busit.com/?auth=i:12345:abcdef123456
 </pre>
 	Any <em>user</em> API parameter will be automatically induced and should be omitted.<br />
 	Any <em>instance</em> API parameter will be automatically induced and should be omitted.</p>
+	<p>When using this mechanism, you are bound to Busit's Tems and Conditions. If you do not fully understand those, do not use this procedure.</p>
 	<p>Note that to ensure the security of the user information, you MUST use <em>https</em> communications</p>
+	<p>Workflow:</p>
 <pre>
   USER         YOUR SERVICE        BUSIT
     |               |                |
@@ -246,17 +251,19 @@ https://api.busit.com/?auth=i:12345:abcdef123456
 	<p class="you_say">Contact us !</p>
 	<ol>
 		<li>In an iframe, a new window or in the current window, call the endpoint URL</li>
-		<li>You should provide a single query string parameter called <em>redirect_uri</em> that contains the callback URL to your service<br />
+		<li>You should provide both a query string parameter called <em>redirect_uri</em> that contains the callback URL to your service; 
+			and a second query string parameter called <em>state</em> that allows you to identify the return request<br />
 		Example:
 <pre>
-https://apps.busit.com/service/config?redirect_uri=https://my.domain.com/callback
+https://apps.busit.com/service/config?redirect_uri=https://my.domain.com/callback&state=session_12345
 </pre>
 		</li>
 		<li>The end user will proceed through the external authentication mechanism</li>
-		<li>Upon success, the URL provided by the <em>redirect_uri</em> parameter will be called with service-dependent query string parameters<br />
+		<li>Upon success, the URL provided by the <em>redirect_uri</em> parameter will be called with service-dependent query string parameters
+			as well as the <em>state</em> parameter that you provided in the initial request.<br />
 		Example:
 <pre>
-https://my.domain.com/callback?auth_key=abcd&secret=1234
+https://my.domain.com/callback?auth_key=abcd&secret=1234&state=session_12345
 </pre>
 		</li>
 	</ol>
@@ -264,6 +271,7 @@ https://my.domain.com/callback?auth_key=abcd&secret=1234
 		If you do not fully understand those, do not use this procedure.
 	</p>
 	<p>Note that to ensure the security of the user information, you MUST use <em>https</em> communications</p>
+	<p>Workflow:</p>
 <pre>
   USER         YOUR SERVICE        BUSIT             THIRD PARTY
     |               |                |                    |
