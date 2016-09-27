@@ -51,7 +51,7 @@
 		<li>All programming languages supported share the same object model <em>(as close as possible)</em>, 
 			this may lead to unusual methods or structures for PHP but allows to have a common meaningful documentation for all programming languages.</li>
 		<li>For most accurate class documentation, see the <a href="javadoc/">javadoc</a></li>
-		<li>You should define the BusApp's capabilities and settings, name, description, translations, what interfaces it supports, what are
+		<li>You should define the BusApp's capabilities and settings, name, description, translations, what channels it supports, what are
 			the configuration parameters,...This is done via the <a href="settings.html">configuration file</a>. Then, you can write the 
 			actual code of your BusApp according to the settings you have declared.</li>
 	</ul>
@@ -81,8 +81,8 @@ class HelloWorld extends com\busit\App implements com\busit\Producer
 abstract class App
 {
 	public function config($key); 	// returns the matching config parameter (or all if $key == null)
-	public function input($key); 	// returns the matching input interface (or all if $key == null)
-	public function output($key); 	// returns the matching output interface (or all if $key == null)
+	public function input($key); 	// returns the matching input channel (or all if $key == null)
+	public function output($key); 	// returns the matching output channel (or all if $key == null)
 	
 	public function id(); 		// returns a unique id for the user instance of the BusApp
 	public function locale(); 	// returns the preferred language of the user
@@ -100,15 +100,15 @@ abstract class App
 	<ol>
 		<li>The class specified by the <strong>__CLASSNAME__</strong> constant is instanciated using a parameterless constructor.</li>
 		<li>If you implemented the <strong>Consumer</strong> pattern, then the 
-			<a href="javadoc/com/busit/Consumer.html#consume(com.busit.IMessage,%20com.busit.Interface)">
-			<em>consume()</em></a> method is called once for the targetted interface only.</li>
+			<a href="javadoc/com/busit/Consumer.html#consume(com.busit.Message, com.busit.Channel)">
+			<em>consume()</em></a> method is called once for the targetted channel only.</li>
 		<li>The Busit broker checks if there are any other BusApps in the flow ; if there are any:
 			<ul>
 				<li>If you implemented the <strong>Producer</strong> pattern, then the 
-					<a href="javadoc/com/busit/Producer.html#produce(com.busit.IMessage,%20com.busit.Interface)">
+					<a href="javadoc/com/busit/Producer.html#produce(com.busit.Message, com.busit.Channel)">
 					<em>produce()</em></a> method is called once for each connected output.</li>
 				<li>If you implemented the <strong>Transformer</strong> pattern, then the 
-					<a href="javadoc/com/busit/Transformer.html#transform(com.busit.IMessage,%20com.busit.Interface,%20com.busit.Interface)">
+					<a href="javadoc/com/busit/Transformer.html#transform(com.busit.Message, com.busit.Channel, com.busit.Channel)">
 					<em>transform()</em></a> method is called once for each connected output.</li>
 			</ul>
 		</li>
@@ -122,24 +122,24 @@ abstract class App
 <div class="answer">
 	<p>If your BusApp brings data from external devices or services, it is producing data for Busit.<br />
 	External devices or services can <strong>push</strong> data directly on your BusApp, or your BusApp can <strong>pull</strong>
-	from those at regular intervals (see <a href="#cron">automatic interfaces</a>)</p>
-	<p>The producer pattern provides a <a href="javadoc/com/busit/Producer.html#produce(com.busit.Interface)"><em>produce()</em></a> 
+	from those at regular intervals (see <a href="#cron">automatic channels</a>)</p>
+	<p>The producer pattern provides a <a href="javadoc/com/busit/Producer.html#produce(com.busit.Channel, com.busit.Content)"><em>produce()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function produce($out);</code></pre>
 	<ul>
-		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Interface</em></a> and represents the output
-			interface that should produce data. <a href="#interfaces">More about Interfaces</a>.</li>
-		<li>The method must return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> or <em>null</em> 
+		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and represents the output
+			channel that should produce data. <a href="#channels">More about Channels</a>.</li>
+		<li>The method must return an <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> or <em>null</em> 
 		if there is no content to be produced.</li>
 	</ul>
-	<p>Moreover, it provides a <a href="javadoc/com/busit/Producer.html#sample(com.busit.Interface)"><em>sample()</em></a> 
+	<p>Moreover, it provides a <a href="javadoc/com/busit/Producer.html#sample(com.busit.Channel)"><em>sample()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function sample($out);</code></pre>
 	<ul>
-		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Interface</em></a> and represents the output
-			interface for which to get sample data. <a href="#interfaces">More about Interfaces</a>.</li>
-		<li>The method should return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> or <em>null</em> 
-		if there no data can be produced from that interface.</li>
+		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and represents the output
+			channel for which to get sample data. <a href="#channels">More about Channels</a>.</li>
+		<li>The method should return an <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> or <em>null</em> 
+		if there no data can be produced from that channel.</li>
 	</ul>
 	<p>Finally, it provides a <a href="javadoc/com/busit/Producer.html#test()"><em>test()</em></a> 
 		method with the following signature:</p>
@@ -195,14 +195,14 @@ class WeatherStation extends com\busit\App implements com\busit\Producer
 <a name="consumer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Consumer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your BusApp sends data to external devices or services, it is consuming data from Busit.</p>
-	<p>The consumer pattern provides <a href="javadoc/com/busit/Consumer.html#consume(com.busit.IMessage,%20com.busit.Interface)"><em>consume()</em></a> 
+	<p>The consumer pattern provides <a href="javadoc/com/busit/Consumer.html#consume(com.busit.Message, com.busit.Channel)"><em>consume()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function consume($message, $in);</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and contains the actual data. 
+		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Interface.html"><em>com\busit\Interface</em></a> and represents the input
-			interface to which data should be sent. <a href="#interfaces">More about Interfaces</a>.</li>
+		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and represents the input
+			channel to which data should be sent. <a href="#channels">More about Channels</a>.</li>
 		<li>The method does not return anything.</li>
 	</ul>
 	<p>Moreover, it provides a <a href="javadoc/com/busit/Consumer.html#test()"><em>test()</em></a> 
@@ -250,17 +250,17 @@ class Light extends com\busit\App implements com\busit\Consumer
 <a name="transformer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Transformer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your BusApp aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
-	<p>The transformer pattern provides <a href="javadoc/com/busit/Transformer.html#transform(com.busit.IMessage,%20com.busit.Interface,%20com.busit.Interface)"><em>transform()</em></a> 
+	<p>The transformer pattern provides <a href="javadoc/com/busit/Transformer.html#transform(com.busit.Message, com.busit.Channel, com.busit.Channel)"><em>transform()</em></a> 
 	method with the following signature:</p>
 	<pre><code class="php">public function transform($message, $in, $out);</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> and contains the actual data. 
+		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Interface</em></a> and gives you a hint on what data is comming in.
-			 <a href="#interfaces">More about Interfaces</a>.</li>
-		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Interface</em></a> and tells you what the user wants to come out.
-			<a href="#interfaces">More about Interfaces</a>.</li>
-		<li>The method must return an <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> <em>(ideally the same with its data transformed)</em> 
+		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and gives you a hint on what data is comming in.
+			 <a href="#channels">More about Channels</a>.</li>
+		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and tells you what the user wants to come out.
+			<a href="#channels">More about Channels</a>.</li>
+		<li>The method must return an <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> <em>(ideally the same with its data transformed)</em> 
 			or <em>null</em> if you want to stop the flow and prevent further processing.</li>
 	</ul>
 	<p>Moreover, it provides a <a href="javadoc/com/busit/Transformer.html#test()"><em>test()</em></a> 
@@ -316,43 +316,38 @@ class Translator extends com\busit\App implements com\busit\Transformer
 
 <a name="messages"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>messages</strong></h2></a>
 <div class="answer">
-	<p>The <a href="javadoc/com/busit/IMessage.html"><em>com\busit\IMessage</em></a> conveys data across the BusApps and make sure the 
+	<p>The <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> conveys data across the BusApps and make sure the 
 	content is encrypted with the user's identity... hopefully, this is all transparent for you.</p>
 	
 	<h3>1) IMessage</h3>
 	<p>Messages are composed of the following elements:</p>
 	<ul>
-		<li>The <strong>content</strong> exposed as a <a href="javadoc/com/busit/IContent.html"><em>com\busit\IContent</em></a> structure</li>
+		<li>The <strong>content</strong> exposed as a <a href="javadoc/com/busit/Content.html"><em>com\busit\Content</em></a> structure</li>
 		<li>The <strong>files</strong> that can contain pictures, attachments,...</li>
-		<li>The <strong>sender</strong> of the message as a <a href="//tools.ietf.org/rfc/rfc5280.txt">X509 name</a> DN string</li>
-		<li>The <strong>receiver</strong> of the message as a <a href="//tools.ietf.org/rfc/rfc5280.txt">X509 name</a> DN string</li>
 	</ul>
 <pre><code class="php">
-interface IMessage
+interface Message
 {
 	public function file($name, $data = null); // Get or Set a file for the message
 	public function files();		// Get all files attached to the message
 	
 	public function content($data = null); 	// Get or Set the content of the message
 	
-	public function from(); 		// Get the sender of the message
-	public function to(); 			// Get the receiver of the message
-	
 	public function clear(); 		// Clears the content and files of the message
 	public function copy(); 		// Get a shallow copy of the message (files content is referenced and not copied)
 }
 </code></pre>
-	<p>You can obtain a new <em>IMessage</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
+	<p>You can obtain a new <em>Message</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
 <pre><code class="php">
 $message = com\busit\Factory::message();
 </code></pre>
 
-	<h3>2) IMessageList</h3>
-	<p>In case you want to return multiple messages at once, you can use a <a href="javadoc/com/busit/IMessageList.html"><em>com\busit\IMessageList</em></a>
-	which is a wrapper around IMessage that behaves just like an array. Do not try to use it as an <em>IMessage</em> because it will throw at you... 
-	Simply append other messages to it.<br />Note that nested IMessageList is not supported.</p>
+	<h3>2) MessageList</h3>
+	<p>In case you want to return multiple messages at once, you can use a <a href="javadoc/com/busit/MessageList.html"><em>com\busit\MessageList</em></a>
+	which is a wrapper around Message that behaves just like an array. Do not try to use it as an <em>Message</em> because it will throw at you... 
+	Simply append other messages to it.<br />Note that nested MessageList is not supported.</p>
 <pre><code class="php">
-interface IMessageList extends IMessage, ArrayAccess, Countable, IteratorAggregate
+interface MessageList extends Message, ArrayAccess, Countable, IteratorAggregate
 {
 }
 </code></pre>
@@ -364,11 +359,11 @@ $list[] = $message1;
 $list[] = $message2;
 </code></pre>
 
-	<h3>3) IContent</h3>
+	<h3>3) Content</h3>
 	<p>The actual content of the message is a very flexible structure that allows developers to strenghten compatibility accross BusApps.
 		See it as a kind of high-level <em>Mime type</em> for data. A extensible set of predefined content types is available so that everyone 
 		can share common data structures. In the end, it behaves like an array in which you can put arbitrary key/value pairs.</p>
-	<p>IContent has:</p>
+	<p>Content has:</p>
 	<ul>
 		<li>An <strong>id</strong> that uniquely identifies the <em>type</em> of content</li>
 		<li>A friendly <strong>name</strong> because it is always better than an id... but you should not rely on it !</li>
@@ -377,7 +372,7 @@ $list[] = $message2;
 		<li>A <strong>html format</strong> template used to represent this content as html</li>
 	</ul>
 <pre><code class="php">
-interface IContent
+interface Content
 {
 	public function id($value = null); 		// Get or Set the id
 	public function name($value = null);		// Get or Set the name
@@ -395,31 +390,31 @@ interface IContent
 	public function merge($content); 		// import another content's data into this one
 }
 </code></pre>
-	<p>You can obtain a new <em>IContent</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
+	<p>You can obtain a new <em>Content</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
 <pre><code class="php">
 $content = com\busit\Factory::content(42); // get content type with id 42
 $content['answer'] = 42;
 $content['question'] = 'undefined';
 </code></pre>
-	<p>For more info about content types compatibility, text and html formats,... See <a href="#icontent">deep into message content</a>.</p>
+	<p>For more info about content types compatibility, text and html formats,... See <a href="#content">deep into message content</a>.</p>
 </div>
 
-<a name="interfaces"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>interfaces</strong> (inputs and outputs)</h2></a>
+<a name="channels"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>channels</strong> (inputs and outputs)</h2></a>
 <div class="answer">
-	<p>Interfaces <em>(do not confuse with OOP class interface)</em> are either inputs or outputs from your BusApp.
+	<p>Channels are either inputs or outputs from your BusApp.
 		When publishing your BusApp, you should mention the different inputs and outputs that your BusApp accepts and
-		give each of them an internal name (the interface <strong>key</strong>) that will never change. 
+		give each of them an internal name (the channel <strong>key</strong>) that will never change. 
 		Then, the user can give it a friendly <strong>name</strong>.
-		Eventually, for custom interfaces, the user can also specify a <strong>value</strong> for it.</p>
-	<p>Example: The mail sender BusApp has only one input interface with internal key <em>email</em>.<br />
+		Eventually, for custom channels, the user can also specify a <strong>value</strong> for it.</p>
+	<p>Example: The mail sender BusApp has only one input channel with internal key <em>email</em>.<br />
 		When the user adds it to his flow, he can add several of those, and thus give them a name and a value:</p>
 	<ul>
 		<li><strong>Key</strong>: <em>email</em> (this cannot change, the user does not see it, this is only for you, the developer)</li>
 		<li><strong>Name</strong>: <em>Bob's mail</em> (this is the friendly name set by the user)</li>
 		<li><strong>Value</strong>: <em>bob@example.com</em> (this is the value set by the user)</li>
 	</ul>
-	<p>So now, in your code, you receive a populated <a href="javadoc/com/busit/Interface.html">
-		<em>com\busit\Interface</em></a> object with the 3 properties <em>key</em>, <em>name</em> and <em>value</em>.
+	<p>So now, in your code, you receive a populated <a href="javadoc/com/busit/Channel.html">
+		<em>com\busit\Channel</em></a> object with the 3 properties <em>key</em>, <em>name</em> and <em>value</em>.
 	</p>
 	<pre><code class="php">
 &lt;?php
@@ -440,11 +435,11 @@ class Mailer extends com\busit\App implements com\busit\Consumer
 	</code></pre>
 	<p>This means that you know which input or output the message was targetting and you can behave accordingly.</p>
 	
-	<h3>About <strong>automatic</strong> interfaces (cron)</h3>
-	<p>Automatic interfaces are <strong>output</strong> <a href="#interfaces">interfaces</a> of the <strong>producer</strong> pattern that are activated at 
+	<h3>About <strong>automatic</strong> channels (cron)</h3>
+	<p>Automatic channels are <strong>output</strong> <a href="#channels">channels</a> of the <strong>producer</strong> pattern that are activated at 
 	given interval defined by the user. I.e.: <em>"I want to get the GPS coordinate every minute"</em>.</p>
-	<p>Hence, the <a href="javadoc/com/busit/Producer.html#produce(com.busit.Interface)"><em>produce()</em></a> method will be called at defined interval for
-		that output interface only (even if other interfaces are connected).</p>
+	<p>Hence, the <a href="javadoc/com/busit/Producer.html#produce(com.busit.Channel)"><em>produce()</em></a> method will be called at defined interval for
+		that output channel only (even if other channels are connected).</p>
 </div>
 
 <a name="configs"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>configurations</strong></h2></a>
@@ -462,7 +457,7 @@ $value = $this-&gt;config('my_parameter');
 		so you should always check if the config contains the value you expect !</p>
 </div>
 
-<a name="icontent"><h2 onclick="return; $(this).next().slideToggle(500);">Deep into message <strong>content</strong></h2></a>
+<a name="content"><h2 onclick="return; $(this).next().slideToggle(500);">Deep into message <strong>content</strong></h2></a>
 <div class="answer">
 	<p>Busit offers an growing list of data structures that anyone can use or enhance. Thus, we
 	strongly encourage all developers to acknowledge and use those for maximum compatibility between BusApps. Meanwhile, content types 
