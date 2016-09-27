@@ -41,7 +41,7 @@
 <a name="start"><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2></a>
 <div class="answer">
 	<p style="font-size: 1.4em;">You sould be familiar with the <a href="concepts.html">concepts</a> in order to understand the various key points and make educated choices about those.<br /><br /></p>
-	<p>Before writing some code, you need to define the properties and the behavior of your BusApp by uploading a <a href="//en.wikipedia.org/wiki/JSON">JSON</a> file containing all required parameters.</p>
+	<p>Before writing some code, you need to define the properties and the behavior of your BusApp by creating a <a href="//en.wikipedia.org/wiki/JSON">JSON</a> file containing all required parameters.</p>
 	<p>The following main properties are required to cover all aspects of your BusApp's settings:</p>
 <pre><code class="json">
 {
@@ -277,7 +277,29 @@
 
 <a name="external"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>external</strong> websites</h2></a>
 <div class="answer">
-	... to be continued ...
+	<p>You can specify URLs to handle some specific <strong>config</strong> or to display a <strong>panel</strong> that contains some charts, tables,...</p>
+	<p>Those URLs may contain parameters in double brackets that will be substituted at runtime:</p>
+	<ul>
+		<li>The <strong>instance</strong> ID of the user BusApp : <code>{INSTANCE}</code></li>
+		<li>The <strong>token</strong> that can be used to update that instance : <code>{TOKEN}</code><br />Note that this is an <em>instance token</em></li>
+	</ul>
+	<p>Example:</p>
+<pre><code class="json">
+{
+	"translation":
+	{
+		"en":
+		{
+			"general": 
+			{
+				"config_url": "https://my.website.com/config?instance={INSTANCE}&token={TOKEN}"
+			}
+		}
+	}
+}
+</code></pre>
+	<p>Will be transformed to <code>https://my.website.com/config?instance=1234&token=12345567890abcdef</code></p>
+	<p>For more details about how to use the instance ID and token, refer to the <a href="api.html#oauth">public API</a> documentation and the BuaApp samples</p>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
