@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Busit - Developers</title>
+		<meta name="description" content="Busit Developer Portal" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="cache-control" content="no-cache, must-revalidate" /> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" /> 
+		<link rel="shortcut icon" href="img/favicon.ico" />
+		<link rel="stylesheet" href="css/main.css" type="text/css" />
+		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		
+		<link class="codestyle" rel="stylesheet" href="css/github.css">
+		<script type="text/javascript" src="js/highlight.pack.js"></script>
+		<style>
+			#content em { font-family: monospace; font-style: normal; background-color: #eeeeee; padding: 2px; border: 1px solid #cccccc; }
+		</style>
+	</head>
+	<body>
+		<div id="footerfix">
+			<header>
+				<div class="content">
+					<div class="logo">
+						<a href="//www.busit.com"><img src="img/logo_white.png" alt="logo" /></a>
+						<em>Developer Portal</em>
+					</div>
+			<nav id="navigation">
+				<ul id="mainmenu">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="concepts.html">Learn</a></li>
+					<li><a href="settings.html">Think</a></li>
+					<li><a href="code.html">Code</a></li>
+					<li><a href="publish.html">Publish</a></li>
+				</ul>
+			</nav>
+			
+				</div>
+			</header>
+			<div id="content">
+			
+			<h1>Discussion</h1>
+
+<a name="rest"><h2 onclick="return; $(this).next().slideToggle(500);">Rest API</h2></a>
+<div class="answer">
+	<p class="you_say">Why doesn't the REST API use HTTP headers and return code like everyone else ?</p>
+	<p>
+		The <a href="https://en.wikipedia.org/wiki/OSI_model">ISO Model</a> defines the different layers required to obtain communication between parties.
+		The model is divided in 7 layers from hardware to application. The entire principle is that higher order layers should not care about lower ones and
+		consider that it is being taken care of. Hence, when you send an email using SMTP, you do not need to know how to calibrate the electric pulse of the
+		wireless connection.</p>
+	<p class="we_say">Why only 7 layers ?</p>
+	<p>Because this is a normative reference. Thereof, everything else is beyond (or encapsulated in) the 7th layer and thus considered application-specific which is outside the scope
+		of the norm. The <strong>HTTP</strong> transport protocol is considered as <strong>layer 7</strong>.</p>
+	<p class="we_say">But HTTP is just a transport layer !</p>
+	<p>Indeed, you can exchange many different types of things using HTTP, starting with HTML. And indeed,
+		according to the encapsulation principle of the ISO model, the HTML page you see does not care about whether or not you have some HTTP-specific 
+		things going on. The article you read will be the same regardless of the compression algotithm used by the server to transfer HTTP packets.</p>
+	<p class="we_say">REST API is layer 8</p>
+	<p>Therefore, we consider that the REST API lies in an 8th layer <strong>on top of HTTP</strong>.
+		And according to the ISO encapsulation, we should not rely on a lower level specifics: the HTTP headers, the HTTP response code or the HTTP encoding,...</p>
+	<p>The REST API speaks JSON and this is what matters.</p>
+	<p class="you_say">So is the entire world wrong and you are right ?</p>
+	<p>There is no right or wrong. If ever there is an evolution of the HTTP protocol, the Busit REST API will remain untouched whereas other implementations
+		will most probably need deep adjustments to make it compliant to another version... which may latter change again...</p>
+</div>
+
+<a name="md5"><h2 onclick="return; $(this).next().slideToggle(500);">MD5</h2></a>
+<div class="answer">
+	<p class="you_say">Why do tokens and passwords use MD5 whereas it has been proven to be a compromized algorithm ?</p>
+	<p>
+		The <a href="https://en.wikipedia.org/wiki/MD5">MD5</a> hashing algorithm is used to issue API tokens and to hash passwords.
+		This is an educated choice for the purposes it serves. You may have read or heard that MD5 is compromized or weak or else, 
+		which is entirely true. However, this does not remove the intresic propreties of the algorithm per-se that we are interrested in:</p>
+	<ol>
+		<li>It hashes one way so that you cannot retreive the original input from the hash, <strong>this still holds</strong>.</li>
+		<li>It is fast and broadly supported, from databases to programming languages, <strong>this still holds</strong>.</li>
+		<li>It produces hashes with a probability sufficiently close to a uniform distribution, <strong>this still holds</strong>.</li>
+		<li>It is 128bit long, which is 340282366920938463463374607431768211456 possibilities, <strong>this still holds</strong>.</li>
+	</ol>
+	<p class="we_say">But why is it compromized then ?</p>
+	<p>Some researchers have found a way to produce collision attacks (with 11 hours of processing using an entire data center) which means that they were
+		able to forge two different files that give the same hash output.</p>
+	<ul>
+		<li>In the case of tokens, the only component retained is the randomness, not the meaning of the hash. Thus it does not matter at all whether or not the
+		hashing algorithm is compromized.</li>
+		<li>In the case of passwords, we are using <a href="https://en.wikipedia.org/wiki/Key_stretching">key stretching</a> in which case, finding the original 
+		input is not less computationally hard than brute force. Once again, the collision weakness of the algorithm does not alter the complexity of retreiving
+		the original password.</li>
+	</ul>
+	<p class="we_say">How does one find your password based on the MD5 hash ?</p>
+	<p>There are two ways to find the password based on the MD5 hash. Those are the same two methods than for any other hashing algorithm:</p>
+	<ol>
+		<li><strong>Rainbow tables</strong>. This means that people keep a list of all possible hash with the corresponding input value. Then you just
+			have to select the hash in the list and that's it, you have it ! However, this requires a list of 2e128 entries of 128bit each, which is about
+			3.9e28 TB of storage, just for the hash, then you have to store the values too. However, beware that partial rainbow
+			tables do exist, with the most common words or phrases. So if you use a weak password, it is probably listed already.
+		</li>
+		<li><strong>Brute force</strong>. This means that people try all possible combinations until they find a match. Depending on the complexity of your 
+			password, it may be easier to bruteforce the hash itself than the password, i.e. if your password is longer than 32 characters with random binary.
+			Otherwise, if you use lower case and upper case letters, numbers and about 15 special characters, if your password is 10 characters long, this is only 
+			7.3e18 possibilities. So basically, it is by far much more faster to brute force your password than the hash, MD5 or not.
+		</li>
+	</ol>
+	<p class="you_say">Are you saying MD5 is safe ?</p>
+	<p>No. Security is a serious topic, and we take it very seriously. However, lets not confuse what we want to acheive and how to acheive it.
+		Some people will havoc MD5 because it is flawed. We rather use it for what it is good at.
+	</p>
+</div>
+
+<a name="json"><h2 onclick="return; $(this).next().slideToggle(500);">JSON</h2></a>
+<div class="answer">
+	<p class="you_say">Why did you reinvent the wheel with your own JSON parser ?</p>
+	<p>The short answer is because we are actually using our platform ourselves and we find it much more convenient that way.</p>
+	<p>
+		The long answer is a matter of where you need JSON and how fast, robust or convenient you want it to be. We created a custom JSON parser to
+		read data, but writing JSON is done in a strict conventionnal manner. That way, we send valid JSON to external sources, but if we receive somewhat
+		malformed input, we try our best to understand it.
+	</p>
+	<p>The platform is using different programming languages at different levels. The API is written in Java, the frontend is using Javascript, and BusApps may use PHP.
+		All those do support JSON, and all those also have a different natural way to write data.
+	</p>
+<pre><code class="java">
+// JAVA
+Map&lt;String, Object> = new HashMap&lt;String, Object>() { {"key1", "value"}, {"key2", 42} };
+List&lt;Object> = new ArrayList&lt;Object>() { "value", 42 };
+</code></pre>
+<pre><code class="javascript">
+// JAVASCRIPT
+var map = { 'key1': "value", 'key2': 42 };
+var list = [ "value", 42 ];
+</code></pre>
+<pre><code class="php">
+// PHP
+$map = [ "key1" => 'value', "key2" => 42 ];
+$list = [ 'value', 42 ];
+</code></pre>
+	<p>Some languages are more strict while some other are more loose. For instance, Javascript does not care about a single trailing coma while PHP is very strict
+		about it. But in the end, this is all about conforming human developers to yet another syntax. So we turned things around and asked ourselves about whether
+		or not <strong>the language should adapt to the developer</strong> instead !
+	</p>
+	<p>In the three example above, <i>-- provided that you are a developer that knows about JSON --</i>, you were certainly able to understand what the code meant even if you
+		did not know that particular programming language. As a developer again, you most probably encountered this type of error: 
+		<code>Missing semicolon ';' on line 42 at character 666.</code> or something like 
+		<code>Found ')' on line 42 at character 666 but expecting '}'.</code> 
+		Then you most probably thought out loud <i>"But do it then if you know it, you #@$*"</i>
+	</p>
+	<p>Well, this is exactly what we do. If 2 different human can understand what was meant in the JSON, so should the parser. Knowing JSON, can you guess what was meant
+		here ?
+	</p>
+<pre>
+{ 'key1': "value", key2: 42 }
+
+{ "key1" => "value", "key2" 42
+</pre>
+	<p class="we_say">And can your parser tell what this meant ?<br /><code>[ 42: "123,key' value; [ '}', value-:</code></p>
+	<p>Well, can you ? The goal is not to be challenged on the most complicated scenarios just to make the point. The goal is to <strong>simplify developer's life</strong>
+	by accepting common mistakes. Some languages accept single or double quotes, we do. Some languages accept trailing coma or missing semicolon, we do. 
+	Some languages use colon or arrows, we do. And so on.</p>
+	
+	<p class="we_say">And what about performance ?</p>
+	<p>There are numerous aspects on performance that should be taken into account. Decoding speed, CPU hunger, memory footprint, warmup phases,... and those do not
+		apply equally for huge JSON as for tiny JSON. So considering that the main purpose of our JSON parser is to understand the BusApp config file, this is about
+		a few kilobytes a few times a day, the fastest library out there takes about 2.5ms to process the file, and our parser is about 100% slower with a very bad 
+		5ms. This means that we are spoiling 6ms of processing everyday. In this case, the tradeoff is very clear and this is a sacrifice on performance we are willing
+		to make.
+	</p>
+	
+	<p class="you_say">So you pretend your parser is better ?</p>
+	<p>The notion of good or bad is subjective. Our parser fit our needs, is easy to use and holds in a single code file 
+		(compared to 750 files for the Jackson library). Did we really need it, as we said first, we are the first users of our plaform, we are human, 
+		and we do mistakes. So our parser saves us hours of debugging every day.
+	</p>
+</div>
+			
+<script>hljs.initHighlightingOnLoad();</script>
+<script>createShortcutMenu();</script>
+			</div>
+		</div>
+		<footer>
+			<div class="copyright">&copy; <a href='//www.busit.com'>Busit</a></div>
+		</footer>
+		<div id="help">
+			Is something unclear, you've spotted a mistake, or you need more details ?<br /><br />
+			Then please help us <a href="//github.com/Busit/Busit.github.io/issues/new">improve this doc</a>.<br />
+			Or <a href="//www.busit.com/contact">contact us</a> directly.
+		</div>
+	</body>
+</html>
