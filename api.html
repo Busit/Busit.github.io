@@ -313,7 +313,22 @@ https://my.domain.com/callback?access_token={...}&state=session_12345
 		This allows to circumvent common mistakes, trailing characters, comments and deviation from
 		strict JSON. Some example of accepted syntax are shown below but there are more subtle things. If you ever encounter an
 		issue with the way JSON is parsed by the API and you truly believe the system should handle it, please let us know.
-		(<a href="discussion.html#md5">Discussion</a>)</p>
+		(<a href="discussion.html#json">Discussion</a>)</p>
+	<p>Features supported by the loose parser:</p>
+	<ul>
+		<li>Block or line comments</li>
+		<li>Unescaped newlines in string values</li>
+		<li>Single quotes, double quotes or no quotes for string values where there is no ambiguity</li>
+		<li>Unterminated array, object or quoted string</li>
+		<li>Case insensitive keywords for true, false, null</li>
+		<li>Unquoted string value starting with digits</li>
+		<li>Single quotes, double quotes or no quotes for object keys</li>
+		<li>Colon, space, equals sign, arrow (=>) or even nothing in some cases as separator between object key and value</li>
+		<li>Coma, semicolon, space, colon, equals sign, arrow (=>) or even nothing in some cases as separator between array elements</li>
+		<li>Coma, semicolon, space or even nothing in some cases as separator between object elements</li>
+		<li>Implicit null as key or value when explicit element is missing in object or array</li>
+		<li>Overterminated array or object (unmatched closing braces)</li>
+	</ul>
 	<p>Strict JSON example:</p>
 <pre><code class="json">
 {
@@ -321,62 +336,74 @@ https://my.domain.com/callback?access_token={...}&state=session_12345
 	"key2": ["string", false, null, 42]
 }
 </code></pre>
-	<p>Loose JSON parser allows comments:</p>
+	<p>Loose JSON alternative:</p>
 <pre><code class="json">
 {
-	"key1": "value", // this is a line comment
-	"key2": ["string", false, null, 42]
-	/*
-		block comments
-		can spawn on multiple lines
-	*/
+	key1 'value' /*	comment */
+	"key2" => [string fAlSE;;42
+	}
+	}
 }
 </code></pre>
-	<p>Loose JSON parser allows double quotes, single quotes or no quotes:</p>
+</div>
+
+<a name="push"><h2 onclick="return; $(this).next().slideToggle(500);">Pushing messages to Busit</h2></a>
+<div class="answer">
+	<p>The most frequent operation you will probably need is to push messages into the system. Fortunately, this is just a simple HTTP call to the API.
+		You will need:
+	</p>
+	<ol>
+		<li>The URL : <strong>https://api.busit.com/vanilla/message/push</strong></li>
+		<li>An <strong>instance token</strong> in the form <em>i:[instance_id]:[token_value]</em></li>
+		<li>The name of the <strong>channel</strong> to push data to</li>
+		<li>Some <strong>data</strong>... duh!</li>
+	</ol>
+	<p>Remember that you may pass parameters as a query string, or as form-data, that you can pass the authentication in the HTTP header if you like,... as 
+		explained previousely.</p>
+<pre>
+https://api.busit.com/vanilla/message/push
+	?auth=i:123:abcdef12345
+	&channel=my_channel
+	&data=my_data
+</pre>
+	<p>If the data is a JSON object, then it will be interpreted and all key/value pairs will be added to the message as properties. Otherwise, the message
+		will contain one single property named <em>data</em> with the provided value.
+		For convenience, you may also post a <strong>JSON body</strong> as the data. In that case, the data query string parameter must be omitted.</p>
+Example 1:
+<pre>
+		POST /vanilla/message/push HTTP/1.1
+		Host: api.busit.com
+		Authorization: Bearer i:123:abcdef12345
+
+		channel=my_channel&data=my_data</pre>
+Will be sent to the BusApp instance <em>123</em> on channel <em>my_channel</em> with a message of the form:
 <pre><code class="json">
-{
-	"key1": 'value', 
-	key2: [string, false, null, 42]
-}
+		{"data": "my_data"}
 </code></pre>
-	<p>Loose JSON parser allows trailing separator and case-insensitive raw types:</p>
+Example 2:
+<pre>
+		POST /vanilla/message/push HTTP/1.1
+		Host: api.busit.com
+		Authorization: Bearer i:123:abcdef12345
+		
+		channel=my_channel&data={"foo":"bar","key":42}
+</pre>
+Will be sent to the BusApp instance <em>123</em> on channel <em>my_channel</em> with a message of the form:
 <pre><code class="json">
-{
-	"key1": "value", 
-	"key2": ["string", False, NULL, 42,],
-}
+		{"foo": "bar", "key": 42}
 </code></pre>
-	<p>Loose JSON parser allows unterminated objects or arrays:</p>
+Example 3:
+<pre>
+		POST /vanilla/message/push?channel=my_channel HTTP/1.1
+		Host: api.busit.com
+		Authorization: Bearer i:123:abcdef12345
+		Content-Type: application/json
+
+		{"foo": "bar", "key": 42}
+</pre>
+Will be sent to the BusApp instance <em>123</em> on channel <em>my_channel</em> with a message of the form:
 <pre><code class="json">
-{
-	"key1": "value", 
-	"key2": ["string", false, null, 42
-</code></pre>
-	<p>Loose JSON parser does not require colon between key and value or it may be an equal sign eventually followed by a greater than sign:</p>
-<pre><code class="json">
-{
-	"key1" "value",
-	"key2"=>["string", false, null, 42]
-}
-</code></pre>
-	<p>Loose JSON parser allows coma, semicolon or space to separate elements:</p>
-<pre><code class="json">
-{
-	"key1": "value";
-	"key2": ["string"; false null, 42]
-}
-</code></pre>
-	<p>Loose JSON parser substitutes missing values with null:</p>
-<pre><code class="json">
-{
-	"key1": "value", 
-	"key2": ["string", false, , 42]
-}
-</code></pre>
-	<p>Altogether:</p>
-<pre><code class="json">
-Strict : { "key1": "value", "key2": ["string", false, null, 42] }
-Loose :  { key1'value'/*comment*/key2[string fAlSE;;42
+		{"foo": "bar", "key": 42}
 </code></pre>
 </div>
 
