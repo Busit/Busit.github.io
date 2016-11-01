@@ -311,9 +311,7 @@ https://my.domain.com/callback?access_token={...}&state=session_12345
 <div class="answer">
 	<p>Anywhere <strong>JSON</strong> parsing is required, an efficient <strong>loose parsing</strong> is performed. 
 		This allows to circumvent common mistakes, trailing characters, comments and deviation from
-		strict JSON. Some example of accepted syntax are shown below but there are more subtle things. If you ever encounter an
-		issue with the way JSON is parsed by the API and you truly believe the system should handle it, please let us know.
-		(<a href="discussion.html#json">Discussion</a>)</p>
+		strict JSON. Some example of accepted syntax are shown below but there are more subtle things. (<a href="discussion.html#json">Discussion</a>)</p>
 	<p>Features supported by the loose parser:</p>
 	<ul>
 		<li>Block or line comments</li>
@@ -374,6 +372,7 @@ Example 1:
 		POST /vanilla/message/push HTTP/1.1
 		Host: api.busit.com
 		Authorization: Bearer i:123:abcdef12345
+		Content-Type: application/x-www-form-urlencoded
 
 		channel=my_channel&data=my_data</pre>
 Will be sent to the BusApp instance <em>123</em> on channel <em>my_channel</em> with a message of the form:
@@ -385,6 +384,7 @@ Example 2:
 		POST /vanilla/message/push HTTP/1.1
 		Host: api.busit.com
 		Authorization: Bearer i:123:abcdef12345
+		Content-Type: application/x-www-form-urlencoded
 		
 		channel=my_channel&data={"foo":"bar","key":42}
 </pre>
