@@ -319,7 +319,7 @@ class Translator extends com\busit\App implements com\busit\Transformer
 	<p>The <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> conveys data across the BusApps and make sure the 
 	content is encrypted with the user's identity... hopefully, this is all transparent for you.</p>
 	
-	<h3>1) IMessage</h3>
+	<h3>1) Message</h3>
 	<p>Messages are composed of the following elements:</p>
 	<ul>
 		<li>The <strong>content</strong> exposed as a <a href="javadoc/com/busit/Content.html"><em>com\busit\Content</em></a> structure</li>
@@ -351,7 +351,7 @@ interface MessageList extends Message, ArrayAccess, Countable, IteratorAggregate
 {
 }
 </code></pre>
-	<p>You can obtain a new <em>IMessageList</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
+	<p>You can obtain a new <em>MessageList</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
 <pre><code class="php">
 $list = com\busit\Factory::messageList();
 
@@ -609,6 +609,39 @@ $content->textFormat($content->textFormat() . ", Favourite Color: {{favourite_co
 $message->content(null);
 echo $message->$content()->id(); // will echo '0' (default content type)
 </code></pre>
+</div>
+
+<a name="exceptions"><h2 onclick="return; $(this).next().slideToggle(500);">Exceptions, <strong>Retry</strong> and <strong>Abort</strong></h2></a>
+<div class="answer">
+	<p>There are 3 builtin error handling strategies that you can use in your code, each with a specific function.</p>
+	
+	<h3>1) Retry</h3>
+	<p>When your code encounters an error that is recoverable with time and therefore can be simply retried later, then 
+	you should throw a <a href="javadoc/com/busit/Retry.html"><em>com/busit/Retry</em></a> exception. This will silently
+	stop the current processing and retry the operation according to the <em>retry policy</em> defined by the administrator.</p>
+	<p>Typical example : if a momentary loss of connection to a dependent API is detected and should normally come back up in a few minutes</p>
+	<pre><code class="php">
+if( date('Gi') > 2330 ) // retry if later than 23h30
+	throw new com\busit\Retry();
+	</code></pre>
+	
+	<h3>2) Abort</h3>
+	<p>When your code detects abnormalities from dependent resources or from the user configuration that would yield the same error
+	over and over again, then you should throw an <a href="javadoc/com/busit/Abort.html"><em>com/busit/Abort</em></a> exception.
+	The message will be transmitted to the user to inform him about the issue. Then, the process will stop and be marked as a failure.</p>
+	<p>Typical example : if the user credentials to some service are invalid</p>
+	<pre><code class="php">
+if( $config == null )
+	throw new com\busit\Abort("Please reconfigure your BusApp");
+	</code></pre>
+	
+	<h3>3) None</h3>
+	<p>Any other unhandled exception will be interpreted by the system as a failure from <em>you</em>, the developer ! The message of the error
+	will be notified to you such with a complete stack trace so that you can see what is going on. The process will stop and be marked as a failure.</p>
+	<p>Typical example: null pointer exceptions</p>
+	<pre><code class="php">
+$a = (2+2) / (2-2); // Exception : division by zero
+	</code></pre>
 </div>
 
 <script>hljs.initHighlightingOnLoad();</script>
