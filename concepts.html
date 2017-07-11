@@ -142,11 +142,6 @@
 	Moreover, it can have multiple applications for time related matters: birthdays, alarm clock, reminders,...
 </div>
 
-<a name="binding"><h2 onclick="return; $(this).next().slideToggle(500);">What is configuration <strong>binding</strong> ?</h2></a>
-<div class="answer">
-	// TODO...
-</div>
-
 <a name="pushpull"><h2 onclick="return; $(this).next().slideToggle(500);">What about <strong>push</strong> and <strong>pull</strong> ?</h2></a>
 <div class="answer">
 	We talk about push and pull when it comes to exchange data accross devices or services. We always look at the 
@@ -196,6 +191,18 @@
 		<li>If the configuration is more complex, then the developer of the BusApp can use an <strong>external</strong>
 		configuration website that will guide the user through the process.</li>
 	</ol>
+</div>
+
+<a name="binding"><h2 onclick="return; $(this).next().slideToggle(500);">What is configuration <strong>binding</strong> ?</h2></a>
+<div class="answer">
+	Every BusApp configuration field may include values from the current message. Those values will be substituted at runtime.
+	<br />In order to express binding, just put a message property name in <strong>double curly braces</strong> : <pre>{{property}}</pre>
+	Example: if a message contains the following properties
+	<ul><li>quantity: 3.141592</li><li>price: 42</li></ul>
+	You can configure the <em>Calculator</em> BusApp to compute the cost as : 
+	<pre>{{quantity}} * {{price}} / 100</pre>
+	Which will automatically be converted to :
+	<pre>3.141592 * 42 / 100</pre>
 </div>
 
 <script>createShortcutMenu();</script>

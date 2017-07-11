@@ -81,8 +81,6 @@ class HelloWorld extends com\busit\App implements com\busit\Producer
 abstract class App
 {
 	public function config($key); 	// returns the matching config parameter (or all if $key == null)
-	public function input($key); 	// returns the matching input channel (or all if $key == null)
-	public function output($key); 	// returns the matching output channel (or all if $key == null)
 	
 	public function id(); 		// returns a unique id for the user instance of the BusApp
 	public function locale(); 	// returns the preferred language of the user
@@ -100,15 +98,15 @@ abstract class App
 	<ol>
 		<li>The class specified by the <strong>__CLASSNAME__</strong> constant is instanciated using a parameterless constructor.</li>
 		<li>If you implemented the <strong>Consumer</strong> pattern, then the 
-			<a href="javadoc/com/busit/Consumer.html#consume(com.busit.Message, com.busit.Channel)">
+			<a href="javadoc/com/busit/Consumer.html#consume(com.busit.Message, String)">
 			<em>consume()</em></a> method is called once for the targetted channel only.</li>
 		<li>The Busit broker checks if there are any other BusApps in the flow ; if there are any:
 			<ul>
 				<li>If you implemented the <strong>Producer</strong> pattern, then the 
-					<a href="javadoc/com/busit/Producer.html#produce(com.busit.Message, com.busit.Channel)">
+					<a href="javadoc/com/busit/Producer.html#produce(com.busit.Message, String)">
 					<em>produce()</em></a> method is called once for each connected output.</li>
 				<li>If you implemented the <strong>Transformer</strong> pattern, then the 
-					<a href="javadoc/com/busit/Transformer.html#transform(com.busit.Message, com.busit.Channel, com.busit.Channel)">
+					<a href="javadoc/com/busit/Transformer.html#transform(com.busit.Message, String, String)">
 					<em>transform()</em></a> method is called once for each connected output.</li>
 			</ul>
 		</li>
@@ -123,20 +121,20 @@ abstract class App
 	<p>If your BusApp brings data from external devices or services, it is producing data for Busit.<br />
 	External devices or services can <strong>push</strong> data directly on your BusApp, or your BusApp can <strong>pull</strong>
 	from those at regular intervals (see <a href="#cron">automatic channels</a>)</p>
-	<p>The producer pattern provides a <a href="javadoc/com/busit/Producer.html#produce(com.busit.Channel, com.busit.Content)"><em>produce()</em></a> 
+	<p>The producer pattern provides a <a href="javadoc/com/busit/Producer.html#produce(String, com.busit.Message)"><em>produce()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function produce($out);</code></pre>
 	<ul>
-		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and represents the output
+		<li>The <strong>$out</strong> parameter is the name of the output
 			channel that should produce data. <a href="#channels">More about Channels</a>.</li>
 		<li>The method must return an <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> or <em>null</em> 
 		if there is no content to be produced.</li>
 	</ul>
-	<p>Moreover, it provides a <a href="javadoc/com/busit/Producer.html#sample(com.busit.Channel)"><em>sample()</em></a> 
+	<p>Moreover, it provides a <a href="javadoc/com/busit/Producer.html#sample(String)"><em>sample()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function sample($out);</code></pre>
 	<ul>
-		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and represents the output
+		<li>The <strong>$out</strong> parameter is the name of the output
 			channel for which to get sample data. <a href="#channels">More about Channels</a>.</li>
 		<li>The method should return an <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> or <em>null</em> 
 		if there no data can be produced from that channel.</li>
@@ -160,9 +158,9 @@ class WeatherStation extends com\busit\App implements com\busit\Producer
 		
 		$message = com\busit\Factory::message();
 		$content = $message->content();
-		if( $out-&gt;key == 'pressure' )
+		if( $out == 'pressure' )
 			content['data'] = $this-&gt;getPressure();
-		else if( $out-&gt;key == 'temperature' )
+		else if( $out == 'temperature' )
 			content['data'] = $this-&gt;getTemperature();
 			
 		return $message;
@@ -195,13 +193,13 @@ class WeatherStation extends com\busit\App implements com\busit\Producer
 <a name="consumer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Consumer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your BusApp sends data to external devices or services, it is consuming data from Busit.</p>
-	<p>The consumer pattern provides <a href="javadoc/com/busit/Consumer.html#consume(com.busit.Message, com.busit.Channel)"><em>consume()</em></a> 
+	<p>The consumer pattern provides <a href="javadoc/com/busit/Consumer.html#consume(com.busit.Message, String)"><em>consume()</em></a> 
 		method with the following signature:</p>
 	<pre><code class="php">public function consume($message, $in);</code></pre>
 	<ul>
 		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and represents the input
+		<li>The <strong>$in</strong> parameter is the name of the input
 			channel to which data should be sent. <a href="#channels">More about Channels</a>.</li>
 		<li>The method does not return anything.</li>
 	</ul>
@@ -250,15 +248,15 @@ class Light extends com\busit\App implements com\busit\Consumer
 <a name="transformer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Transformer</strong> pattern</h2></a>
 <div class="answer">
 	<p>If your BusApp aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
-	<p>The transformer pattern provides <a href="javadoc/com/busit/Transformer.html#transform(com.busit.Message, com.busit.Channel, com.busit.Channel)"><em>transform()</em></a> 
+	<p>The transformer pattern provides <a href="javadoc/com/busit/Transformer.html#transform(com.busit.Message, String, String)"><em>transform()</em></a> 
 	method with the following signature:</p>
 	<pre><code class="php">public function transform($message, $in, $out);</code></pre>
 	<ul>
 		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$in</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and gives you a hint on what data is comming in.
+		<li>The <strong>$in</strong> parameter is the name of the input channel and gives you a hint on what data is comming in.
 			 <a href="#channels">More about Channels</a>.</li>
-		<li>The <strong>$out</strong> parameter is of type <a href="javadoc/com/busit/Channel.html"><em>com\busit\Channel</em></a> and tells you what the user wants to come out.
+		<li>The <strong>$out</strong> parameter is the name of the output channel and tells you what the user wants to come out.
 			<a href="#channels">More about Channels</a>.</li>
 		<li>The method must return an <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> <em>(ideally the same with its data transformed)</em> 
 			or <em>null</em> if you want to stop the flow and prevent further processing.</li>
@@ -403,42 +401,32 @@ $content['question'] = 'undefined';
 <div class="answer">
 	<p>Channels are either inputs or outputs from your BusApp.
 		When publishing your BusApp, you should mention the different inputs and outputs that your BusApp accepts and
-		give each of them an internal name (the channel <strong>key</strong>) that will never change. 
-		Then, the user can give it a friendly <strong>name</strong>.
-		Eventually, for custom channels, the user can also specify a <strong>value</strong> for it.</p>
-	<p>Example: The mail sender BusApp has only one input channel with internal key <em>email</em>.<br />
-		When the user adds it to his flow, he can add several of those, and thus give them a name and a value:</p>
-	<ul>
-		<li><strong>Key</strong>: <em>email</em> (this cannot change, the user does not see it, this is only for you, the developer)</li>
-		<li><strong>Name</strong>: <em>Bob's mail</em> (this is the friendly name set by the user)</li>
-		<li><strong>Value</strong>: <em>bob@example.com</em> (this is the value set by the user)</li>
-	</ul>
-	<p>So now, in your code, you receive a populated <a href="javadoc/com/busit/Channel.html">
-		<em>com\busit\Channel</em></a> object with the 3 properties <em>key</em>, <em>name</em> and <em>value</em>.
+		give each of them an internal name (the channel <strong>key</strong>) that will never change.
+	<p>When one of the <em>produce()</em>, <em>consume()</em> or <em>transform()</em> function is called, the concerned channel name
+	will be provided such that the apropriate action can be taken.
 	</p>
 	<pre><code class="php">
 &lt;?php
-define("__CLASSNAME__", "\\Mailer");
+define("__CLASSNAME__", "\\YesNoFilter");
 
-class Mailer extends com\busit\App implements com\busit\Consumer
+class YesNoFilter extends com\busit\App implements com\busit\Consumer
 {
 	public function consume($message, $in)
 	{
-		$key = $in-&gt;key; // email
-		$name = $in-&gt;name; // Bob's mail
-		$value = $in-&gt;value; // bob@example.com
-		...
+		if( $key == "yes" ) // channel key
+			...
+		else if( $key == "no" )
+			...
 	}
 }
 
 ?&gt;
 	</code></pre>
-	<p>This means that you know which input or output the message was targetting and you can behave accordingly.</p>
 	
 	<h3>About <strong>automatic</strong> channels (cron)</h3>
 	<p>Automatic channels are <strong>output</strong> <a href="#channels">channels</a> of the <strong>producer</strong> pattern that are activated at 
 	given interval defined by the user. I.e.: <em>"I want to get the GPS coordinate every minute"</em>.</p>
-	<p>Hence, the <a href="javadoc/com/busit/Producer.html#produce(com.busit.Channel)"><em>produce()</em></a> method will be called at defined interval for
+	<p>Hence, the <a href="javadoc/com/busit/Producer.html#produce(String, com.busit.Message)"><em>produce()</em></a> method will be called at defined interval for
 		that output channel only (even if other channels are connected).</p>
 </div>
 
