@@ -413,9 +413,9 @@ class YesNoFilter extends com\busit\App implements com\busit\Consumer
 {
 	public function consume($message, $in)
 	{
-		if( $key == "yes" ) // channel key
+		if( $in == "yes" ) // channel key
 			...
-		else if( $key == "no" )
+		else if( $in == "no" )
 			...
 	}
 }
