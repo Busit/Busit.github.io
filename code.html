@@ -76,6 +76,8 @@ class HelloWorld extends com\busit\App implements com\busit\Producer
 }
 </code></pre>
 	</ol>
+	<p>In Java, you must have a public class named <strong>BusApp</strong> (default package, aka: no package) that contains one pubic static final property named
+		<strong>__CLASSNAME__</strong> that contains the fully qualified name of the BusApp class to be instanciated.</p>
 	<p>The <strong>App</strong> abstract class implements a bunch of behaviors to help you:</p>
 <pre><code class="php">
 abstract class App
@@ -602,6 +604,10 @@ echo $message->$content()->id(); // will echo '0' (default content type)
 <a name="exceptions"><h2 onclick="return; $(this).next().slideToggle(500);">Exceptions, <strong>Retry</strong> and <strong>Abort</strong></h2></a>
 <div class="answer">
 	<p>There are 3 builtin error handling strategies that you can use in your code, each with a specific function.</p>
+	<p class="we_say">Be careful to the side effects</p>
+	<p>When an exception is thrown or not caught, it will stop the current processing of the BusApp. This means that if there are multiple outputs
+	that need to be pulled and one of them throws an exception, then the remaining output channels will not be processed. In such a case, it may be
+	best to resort to the user notification system and return no message (<code>null</code>) instead.</p>
 	
 	<h3>1) Retry</h3>
 	<p>When your code encounters an error that is recoverable with time and therefore can be simply retried later, then 
