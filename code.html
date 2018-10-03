@@ -8,6 +8,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" /> 
 		<link rel="shortcut icon" href="img/favicon.ico" />
 		<link rel="stylesheet" href="css/main.css" type="text/css" />
+		<link rel="stylesheet" href="css/bi.tab.css" type="text/css" />
 		<script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="js/jquery.min.js"></script>
 		
@@ -39,17 +40,14 @@
 			<h1>Let's <strong>Code</strong> a bit</h1>
 <a name="start"><h2 onclick="return; $(this).next().slideToggle(500);">Before we start</h2></a>
 <div class="answer">
-	<p>Busit supports multiple programming languages for BusApps. However, only <strong>PHP 5</strong> is open for developers at this time. 
-	You can find the complete reference on <a href="//php.net/">php.net</a>.<br />
+	<p>Busit supports multiple programming languages for BusApps: <a href="//php.net">PHP 7</a>, <a href="//python.org">Python 3</a> and <a href="//docs.oracle.com/javase/8">Java 8</a>.<br />
 	It is highly recommended that you'd be familiar with <a href="//en.wikipedia.org/wiki/Object-oriented_programming">OOP</a>.</p>
 	<ul>
 		<li>BusApps are <strong>stateless</strong> and must have a parameterless constructor, see lifecycle below for more details.</li>
-		<li>PHP BusApps are using <a href="//php.net/manual/en/language.namespaces.php">namespaces</a>. 
-			However, it is recommended that you leave your code in the default namespace.</li>
-		<li>PHP BusApps are composed of at least one class <em>(and ideally only one)</em>.</li>
+		<li>BusApps are composed of at least one class <em>(and ideally only one)</em>.</li>
 		<li>BusApps must be <a href="publish.html">validated by Busit</a> prior to be available on the platform.</li>
 		<li>All programming languages supported share the same object model <em>(as close as possible)</em>, 
-			this may lead to unusual methods or structures for PHP but allows to have a common meaningful documentation for all programming languages.</li>
+			this may lead to unusual methods or structures for some languages but allows to have a common meaningful documentation for all programming languages.</li>
 		<li>For most accurate class documentation, see the <a href="javadoc/">javadoc</a></li>
 		<li>You should define the BusApp's capabilities and settings, name, description, translations, what channels it supports, what are
 			the configuration parameters,...This is done via the <a href="settings.html">configuration file</a>. Then, you can write the 
@@ -57,46 +55,132 @@
 	</ul>
 	
 	<h3>1) Basic structure</h3>
-	<p>There are 2 basic requirements for a PHP BusApp:</p>
+	<p>There are 2 basic requirements for a BusApp:</p>
 	<ol>
-		<li>You must define the <strong>__CLASSNAME__</strong> constant to provide the name of the BusApp class to be instanciated.</li>
-<pre><code class="php">
+		<li>You must define the name of the BusApp class to be instanciated.</li>
+		
+		<div class="tab" data-tab="1">
+			<div>
+				<span onclick="this.parentNode.parentNode.dataset.tab=1;">PHP</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=2;">Python</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=3;">Java</span>
+			</div>
+			<div>
+				<section><pre><code class="php">
 define("__CLASSNAME__", "\\HelloWorld");
-</code></pre>
-		<li>You must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/App.html"><em>com\busit\App</em></a> and 
+</code></pre></section>
+				<section><pre><code class="python">
+__CLASSNAME__ = "HelloWorld"
+</code></pre></section>
+				<section><pre><code class="java">
+public class BusApp { 
+	public static final String __CLASSNAME__ = "HelloWorld";
+}
+</code></pre></section>
+			</div>
+		</div>
+		
+		<li>You must <strong>extend</strong> the abstract class <a href="javadoc/com/busit/App.html"><em>com.busit.App</em></a> and 
 			<strong>implement</strong> <em>(at least)</em> one of the  
-					<a href="#producer"><em>com\busit\Producer</em></a>,
-					<a href="#consumer"><em>com\busit\Consumer</em></a> or 
-					<a href="#transformer"><em>com\busit\Transformer</em></a> patterns.
+					<a href="#producer"><em>com.busit.Producer</em></a>,
+					<a href="#consumer"><em>com.busit.Consumer</em></a> or 
+					<a href="#transformer"><em>com.busit.Transformer</em></a> patterns.
 		</li>
-<pre><code class="php">
-class HelloWorld extends com\busit\App implements com\busit\Producer
+		
+		<div class="tab" data-tab="1">
+			<div>
+				<span onclick="this.parentNode.parentNode.dataset.tab=1;">PHP</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=2;">Python</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=3;">Java</span>
+			</div>
+			<div>
+				<section><pre><code class="php">
+use com.busit.App;
+use com.busit.Producer;
+
+class HelloWorld extends App implements Producer
 {
 	...
 }
-</code></pre>
+</code></pre></section>
+				<section><pre><code class="python">
+from com.busit import App
+from com.busit import Producer
+
+class HelloWorld(App, Producer):
+	...
+</code></pre></section>
+				<section><pre><code class="java">
+import com.busit.App;
+import com.busit.Producer;
+
+public class HelloWorld extends App implements Producer { 
+	...
+}
+</code></pre></section>
+			</div>
+		</div>
+
 	</ol>
-	<p>In Java, you must have a public class named <strong>BusApp</strong> (default package, aka: no package) that contains one pubic static final property named
-		<strong>__CLASSNAME__</strong> that contains the fully qualified name of the BusApp class to be instanciated.</p>
-	<p>The <strong>App</strong> abstract class implements a bunch of behaviors to help you:</p>
-<pre><code class="php">
-abstract class App
+	
+	<p>The base <strong>App</strong> class implements a bunch of behaviors to help you:</p>
+	
+	<div class="tab" data-tab="1">
+			<div>
+				<span onclick="this.parentNode.parentNode.dataset.tab=1;">PHP</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=2;">Python</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=3;">Java</span>
+			</div>
+			<div>
+				<section><pre><code class="php">
+namespace com\busit;
+
+class App
 {
-	public function config($key); 	// returns the matching config parameter (or all if $key == null)
+	public function config($key=null); 	// returns the matching config parameter (or all if $key == null)
 	
 	public function id(); 		// returns a unique id for the user instance of the BusApp
 	public function locale(); 	// returns the preferred language of the user
+	public function name(); 	// returns the user-given name of the instance
 	
 	public function notifyUser($message); 		// send warnings to the user (use sparsely)
 	public function notifyOwner($message, $data); 	// send warnings to the developper (aka: you) (use sparsely)
 }
-</code></pre>
+</code></pre></section>
+				<section><pre><code class="python">
+class App:
+	def config(this, _key=None): pass # returns the matching config parameter (or all if _key == None)
+	
+	def id(this): pass 	# returns a unique id for the user instance of the BusApp
+	def locale(this): pass 	# returns the preferred language of the user
+	def name(this): pass 	# returns the user-given name of the instance
+
+	def notifyUser(this, _message): pass 	# send warnings to the user (use sparsely)
+	def notifyOwner(this, _message, _data=None): pass 	# send warnings to the developper (aka: you) (use sparsely)
+</code></pre></section>
+				<section><pre><code class="java">
+package com.busit;
+
+public abstract class App {
+	public String config(String key); 	// returns the matching config parameter as a string
+	public Any config(); 			// returns all the config parameters
+
+	public String id(); 		// returns a unique id for the user instance of the BusApp
+	public String locale(); 	// returns the preferred language of the user
+	public String name(); 		// returns the user-given name of the instance
+	
+	public void notifyUser(String message); 		// send warnings to the developper (aka: you) (use sparsely)
+	public void notifyOwner(String message, Object data); 	// send warnings to the developper (aka: you) (use sparsely)
+}
+</code></pre></section>
+			</div>
+		</div>
 
 	<h3>2) Lifecycle</h3>
 	<p>Everytime a BusApp is triggered, a new instance of the class is created. After processing the message, the class instance is destroyed. 
 	This means that there is no persistency nor any kind of state of the class once the lifecycle is complete: BusApps are <strong>stateless</strong>.</p>
-	<p class="we_say">If your BusApp absolutely requires an internal state or some sort of history, you should setup one of your own using external services or you 
-	should have a <em>premium developer account</em> so that Busit provides such mechanism to you.</p>
+	<p class="we_say">If your BusApp absolutely requires an internal state or some sort of history, you should setup one of your own using external services or 
+	use the internal SQL or NoSQL storage available through the Factory class.</p>
 	<ol>
 		<li>The class specified by the <strong>__CLASSNAME__</strong> constant is instanciated using a parameterless constructor.</li>
 		<li>If you implemented the <strong>Consumer</strong> pattern, then the 
@@ -122,55 +206,97 @@ abstract class App
 <div class="answer">
 	<p>If your BusApp brings data from external devices or services, it is producing data for Busit.<br />
 	External devices or services can <strong>push</strong> data directly on your BusApp, or your BusApp can <strong>pull</strong>
-	from those at regular intervals (see <a href="#cron">automatic channels</a>)</p>
-	<p>The producer pattern provides a <a href="javadoc/com/busit/Producer.html#produce(String, com.busit.Message)"><em>produce()</em></a> 
-		method with the following signature:</p>
-	<pre><code class="php">public function produce($out);</code></pre>
-	<ul>
-		<li>The <strong>$out</strong> parameter is the name of the output
-			channel that should produce data. <a href="#channels">More about Channels</a>.</li>
-		<li>The method must return an <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> or <em>null</em> 
-		if there is no content to be produced.</li>
-	</ul>
-	<p>Moreover, it provides a <a href="javadoc/com/busit/Producer.html#sample(String)"><em>sample()</em></a> 
-		method with the following signature:</p>
-	<pre><code class="php">public function sample($out);</code></pre>
-	<ul>
-		<li>The <strong>$out</strong> parameter is the name of the output
-			channel for which to get sample data. <a href="#channels">More about Channels</a>.</li>
-		<li>The method should return an <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> or <em>null</em> 
-		if there no data can be produced from that channel.</li>
-	</ul>
-	<p>Finally, it provides a <a href="javadoc/com/busit/Producer.html#test()"><em>test()</em></a> 
-		method with the following signature:</p>
-	<pre><code class="php">public function test();</code></pre>
-	<ul>
-		<li>The method should return a boolean value indicating if the BusApp is working properly. This is where you should check any possible dependency.</li>
-	</ul>
-	<pre><code class="php">
+	from those at regular intervals (see <a href="#cron">automatic channels</a>).<br />
+	In this case, you should implement the <a href="javadoc/com/busit/Producer.html">com.busit.Producer</a> interface.</p>
+	
+	<div class="tab" data-tab="1">
+			<div>
+				<span onclick="this.parentNode.parentNode.dataset.tab=1;">PHP</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=2;">Python</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=3;">Java</span>
+			</div>
+			<div>
+				<section><pre><code class="php">
+namespace com\busit;
+
+interface Producer
+{
+	public function produce($out, $data=null);
+	public function sample($out);
+	public function test();
+}
+</code></pre></section>
+				<section><pre><code class="python">
+class Producer:
+	def produce(this, _out, _data=None): pass
+	def sample(this, _out): pass
+	def test(this): pass
+</code></pre></section>
+				<section><pre><code class="java">
+package com.busit;
+
+public interface Producer {
+	public Message produce(String out, Message data) throws Exception;
+	public Message sample(String out) throws Exception;
+	public boolean test() throws Exception;
+}
+</code></pre></section>
+			</div>
+		</div>
+	
+	<h3><a href="javadoc/com/busit/Producer.html#produce(String, com.busit.Message)"><em>produce()</em></a></h3>
+		<ul>
+			<li>The <strong>out</strong> parameter is the name of the output
+				channel that should produce data. <a href="#channels">More about Channels</a>.</li>
+			<li>The <strong>data</strong> parameter is an optional <a href="javadoc/com/busit/Message.html"><em>com.busit.Message</em></a>
+				instance that contains the <em>pushed</em> data.</li>
+			<li>The method must return an <a href="javadoc/com/busit/Message.html"><em>com.busit.Message</em></a> or <em>null</em> 
+			if there is no content to be produced.</li>
+		</ul>
+	<h3><a href="javadoc/com/busit/Producer.html#sample(String)"><em>sample()</em></a></h3>
+		<ul>
+			<li>The <strong>out</strong> parameter is the name of the output
+				channel for which to get sample data. <a href="#channels">More about Channels</a>.</li>
+			<li>The method should return an <a href="javadoc/com/busit/Message.html"><em>com.busit.Message</em></a> or <em>null</em> 
+			if there no data can be produced from that channel.</li>
+		</ul>
+	<h3><a href="javadoc/com/busit/Producer.html#test()"><em>test()</em></a></h3>
+		<ul>
+			<li>The method should return a boolean value indicating if the BusApp is working properly. This is where you should check any possible dependency.</li>
+		</ul>
+		</li>
+		
+	<div class="tab" data-tab="1">
+			<div>
+				<span onclick="this.parentNode.parentNode.dataset.tab=1;">PHP</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=2;">Python</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=3;">Java</span>
+			</div>
+			<div>
+				<section><pre><code class="php">
 &lt;?php
 define("__CLASSNAME__", "\\WeatherStation");
+use com.busit.App;
+use com.busit.Producer;
+use com.busit.Message;
 
-class WeatherStation extends com\busit\App implements com\busit\Producer
+class WeatherStation extends App implements Producer
 {
-	public function produce($out)
+	public function produce($out, $data=null)
 	{
-		if( !$this-&gt;hasData() )
-			return null;
-		
-		$message = com\busit\Factory::message();
+		$message = new Message();
 		$content = $message->content();
 		if( $out == 'pressure' )
-			content['data'] = $this-&gt;getPressure();
+			content['data'] = "38psi";
 		else if( $out == 'temperature' )
-			content['data'] = $this-&gt;getTemperature();
+			content['data'] = "-14 C";
 			
 		return $message;
 	}
 	
 	public function sample($out)
 	{
-		$message = com\busit\Factory::message();
+		$message = new Message();
 		$content = $message->content();
 		content['data'] = 42;
 		
@@ -179,17 +305,76 @@ class WeatherStation extends com\busit\App implements com\busit\Producer
 	
 	public function test()
 	{
-		...
 		return true;
 	}
-	
-	private function hasData() { ... }
-	private function getPressure() { ... }
-	private function getTemperature() { ... }
 }
 
 ?&gt;
-	</code></pre>
+</code></pre></section>
+				<section><pre><code class="python">
+__CLASSNAME__ = "WeatherStation"
+from com.busit import App
+from com.busit import Producer
+from com.busit import Message
+
+class WeatherStation(App, Producer):
+	def produce(this, _out, _data=None):
+		message = new Message()
+		content = message.content()
+		if _out == 'pressure':
+			content['data'] = "38psi"
+		elif _out == 'temperature':
+			content['data'] = "-14 C"
+		
+		return message
+	
+	def sample(this, _out):
+		message = new Message()
+		content = message.content()
+		content['data'] = 42
+		
+		return message
+	
+	def test():
+		return True
+</code></pre></section>
+				<section><pre><code class="java">
+public class BusApp { 
+	public static final String __CLASSNAME__ = "WeatherStation";
+}
+</code></pre><pre><code class="java">
+import com.busit.App;
+import com.busit.Producer;
+import com.busit.Message;
+
+public class WeatherStation extends App implements Producer {
+
+	public Message produce(String out, Message data) throws Exception {
+		Message message = new Message();
+		Content content = message.content();
+		if( out.equals("pressure") )
+			content.put("data", "38psi");
+		else if( out.equals("temperature") )
+			content.put("data", "-14 C");
+		
+		return message;
+	}
+	
+	public Message sample(String out) throws Exception {
+		Message message = new Message();
+		Content content = message.content();
+		content.put("data", 42);
+		
+		return message;
+	}
+	
+	public boolean test() throws Exception {
+		return true;
+	}
+}
+</code></pre></section>
+			</div>
+		</div>
 </div>
 
 <a name="consumer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Consumer</strong> pattern</h2></a>
@@ -199,7 +384,7 @@ class WeatherStation extends com\busit\App implements com\busit\Producer
 		method with the following signature:</p>
 	<pre><code class="php">public function consume($message, $in);</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> and contains the actual data. 
+		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/Message.html"><em>com.busit.Message</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
 		<li>The <strong>$in</strong> parameter is the name of the input
 			channel to which data should be sent. <a href="#channels">More about Channels</a>.</li>
@@ -215,7 +400,7 @@ class WeatherStation extends com\busit\App implements com\busit\Producer
 &lt;?php
 define("__CLASSNAME__", "\\Light");
 
-class Light extends com\busit\App implements com\busit\Consumer
+class Light extends com.busit.App implements com.busit.Consumer
 {
 	public function consume($message, $in)
 	{
@@ -254,13 +439,13 @@ class Light extends com\busit\App implements com\busit\Consumer
 	method with the following signature:</p>
 	<pre><code class="php">public function transform($message, $in, $out);</code></pre>
 	<ul>
-		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> and contains the actual data. 
+		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/Message.html"><em>com.busit.Message</em></a> and contains the actual data. 
 			<a href="#messages">More about Messages</a>.</li>
 		<li>The <strong>$in</strong> parameter is the name of the input channel and gives you a hint on what data is comming in.
 			 <a href="#channels">More about Channels</a>.</li>
 		<li>The <strong>$out</strong> parameter is the name of the output channel and tells you what the user wants to come out.
 			<a href="#channels">More about Channels</a>.</li>
-		<li>The method must return an <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> <em>(ideally the same with its data transformed)</em> 
+		<li>The method must return an <a href="javadoc/com/busit/Message.html"><em>com.busit.Message</em></a> <em>(ideally the same with its data transformed)</em> 
 			or <em>null</em> if you want to stop the flow and prevent further processing.</li>
 	</ul>
 	<p>Moreover, it provides a <a href="javadoc/com/busit/Transformer.html#test()"><em>test()</em></a> 
@@ -273,7 +458,7 @@ class Light extends com\busit\App implements com\busit\Consumer
 &lt;?php
 define("__CLASSNAME__", "\\Translator");
 
-class Translator extends com\busit\App implements com\busit\Transformer
+class Translator extends com.busit.App implements com.busit.Transformer
 {
 	public function transform($message, $in, $out)
 	{
@@ -316,13 +501,13 @@ class Translator extends com\busit\App implements com\busit\Transformer
 
 <a name="messages"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>messages</strong></h2></a>
 <div class="answer">
-	<p>The <a href="javadoc/com/busit/Message.html"><em>com\busit\Message</em></a> conveys data across the BusApps and make sure the 
+	<p>The <a href="javadoc/com/busit/Message.html"><em>com.busit.Message</em></a> conveys data across the BusApps and make sure the 
 	content is encrypted with the user's identity... hopefully, this is all transparent for you.</p>
 	
 	<h3>1) Message</h3>
 	<p>Messages are composed of the following elements:</p>
 	<ul>
-		<li>The <strong>content</strong> exposed as a <a href="javadoc/com/busit/Content.html"><em>com\busit\Content</em></a> structure</li>
+		<li>The <strong>content</strong> exposed as a <a href="javadoc/com/busit/Content.html"><em>com.busit.Content</em></a> structure</li>
 		<li>The <strong>files</strong> that can contain pictures, attachments,...</li>
 	</ul>
 <pre><code class="php">
@@ -339,11 +524,11 @@ interface Message
 </code></pre>
 	<p>You can obtain a new <em>Message</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
 <pre><code class="php">
-$message = com\busit\Factory::message();
+$message = com.busit.Factory::message();
 </code></pre>
 
 	<h3>2) MessageList</h3>
-	<p>In case you want to return multiple messages at once, you can use a <a href="javadoc/com/busit/MessageList.html"><em>com\busit\MessageList</em></a>
+	<p>In case you want to return multiple messages at once, you can use a <a href="javadoc/com/busit/MessageList.html"><em>com.busit.MessageList</em></a>
 	which is a wrapper around Message that behaves just like an array. Do not try to use it as an <em>Message</em> because it will throw at you... 
 	Simply append other messages to it.<br />Note that nested MessageList is not supported.</p>
 <pre><code class="php">
@@ -353,7 +538,7 @@ interface MessageList extends Message, ArrayAccess, Countable, IteratorAggregate
 </code></pre>
 	<p>You can obtain a new <em>MessageList</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
 <pre><code class="php">
-$list = com\busit\Factory::messageList();
+$list = com.busit.Factory::messageList();
 
 $list[] = $message1;
 $list[] = $message2;
@@ -392,7 +577,7 @@ interface Content
 </code></pre>
 	<p>You can obtain a new <em>Content</em> instance using the <a href="javadoc/com/busit/Factory.html"><em>com/busit/Factory</em></a>:</p>
 <pre><code class="php">
-$content = com\busit\Factory::content(42); // get content type with id 42
+$content = com.busit.Factory::content(42); // get content type with id 42
 $content['answer'] = 42;
 $content['question'] = 'undefined';
 </code></pre>
@@ -411,7 +596,7 @@ $content['question'] = 'undefined';
 &lt;?php
 define("__CLASSNAME__", "\\YesNoFilter");
 
-class YesNoFilter extends com\busit\App implements com\busit\Consumer
+class YesNoFilter extends com.busit.App implements com.busit.Consumer
 {
 	public function consume($message, $in)
 	{
@@ -469,7 +654,7 @@ $value = $this-&gt;config('my_parameter');
 }
 </code></pre>
 <pre><code class="php">
-$content = com\busit\Factory::content(42);
+$content = com.busit.Factory::content(42);
 $content['name'] = 'Simon';
 $content['birthday'] = 468021600;
 </code></pre>
@@ -483,7 +668,7 @@ $content['birthday'] = 468021600;
 	"birthday", not any clue,<br />
 	but hey, i've got his "favourite color" !</p>
 <pre><code class="php">
-$content = com\busit\Factory::content(42);
+$content = com.busit.Factory::content(42);
 $content['name'] = 123;
 $content['favourite_color'] = 'blue';
 </code></pre>
@@ -616,7 +801,7 @@ echo $message->$content()->id(); // will echo '0' (default content type)
 	<p>Typical example : if a momentary loss of connection to a dependent API is detected and should normally come back up in a few minutes</p>
 	<pre><code class="php">
 if( date('Gi') > 2330 ) // retry if later than 23h30
-	throw new com\busit\Retry();
+	throw new com.busit.Retry();
 	</code></pre>
 	
 	<h3>2) Abort</h3>
@@ -626,7 +811,7 @@ if( date('Gi') > 2330 ) // retry if later than 23h30
 	<p>Typical example : if the user credentials to some service are invalid</p>
 	<pre><code class="php">
 if( $config == null )
-	throw new com\busit\Abort("Please reconfigure your BusApp");
+	throw new com.busit.Abort("Please reconfigure your BusApp");
 	</code></pre>
 	
 	<h3>3) None</h3>
