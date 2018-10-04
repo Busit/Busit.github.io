@@ -412,7 +412,7 @@ public interface Consumer {
 			</div>
 		</div>
 	
-	<h3><a href="javadoc/com/busit/Producer.html#sample(String)">consume()</a></h3>
+	<h3><a href="javadoc/com/busit/Consumer.html#consume(com.busit.Message, String)">consume()</a></h3>
 		<ul>
 			<li>The <strong>message</strong> parameter is of type <a href="javadoc/com/busit/Message.html">Message</a> and contains the actual data. 
 				<a href="#messages">More about Messages</a>.</li>
@@ -420,7 +420,7 @@ public interface Consumer {
 				channel to which data should be sent. <a href="#channels">More about Channels</a>.</li>
 			<li>The method does not return anything.</li>
 		</ul>
-	<h3><a href="javadoc/com/busit/Producer.html#test()">test()</a></h3>
+	<h3><a href="javadoc/com/busit/Consumer.html#test()">test()</a></h3>
 		<ul>
 			<li>The method should return a boolean value indicating if the BusApp is working properly. This is where you should check any possible dependency.</li>
 		</ul>
@@ -516,69 +516,145 @@ public class Light extends App implements Consumer {
 
 <a name="transformer"><h2 onclick="return; $(this).next().slideToggle(500);"><strong>Transformer</strong> pattern</h2></a>
 <div class="answer">
-	<p>If your BusApp aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.</p>
-	<p>The transformer pattern provides <a href="javadoc/com/busit/Transformer.html#transform(com.busit.Message, String, String)">transform()</a> 
-	method with the following signature:</p>
-	<pre><code class="php">public function transform($message, $in, $out);</code></pre>
-	<ul>
-		<li>The <strong>$message</strong> parameter is of type <a href="javadoc/com/busit/Message.html">Message</a> and contains the actual data. 
-			<a href="#messages">More about Messages</a>.</li>
-		<li>The <strong>$in</strong> parameter is the name of the input channel and gives you a hint on what data is comming in.
-			 <a href="#channels">More about Channels</a>.</li>
-		<li>The <strong>$out</strong> parameter is the name of the output channel and tells you what the user wants to come out.
-			<a href="#channels">More about Channels</a>.</li>
-		<li>The method must return a <a href="javadoc/com/busit/Message.html">Message</a> <em>(ideally the same with its data transformed)</em> 
-			or <em>null</em> if you want to stop the flow and prevent further processing.</li>
-	</ul>
-	<p>Moreover, it provides a <a href="javadoc/com/busit/Transformer.html#test()">test()</a> 
-		method with the following signature:</p>
-	<pre><code class="php">public function test();</code></pre>
-	<ul>
-		<li>The method should return a boolean value indicating if the BusApp is working properly. This is where you should check any possible dependency.</li>
-	</ul>
-	<pre><code class="php">
+	<p>If your BusApp aims at modifying or enhancing data eventually using external services, it is transforming data for Busit.<br />
+		In this case, you should implement the <a href="javadoc/com/busit/Transformer.html">Transformer</a> interface.</p>
+	
+	<div class="tab" data-tab="1">
+			<div>
+				<span onclick="this.parentNode.parentNode.dataset.tab=1;">PHP</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=2;">Python</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=3;">Java</span>
+			</div>
+			<div>
+				<section><pre><code class="php">
+namespace com\busit;
+
+interface Transformer
+{
+	public function transform($message, $in, $out);
+	public function test();
+}
+</code></pre></section>
+				<section><pre><code class="python">
+class Transformer:
+	def transform(this, _message, _in, _out): pass
+	def test(this): pass
+</code></pre></section>
+				<section><pre><code class="java">
+package com.busit;
+
+public interface Transformer {
+	public Message transform(Message message, String in, String out) throws Exception;
+	public boolean test() throws Exception;
+}
+</code></pre></section>
+			</div>
+		</div>
+	
+	<h3><a href="javadoc/com/busit/Transformer.html#transform(com.busit.Message, String, String)">transform()</a></h3>
+		<ul>
+			<li>The <strong>message</strong> parameter is of type <a href="javadoc/com/busit/Message.html">Message</a> and contains the actual data. 
+				<a href="#messages">More about Messages</a>.</li>
+			<li>The <strong>in</strong> parameter is the name of the input channel and gives you a hint on what data is comming in.
+				 <a href="#channels">More about Channels</a>.</li>
+			<li>The <strong>out</strong> parameter is the name of the output channel and tells you what the user wants to come out.
+				<a href="#channels">More about Channels</a>.</li>
+			<li>The method must return a <a href="javadoc/com/busit/Message.html">Message</a>
+				or <em>null</em> if you want to stop the flow and prevent further processing.</li>
+		</ul>
+	<h3><a href="javadoc/com/busit/Transformer.html#test()">test()</a></h3>
+		<ul>
+			<li>The method should return a boolean value indicating if the BusApp is working properly. This is where you should check any possible dependency.</li>
+		</ul>
+	
+	<div class="tab" data-tab="1">
+			<div>
+				<span onclick="this.parentNode.parentNode.dataset.tab=1;">PHP</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=2;">Python</span>
+				<span onclick="this.parentNode.parentNode.dataset.tab=3;">Java</span>
+			</div>
+			<div>
+				<section><pre><code class="php">
 &lt;?php
 define("__CLASSNAME__", "\\Translator");
+use com\busit\App;
+use com\busit\Transformer;
 
-class Translator extends com.busit.App implements com.busit.Transformer
+class Translator extends App implements Transformer
 {
-	public function transform($message, $in, $out)
+	public function transform($mssage, $in, $out)
 	{
-		if( $in-&gt;key == $out-&gt;key )
-		{
-			// no need to translate :)
-			return $message;
-		}
-		
 		$content = $message->content();
-		if( $in-&gt;key == 'french' && $out-&gt;key == 'english' )
-		{
-			$content['data'] = $this-&gt;FRtoEN($content['data']);
-			return $message;
-		}
+		if( $in == 'fr' && $out == 'en' )
+			$content['text'] = $this->fr2en($content['text']);
+		else if( $in == 'en' && $out == 'fr' )
+			$content['text'] = $this->en2fr($content['text']);
 		
-		if( $in-&gt;key == 'english' && $out-&gt;key == 'french' )
-		{
-			$content['data'] = $this-&gt;ENtoFR($content['data']);
-			return $message;
-		}
-		
-		// we do not support another translation so break the flow
-		return null;
+		return $message;
 	}
 	
 	public function test()
 	{
-		...
 		return true;
 	}
 	
-	private function FRtoEN($text) { ... }
-	private function ENtoFR($text) { ... }
+	private function fr2en($text) {}
+	private function en2fr($text) {}
 }
-
 ?&gt;
-	</code></pre>
+</code></pre></section>
+				<section><pre><code class="python">
+__CLASSNAME__ = "Translator"
+from com.busit import App
+from com.busit import Transformer
+
+class Translator(App, Transformer):
+	def transform(this, _message, _in, _out):
+		content = _message.content()
+		if _in == 'fr' and _out == 'en':
+			content['text'] = this.fr2en(content['text'])
+		elif _in == 'en' and _out == 'fr':
+			content['text'] = this.en2fr(content['text'])
+		
+		return _message
+	
+	def test():
+		return True
+	
+	def fr2en(this, _text): pass
+	def en2fr(this, _text): pass
+</code></pre></section>
+				<section><pre><code class="java">
+public class BusApp { 
+	public static final String __CLASSNAME__ = "Translator";
+}
+</code></pre><pre><code class="java">
+import com.busit.App;
+import com.busit.Transformer;
+
+public class Translator extends App implements Transformer {
+
+	public Message transform(Message message, String in, String out) throws Exception {
+		Content content = message.content();
+		if( in.equals("fr") && out.equals("en") )
+			content.put("text", this.fr2en(content.asString("text")));
+		else if( in.equals("en") && out.equals("fr") )
+			content.put("text", this.en2fr(content.asString("text")));
+		
+		return message;
+	}
+	
+	public boolean test() throws Exception {
+		return true;
+	}
+	
+	private String fr2en(String text) {}
+	private String en2fr(String text) {}
+}
+</code></pre></section>
+			</div>
+	</div>
+	
 </div>
 
 <a name="messages"><h2 onclick="return; $(this).next().slideToggle(500);">About <strong>messages</strong></h2></a>
@@ -604,7 +680,7 @@ interface Message
 	public function copy(); 		// Get a shallow copy of the message (files content is referenced and not copied)
 }
 </code></pre>
-	<p>You can obtain a new <em>Message</em> instance using the <a href="javadoc/com/busit/Factory.html">com/busit/Factory</a>:</p>
+	<p>You can obtain a new <em>Message</em> instance using the <a href="javadoc/com/busit/Factory.html">Factory</a>:</p>
 <pre><code class="php">
 $message = com.busit.Factory::message();
 </code></pre>
@@ -618,7 +694,7 @@ interface MessageList extends Message, ArrayAccess, Countable, IteratorAggregate
 {
 }
 </code></pre>
-	<p>You can obtain a new <em>MessageList</em> instance using the <a href="javadoc/com/busit/Factory.html">com/busit/Factory</a>:</p>
+	<p>You can obtain a new <em>MessageList</em> instance using the <a href="javadoc/com/busit/Factory.html">Factory</a>:</p>
 <pre><code class="php">
 $list = com.busit.Factory::messageList();
 
@@ -657,7 +733,7 @@ interface Content
 	public function merge($content); 		// import another content's data into this one
 }
 </code></pre>
-	<p>You can obtain a new <em>Content</em> instance using the <a href="javadoc/com/busit/Factory.html">com/busit/Factory</a>:</p>
+	<p>You can obtain a new <em>Content</em> instance using the <a href="javadoc/com/busit/Factory.html">Factory</a>:</p>
 <pre><code class="php">
 $content = com.busit.Factory::content(42); // get content type with id 42
 $content['answer'] = 42;
@@ -844,7 +920,7 @@ $content->textFormat($content->textFormat() . ", Favourite Color: {{favourite_co
 	<p>Note that for the html format, some tags are not allowed (stripped): <em>script, object, embed,...</em></p>
 	
 	<h3>5) Obtain a content type</h3>
-	<p>As shown before, you can request a content type by its id using the <a href="javadoc/com/busit/Factory.html">com/busit/Factory</a>. Then,
+	<p>As shown before, you can request a content type by its id using the <a href="javadoc/com/busit/Factory.html">Factory</a>. Then,
 		you receive a pre-filled content type with all data properties set to null.</p>
 	<p>If you specify a wrong (unknown) id, then it will fallback on the default content type with id zero:</p>
 <pre><code class="json">
@@ -878,7 +954,7 @@ echo $message->$content()->id(); // will echo '0' (default content type)
 	
 	<h3>1) Retry</h3>
 	<p>When your code encounters an error that is recoverable with time and therefore can be simply retried later, then 
-	you should throw a <a href="javadoc/com/busit/Retry.html">com/busit/Retry</a> exception. This will silently
+	you should throw a <a href="javadoc/com/busit/Retry.html">Retry</a> exception. This will silently
 	stop the current processing and retry the operation according to the <em>retry policy</em> defined by the administrator.</p>
 	<p>Typical example : if a momentary loss of connection to a dependent API is detected and should normally come back up in a few minutes</p>
 	<pre><code class="php">
@@ -888,7 +964,7 @@ if( date('Gi') > 2330 ) // retry if later than 23h30
 	
 	<h3>2) Abort</h3>
 	<p>When your code detects abnormalities from dependent resources or from the user configuration that would yield the same error
-	over and over again, then you should throw an <a href="javadoc/com/busit/Abort.html">com/busit/Abort</a> exception.
+	over and over again, then you should throw an <a href="javadoc/com/busit/Abort.html">Abort</a> exception.
 	The message will be transmitted to the user to inform him about the issue. Then, the process will stop and be marked as a failure.</p>
 	<p>Typical example : if the user credentials to some service are invalid</p>
 	<pre><code class="php">
