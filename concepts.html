@@ -37,19 +37,19 @@
 <a name="BusApp"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>BusApp</strong> ?</h2></a>
 <div class="answer">
 	A BusApp is a little piece of code that can <em>do</em> stuff. See them as independant boxes that users can link to each 
-	other in order to create scenarios (aka: <a href="#flow">flows</a>).
+	other in order to create <a href="#flow">scenarios</a>.
 	<div style="text-align: center; margin: 20px;">
 		<em>For instance: <ol><li>Collect news from CNN</li>
 		<li>Then look for interesting keywords</li>
 		<li>Then translate it in another language</li>
 		<li>And finally send it to my email</li></ol></em><br />
-		<div class="connector"><img src="//images.busit.com/connectors/28.png" /></div>
+		<div class="connector"><img src="img/apps/CNN_100.png" /></div>
 		<div class="arrow">&#xf061 </div>
-		<div class="connector"><img src="//images.busit.com/connectors/32.png" /></div>
+		<div class="connector"><img src="img/apps/TextFilter_100.png" /></div>
 		<div class="arrow">&#xf061 </div>
-		<div class="connector"><img src="//images.busit.com/connectors/24.png" /></div>
+		<div class="connector"><img src="img/apps/GoogleTranslate_100.png" /></div>
 		<div class="arrow">&#xf061 </div>
-		<div class="connector"><img src="//images.busit.com/connectors/10.png" /></div>
+		<div class="connector"><img src="img/apps/Mailer_100.png" /></div>
 	</div>
 	As you can guess, there are 3 distinct types of BusApps:
 	<ol>
@@ -68,30 +68,20 @@
 	We speak about <em>BusApps</em> when it is not bound to a user, and about <em>instances</em> when it is.
 </div>
 
-<a name="flow"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>flow</strong> ?</h2></a>
+<a name="flow"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>scenario</strong> ?</h2></a>
 <div class="answer">
-	A flow is the actual scenario that a user creates when linking instances of different BusApps. 
-	A flow usually starts with a <em>producer</em> in order to get data, then any number of <em>transformers</em>, then a <em>consumer</em>.
-	<p>Users can create as many flows as they want by reusing existing instances or new ones.</p>
+	A scenario is the path that a user creates when linking instances of different BusApps. 
+	A scenario usually starts with a <em>producer</em> in order to get data, then any number of <em>transformers</em>, then a <em>consumer</em>.
 	<div style="text-align: center; margin: 20px;">
-		<em>For instance, get my Facebook messages and save them on Dropbox:</em><br /><br />
-		<div class="device" style="margin-bottom: 10px;">
-			<div class="main">
-				<span class="logo"><img src="//images.busit.com/connectors/11.png" /></span>
-				<span class="title">Get all messages from Facebook</span>
-				<span class="down">&#xf078 </span>
-			</div>
-		</div><br />
-		<div class="device">
-			<div class="main">
-				<span class="logo"><img src="//images.busit.com/connectors/16.png" /></span>
-				<span class="title">Save to Dropbox</span>
-				<span class="down">&#xf078 </span>
-			</div>
-		</div>
+		<em>For instance, get my truck data using the MQTT protocol, check if it is inside the required zone, then save the position to my enterprise database:</em><br /><br />
+		
+		<div class="connector"><img src="img/apps/MQTT_100.png" /></div>
+		<div class="arrow">&#xf061 </div>
+		<div class="connector"><img src="img/apps/GeoAlert_100.png" /></div>
+		<div class="arrow">&#xf061 </div>
+		<div class="connector"><img src="img/apps/OracleORDS_100.png" /></div>
 	</div>
-	<p>Rarely, there can also be partial flows which do not start with a producer, in that case, data has to come in the flow by other means:
-	using the API to <a href="#pushpull">push</a> data directly on an instance.</p>
+	<p>Scenarios are triggered either whenever some data is received in real time, or at <a href="#cron">specified intervals</a>.</p>
 </div>
 
 <a name="channel"><h2 onclick="return; $(this).next().slideToggle(500);">What is a <strong>channel</strong> ?</h2></a>
@@ -104,35 +94,7 @@
 		<li>Transformers have both <strong>input</strong> and <strong>output</strong> channels because you put data in them and 
 		they return it after transformation, data gets in and then out of the BusApp.</li>
 	</ol>
-	<p>Meanwhile, since BusApps can be multiple things at once (consumer and producer) they may have input and output 
-	channels and thus look like a transformer... In that case, simply refer to the logical behavior of the BusApp: 
-	the <em>twitter</em> BusApp has an input channel to post tweets and also an independant output channel to get new 
-	tweets, though, it does not <em>transform</em> tweets; whereas the <em>translation</em> BusApp has both an input and 
-	an output channel so the text that goes in is directly translated and comes out, this is a transformer.</p>
-	<p>There can be multiple input or output channels on a single BusApp, so in order to make it clear each have a name 
-	and a description.</p>
-	<div style="text-align: center; margin: 20px;">
-		<em>For instance, the Netatmo BusApp has 3 output channels:</em><br /><br />
-		<div class="device">
-			<div class="main">
-				<span class="logo"><img src="//images.busit.com/connectors/146.png" /></span>
-				<span class="title">Netatmo Weather Station</span>
-				<span class="down">&#xf078 </span>
-			</div>
-			<div class="interface">
-				<div class="name">Temperature</div>
-				<div class="description">The outside air temperature in Celcius</div>
-			</div>
-			<div class="interface">
-				<div class="name">CO2</div>
-				<div class="description">The CO2 level in ppm</div>
-			</div>
-			<div class="interface">
-				<div class="name">Noise</div>
-				<div class="description">The noise level in dB</div>
-			</div>
-		</div>
-	</div>
+	<p>Meanwhile, since BusApps can be multiple things at once (consumer and producer) they may have multiple input and ouput channels</p>
 </div>
 	
 <a name="cron"><h2 onclick="return; $(this).next().slideToggle(500);">What is an <strong>automatic</strong> channel ?</h2></a>
@@ -161,13 +123,13 @@
 		(see <a href='#'>automatic</a> channels) then we say that Busit <strong>pulls</strong> the data from that device.
 			<div style="text-align: center; margin: 20px;">
 				<em>Busit <strong>pulls</strong> the data from my phone.<br />Do you have some data ?</em><br />
-				<div class="connector"><img src="//images.busit.com/connectors/27.png" /></div>
+				<div class="connector"><img src="img/apps/Android_100.png" /></div>
 				<div class="arrow">&#xf060 </div>
 				<div class="connector"><img src="img/logo_white.png" /></div>
 			</div>
 			<div style="text-align: center; margin: 20px;">
 				<em>Yes, here it is.</em><br />
-				<div class="connector"><img src="//images.busit.com/connectors/27.png" /></div>
+				<div class="connector"><img src="img/apps/Android_100.png" /></div>
 				<div class="arrow">&#xf061 </div>
 				<div class="connector"><img src="img/logo_white.png" /></div>
 			</div>

@@ -67,7 +67,7 @@
 
 <a name="md5"><h2 onclick="return; $(this).next().slideToggle(500);">MD5</h2></a>
 <div class="answer">
-	<p class="you_say">Why do tokens and passwords use MD5 whereas it has been proven to be a compromized algorithm ?</p>
+	<p class="you_say">Why use MD5 whereas it has been proven to be a compromized algorithm ?</p>
 	<p>
 		The <a href="https://en.wikipedia.org/wiki/MD5">MD5</a> hashing algorithm is used to issue API tokens and to hash passwords.
 		This is an educated choice for the purposes it serves. You may have read or heard that MD5 is compromized or weak or else, 
@@ -79,27 +79,27 @@
 		<li>It is 128bit long, which is 340282366920938463463374607431768211456 possibilities, <strong>this still holds</strong>.</li>
 	</ol>
 	<p class="we_say">But why is it compromized then ?</p>
-	<p>Some researchers have found a way to produce collision attacks (with 11 hours of processing using an entire data center) which means that they were
-		able to forge two different files that give the same hash output.</p>
+	<p>Some researchers have found a way to produce very specific collision attacks which means that they were
+		able to forge two different binary files that give the same hash output.</p>
 	<ul>
 		<li>In the case of tokens, the only component retained is the randomness, not the meaning of the hash. Thus it does not matter at all whether or not the
 		hashing algorithm is compromized.</li>
-		<li>In the case of passwords, we are using <a href="https://en.wikipedia.org/wiki/Key_stretching">key stretching</a> in which case, finding the original 
+		<li>In the case of passwords, we are using iterative <a href="https://en.wikipedia.org/wiki/Key_stretching">key stretching</a> in which case, finding the original 
 		input is not less computationally hard than brute force. Once again, the collision weakness of the algorithm does not alter the complexity of retreiving
-		the original password.</li>
+		the original password. Meanwhile, due to other internal security considerations, we have opted for a longer hash length using the SHA2 algorithm.</li>
 	</ul>
 	<p class="we_say">How does one find your password based on the MD5 hash ?</p>
 	<p>There are two ways to find the password based on the MD5 hash. Those are the same two methods than for any other hashing algorithm:</p>
 	<ol>
-		<li><strong>Rainbow tables</strong>. This means that people keep a list of all possible hash with the corresponding input value. Then you just
-			have to select the hash in the list and that's it, you have it ! However, this requires a list of 2e128 entries of 128bit each, which is about
-			3.9e28 TB of storage, just for the hash, then you have to store the values too. However, beware that partial rainbow
+		<li><strong>Rainbow tables</strong>. Simplified: This means that people keep a list of all possible hash with the corresponding input value. Then you just
+			have to select the hash in the list and that's it, you have it ! However, this requires a huge list of entries of 128bit each, which can extend to about
+			3.9e28 TB of storage, just for the hash, then you have to store the values too. However, beware that partial hash
 			tables do exist, with the most common words or phrases. So if you use a weak password, it is probably listed already.
 		</li>
 		<li><strong>Brute force</strong>. This means that people try all possible combinations until they find a match. Depending on the complexity of your 
-			password, it may be easier to bruteforce the hash itself than the password, i.e. if your password is longer than 32 characters with random binary.
+			password, it may be easier to bruteforce the hash itself for a collision rather than to try to find the original password, i.e. if your password is longer than 32 characters with random binary.
 			Otherwise, if you use lower case and upper case letters, numbers and about 15 special characters, if your password is 10 characters long, this is only 
-			7.3e18 possibilities. So basically, it is by far much more faster to brute force your password than the hash, MD5 or not.
+			7.3e18 possibilities. So basically, it is by far much faster to brute force your password than the hash, MD5 or not.
 		</li>
 	</ol>
 	<p class="you_say">Are you saying MD5 is safe ?</p>
