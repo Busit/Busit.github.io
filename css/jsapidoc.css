@@ -1,16 +1,23 @@
+@font-face { font-family: 'icon'; src: url('icons.woff') format('woff'); }
+@font-face { font-family: 'roboto'; font-weight: normal; font-style: normal; src: url('roboto.woff') format('woff'); }
+@font-face { font-family: 'roboto'; font-weight: bold;   font-style: normal; src: url('roboto_b.woff') format('woff'); }
+@font-face { font-family: 'roboto'; font-weight: normal; font-style: italic; src: url('roboto_i.woff') format('woff'); }
+@font-face { font-family: 'roboto'; font-weight: lighter; font-style: normal; src: url('roboto_light.woff') format('woff'); }
+@font-face { font-family: 'roboto'; font-weight: lighter; font-style: italic; src: url('roboto_light_i.woff') format('woff'); }
 
 #jsapidoc_ol {
 	position: absolute; top: 0; left: 0; bottom: 0; width: 20%; box-sizing: border-box;
 	overflow: auto; margin: 0; padding: 16px; list-style: none; z-index: 1;
 	border-right: 1px solid rgba(0,0,0,.14); background-color: #ffffff; color: #939393;
+	font-size: 18px; font-weight: 200; font-family: roboto;
 }
 
 #jsapidoc_ol > li { min-width: 150px; }
 #jsapidoc_ol li { padding: 3px; }
 #jsapidoc_ol span { cursor: pointer; display: inline-block; vertical-align: middle; }
-#jsapidoc_ol > li > span:before { content: ">"; display: inline-block; margin-right: 16px; }
+#jsapidoc_ol > li > span:before { content: "\f105"; display: inline-block; margin-right: 16px; font-family: icon; font-size: 12px; vertical-align: middle; }
 #jsapidoc_ol > li.open > span { color: #005596; font-weight: bold; }
-#jsapidoc_ol > li.open > span:before { content: "v"; }
+#jsapidoc_ol > li.open > span:before { content: "\f107"; }
 #jsapidoc_ol > li > ol { display: none; }
 #jsapidoc_ol > li.open > ol { display: block; }
 #jsapidoc_ol ol { margin: 8px 32px; padding: 0; list-style: none; border-left: 1px solid #005596; }
