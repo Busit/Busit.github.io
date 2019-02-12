@@ -11,6 +11,7 @@ window.jsapidoc = bi.instance(
 			element.classList.add('wait');
 			element.appendChild(
 			[
+				bi.node('header', 'Javascript API'),
 				bi.node('ol', {id: 'jsapidoc_ol'}),
 				bi.node('main', {id: 'jsapidoc_main'})
 			]);

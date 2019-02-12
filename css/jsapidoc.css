@@ -5,8 +5,23 @@
 @font-face { font-family: 'roboto'; font-weight: lighter; font-style: normal; src: url('roboto_light.woff') format('woff'); }
 @font-face { font-family: 'roboto'; font-weight: lighter; font-style: italic; src: url('roboto_light_i.woff') format('woff'); }
 
+header {
+	background: #005596;
+	top: 0; right: 0; left: 0;
+	height: 60px;
+	z-index: 2; padding-left: 200px; line-height: 60px; color: #ffffff; font-family: roboto; font-weight: 200; font-size: 45px;
+	overflow: hidden;
+	border-bottom: 1px solid #002d4f;
+	position: absolute;
+	background-image: url("../img/busit_white.png");
+	background-position: 20px center;
+	background-repeat: no-repeat;
+	background-size: auto 30px;
+	box-shadow: 0 0 5px 2px rgba(100, 100, 100, 0.8);
+}
+
 #jsapidoc_ol {
-	position: absolute; top: 0; left: 0; bottom: 0; width: 20%; box-sizing: border-box;
+	position: absolute; top: 60px; left: 0; bottom: 0; width: 250px; box-sizing: border-box;
 	overflow: auto; margin: 0; padding: 16px; list-style: none; z-index: 1;
 	border-right: 1px solid rgba(0,0,0,.14); background-color: #ffffff; color: #939393;
 	font-size: 14px; font-weight: 200; font-family: roboto;
@@ -27,7 +42,7 @@
 #jsapidoc_ol ol li.selected span { color: #F7941E; }
 
 #jsapidoc_main {
-	position: absolute; top: 0; left: 20%; bottom: 0; right: 0; box-sizing: border-box;
+	position: absolute; top: 60px; left: 250px; bottom: 0; right: 0; box-sizing: border-box;
 	overflow: auto; margin: 0; padding: 16px; background-color: #fafafa;
 	font-weight: 200; font-family: roboto; color: #333333; font-size: 14px;
 }
