@@ -1,7 +1,7 @@
 
 #jsapidoc_ol {
-	position: absolute; top: 0; left: 0; bottom: 0; width: 25%;
-	overflow: auto; margin: 0; padding: 16px; list-style: none;
+	position: absolute; top: 0; left: 0; bottom: 0; width: 25%; box-sizing: border-box;
+	overflow: auto; margin: 0; padding: 16px; list-style: none; z-index: 1;
 	border-right: 1px solid rgba(0,0,0,.14); background-color: #ffffff; color: #939393;
 }
 
@@ -16,6 +16,6 @@
 #jsapidoc_ol ol li:hover { background-color: #fafafa; }
 
 #jsapidoc_main {
-	position: absolute; top: 0; left: 25%; bottom: 0; right: 0;
+	position: absolute; top: 0; left: 25%; bottom: 0; right: 0; box-sizing: border-box;
 	overflow: auto; margin: 0; padding: 16px; background-color: #fafafa;
 }

@@ -31,7 +31,7 @@ window.jsapidoc = bi.instance(
 			for( var i = 0; i < this.content.length; i++ )
 			{
 				this.content[i].items.sort(function(a, b) { return (a.name > b.name ? 1 : -1); });
-				var li = ol.appendChild(bi.node('li', bi.node('span', this.content[i].name.escape(), {click: function() { this.classList.toggle('open'); }})));
+				var li = ol.appendChild(bi.node('li', bi.node('span', this.content[i].name.escape(), {click: function() { this.parentNode.classList.toggle('open'); }})));
 				var ol2 = li.appendChild(bi.node('ol'));
 				
 				for( var j = 0; j < this.content[i].items.length; j++ )
