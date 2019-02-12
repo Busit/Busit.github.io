@@ -1,9 +1,11 @@
 
 #jsapidoc_ol {
-	position: absolute; top: 0; left: 0; bottom: 0; width: 25%; max-width: 350px; min-width: 150px;
+	position: absolute; top: 0; left: 0; bottom: 0; width: 25%;
 	overflow: auto; margin: 0; padding: 16px; list-style: none;
+	border-right: 1px solid rgba(0,0,0,.14); background-color: #ffffff; color: #939393;
 }
 
+#jsapidoc_ol > li { min-width: 150px; }
 #jsapidoc_ol li { padding: 3px; }
 #jsapidoc_ol span { cursor: pointer; display: inline-block; }
 #jsapidoc_ol > li > span:before { content: ">"; display: inline-block; margin-right: 16px; }
@@ -12,3 +14,8 @@
 #jsapidoc_ol > li.open > ol { display: block; }
 #jsapidoc_ol ol { margin: 0; padding: 32px 0 0 0; list-style: none; }
 #jsapidoc_ol ol li:hover { background-color: #fafafa; }
+
+#jsapidoc_main {
+	position: absolute; top: 0; left: 25%; bottom: 0; right: 0;
+	overflow: auto; margin: 0; padding: 16px; background-color: #fafafa;
+}
