@@ -66,7 +66,7 @@ window.jsapidoc = bi.instance(
 				main.appendChild(
 				[
 					bi.node('h2', 'Description'),
-					bi.node('p', item.description);
+					bi.node('p', item.description)
 				]);
 			}
 			
@@ -75,7 +75,7 @@ window.jsapidoc = bi.instance(
 				main.appendChild(
 				[
 					bi.node('h2', 'Sample'),
-					bi.node('pre', item.sample);
+					bi.node('pre', item.sample)
 				]);
 			}
 			
