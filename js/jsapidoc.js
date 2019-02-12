@@ -2,7 +2,7 @@
 
 window.jsapidoc = bi.instance(
 {
-	methods:
+	members:
 	{
 		initialize: function(element)
 		{
