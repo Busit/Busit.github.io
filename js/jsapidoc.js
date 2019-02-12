@@ -58,7 +58,7 @@ window.jsapidoc = bi.instance(
 			var s = bi.first('li.selected', bi.$('jsapidoc_ol'));
 			if( s ) s.classList.remove('selected');
 			bi.$('package_' + p).classList.add('open');
-			bi.$('class_' + p).classList.add('selected');
+			bi.$('class_' + c).classList.add('selected');
 		}
 	}
 });
