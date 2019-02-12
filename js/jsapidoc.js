@@ -11,7 +11,7 @@ window.jsapidoc = bi.instance(
 			element.classList.add('wait');
 			element.appendChild(
 			[
-				bi.node('header', 'Javascript API'),
+				bi.node('header', 'Javascript API Documentation'),
 				bi.node('ol', {id: 'jsapidoc_ol'}),
 				bi.node('main', {id: 'jsapidoc_main'})
 			]);
@@ -25,13 +25,13 @@ window.jsapidoc = bi.instance(
 		},
 		generateTreeStructure: function()
 		{
-			this.content.sort(function(a, b) { return (a.name > b.name ? 1 : -1); });
+			this.content.sort(function(a, b) { return (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1); });
 			var ol = bi.$('jsapidoc_ol');
 			
 			var self = this;
 			for( var i = 0; i < this.content.length; i++ )
 			{
-				this.content[i].items.sort(function(a, b) { return (a.name > b.name ? 1 : -1); });
+				this.content[i].items.sort(function(a, b) { return (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1); });
 				var li = ol.appendChild(bi.node('li', 
 					bi.node('span', this.content[i].name.escape(), {click: function() { this.parentNode.classList.toggle('open'); }}),
 					{id: 'package_' + i}

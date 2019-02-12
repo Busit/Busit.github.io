@@ -9,7 +9,7 @@ header {
 	background: #005596;
 	top: 0; right: 0; left: 0;
 	height: 60px;
-	z-index: 2; padding-left: 200px; line-height: 60px; color: #ffffff; font-family: roboto; font-weight: 200; font-size: 45px;
+	z-index: 2; padding-left: 200px; line-height: 60px; color: #ffffff; font-family: roboto; font-weight: 200; font-size: 28px;
 	overflow: hidden;
 	border-bottom: 1px solid #002d4f;
 	position: absolute;
