@@ -31,6 +31,6 @@
 	overflow: auto; margin: 0; padding: 16px; background-color: #fafafa;
 	font-weight: 200; font-family: roboto; color: #333333; font-size: 14px;
 }
-
+#jsapidoc_main section { clear: both; margin: 16px 0; width: 100%; overflow: auto; }
 #jsapidoc_main h1 { font-size: 24px; font-weight: 200; padding: 0 0 8px 0; border-bottom: 1px solid rgba(0,0,0,.14); margin: 0 0 24px 0; color: #005596; }
 #jsapidoc_main h2 { font-size: 18px; font-weight: 200; margin: 8px 0; }

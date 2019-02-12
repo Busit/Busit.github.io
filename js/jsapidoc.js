@@ -63,56 +63,56 @@ window.jsapidoc = bi.instance(
 			
 			if( item.description )
 			{
-				main.appendChild(
+				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Description'),
 					bi.node('p', item.description)
-				]);
+				]));
 			}
 			
 			if( item.sample )
 			{
-				main.appendChild(
+				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Sample'),
 					bi.node('pre', item.sample)
-				]);
+				]));
 			}
 			
 			if( item.ctor )
 			{
-				main.appendChild(
+				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Constructor')
 					// todo
-				]);
+				]));
 			}
 			
 			if( item.properties )
 			{
-				main.appendChild(
+				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Properties')
 					// todo
-				]);
+				]));
 			}
 			
 			if( item.methods )
 			{
-				main.appendChild(
+				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Methods')
 					// todo
-				]);
+				]));
 			}
 			
 			if( item.events )
 			{
-				main.appendChild(
+				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Events')
 					// todo
-				]);
+				]));
 			}
 		}
 	}
