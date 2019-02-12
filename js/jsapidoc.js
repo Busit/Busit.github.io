@@ -76,7 +76,7 @@ window.jsapidoc = bi.instance(
 				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Sample'),
-					bi.node('pre', item.sample)
+					bi.node('pre', item.sample.escape())
 				]));
 			}
 			
@@ -91,6 +91,7 @@ window.jsapidoc = bi.instance(
 			
 			if( item.properties )
 			{
+				item.properties.sort(function(a, b) { return (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1); });
 				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Properties')
