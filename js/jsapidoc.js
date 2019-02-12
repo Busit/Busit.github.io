@@ -31,13 +31,17 @@ window.jsapidoc = bi.instance(
 			for( var i = 0; i < this.content.length; i++ )
 			{
 				this.content[i].items.sort(function(a, b) { return (a.name > b.name ? 1 : -1); });
-				var li = ol.appendChild(bi.node('li', bi.node('span', this.content[i].name.escape(), {click: function() { this.parentNode.classList.toggle('open'); }})));
+				var li = ol.appendChild(bi.node('li', 
+					bi.node('span', this.content[i].name.escape(), {click: function() { this.parentNode.classList.toggle('open'); }}),
+					{id: 'package_' + i}
+				));
 				var ol2 = li.appendChild(bi.node('ol'));
 				
 				for( var j = 0; j < this.content[i].items.length; j++ )
 				{
 					ol2.appendChild(bi.node('li', bi.node('span', this.content[i].items[j].name.escape()),
 					{
+						id: 'class_' + j,
 						click: function() { self.showClass(this.dataset.package, this.dataset.class); },
 						dataPackage: i,
 						dataClass: j
@@ -50,6 +54,11 @@ window.jsapidoc = bi.instance(
 			var main = bi.$('jsapidoc_main');
 			main.clear();
 			main.appendChild(bi.node('h1', this.content[p].items[c].name.escape()));
+			
+			var s = bi.first('li.selected', bi.$('jsapidoc_ol'));
+			if( s ) s.classList.remove('selected');
+			bi.$('package_' + p).classList.add('open');
+			bi.$('class_' + p).classList.add('selected');
 		}
 	}
 });
