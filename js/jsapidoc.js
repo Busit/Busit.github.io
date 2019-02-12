@@ -51,14 +51,69 @@ window.jsapidoc = bi.instance(
 		},
 		showClass: function(p, c)
 		{
-			var main = bi.$('jsapidoc_main');
-			main.clear();
-			main.appendChild(bi.node('h1', this.content[p].items[c].name.escape()));
-			
 			var s = bi.first('li.selected', bi.$('jsapidoc_ol'));
 			if( s ) s.classList.remove('selected');
 			bi.$('package_' + p).classList.add('open');
 			bi.$('class_' + p + '_' + c).classList.add('selected');
+			
+			var main = bi.$('jsapidoc_main');
+			var item = this.content[p].items[c];
+			main.clear();
+			main.appendChild(bi.node('h1', item.title.escape()));
+			
+			if( item.description )
+			{
+				main.appendChild(
+				[
+					bi.node('h2', 'Description'),
+					bi.node('p', item.description);
+				]);
+			}
+			
+			if( item.sample )
+			{
+				main.appendChild(
+				[
+					bi.node('h2', 'Sample'),
+					bi.node('pre', item.sample);
+				]);
+			}
+			
+			if( item.ctor )
+			{
+				main.appendChild(
+				[
+					bi.node('h2', 'Constructor')
+					// todo
+				]);
+			}
+			
+			if( item.properties )
+			{
+				main.appendChild(
+				[
+					bi.node('h2', 'Properties')
+					// todo
+				]);
+			}
+			
+			if( item.methods )
+			{
+				main.appendChild(
+				[
+					bi.node('h2', 'Methods')
+					// todo
+				]);
+			}
+			
+			if( item.events )
+			{
+				main.appendChild(
+				[
+					bi.node('h2', 'Events')
+					// todo
+				]);
+			}
 		}
 	}
 });

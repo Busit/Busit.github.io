@@ -9,12 +9,12 @@
 	position: absolute; top: 0; left: 0; bottom: 0; width: 20%; box-sizing: border-box;
 	overflow: auto; margin: 0; padding: 16px; list-style: none; z-index: 1;
 	border-right: 1px solid rgba(0,0,0,.14); background-color: #ffffff; color: #939393;
-	font-size: 18px; font-weight: 200; font-family: roboto;
+	font-size: 14px; font-weight: 200; font-family: roboto;
 }
 
 #jsapidoc_ol > li { min-width: 150px; }
 #jsapidoc_ol li { padding: 3px; }
-#jsapidoc_ol span { cursor: pointer; display: inline-block; line-height: 18px; }
+#jsapidoc_ol span { cursor: pointer; display: inline-block; line-height: 14px; }
 #jsapidoc_ol > li > span:hover { color: #005596; }
 #jsapidoc_ol > li > span:before { content: "\f105"; display: inline-block; margin-right: 8px; font-family: icon; vertical-align: middle; text-align: center; width: 10px; }
 #jsapidoc_ol > li.open > span { color: #005596; }
@@ -29,5 +29,8 @@
 #jsapidoc_main {
 	position: absolute; top: 0; left: 20%; bottom: 0; right: 0; box-sizing: border-box;
 	overflow: auto; margin: 0; padding: 16px; background-color: #fafafa;
-	font-weight: 200; font-family: roboto; color: #333333;
+	font-weight: 200; font-family: roboto; color: #333333; font-size: 14px;
 }
+
+#jsapidoc_main h1 { font-size: 24px; font-weight: 200; padding: 0 0 8px 0; border-bottom: 1px solid rgba(0,0,0,.14); margin: 0 0 24px 0; color: #005596; }
+#jsapidoc_main h2 { font-size: 18px; font-weight: 200; margin: 8px 0; }
