@@ -41,7 +41,7 @@ window.jsapidoc = bi.instance(
 				{
 					ol2.appendChild(bi.node('li', bi.node('span', this.content[i].items[j].name.escape()),
 					{
-						id: 'class_' + j,
+						id: 'class_' + i + '_' + j,
 						click: function() { self.showClass(this.dataset.package, this.dataset.class); },
 						dataPackage: i,
 						dataClass: j
@@ -58,7 +58,7 @@ window.jsapidoc = bi.instance(
 			var s = bi.first('li.selected', bi.$('jsapidoc_ol'));
 			if( s ) s.classList.remove('selected');
 			bi.$('package_' + p).classList.add('open');
-			bi.$('class_' + c).classList.add('selected');
+			bi.$('class_' + p + '_' + c).classList.add('selected');
 		}
 	}
 });

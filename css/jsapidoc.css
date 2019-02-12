@@ -29,4 +29,5 @@
 #jsapidoc_main {
 	position: absolute; top: 0; left: 20%; bottom: 0; right: 0; box-sizing: border-box;
 	overflow: auto; margin: 0; padding: 16px; background-color: #fafafa;
+	font-weight: 200; font-family: roboto; color: #333333;
 }
