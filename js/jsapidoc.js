@@ -41,7 +41,7 @@ window.jsapidoc = bi.instance(
 						click: function() { self.showClass(this.dataset.package, this.dataset.class); },
 						dataPackage: i,
 						dataClass: j
-					})));
+					}));
 				}
 			}
 		},
