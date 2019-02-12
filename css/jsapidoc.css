@@ -7,15 +7,15 @@
 
 #jsapidoc_ol > li { min-width: 150px; }
 #jsapidoc_ol li { padding: 3px; }
-#jsapidoc_ol span { cursor: pointer; display: inline-block; }
+#jsapidoc_ol span { cursor: pointer; display: inline-block; vertical-align: middle; }
 #jsapidoc_ol > li > span:before { content: ">"; display: inline-block; margin-right: 16px; }
 #jsapidoc_ol > li.open > span { color: #005596; font-weight: bold; }
 #jsapidoc_ol > li.open > span:before { content: "v"; }
 #jsapidoc_ol > li > ol { display: none; }
 #jsapidoc_ol > li.open > ol { display: block; }
-#jsapidoc_ol ol { margin: 8px 32px; padding: 0; list-style: none; }
-#jsapidoc_ol ol li { padding-left: 16px; }
-#jsapidoc_ol ol li:hover { background-color: #f0f0f0; color: #F7941E; }
+#jsapidoc_ol ol { margin: 8px 32px; padding: 0; list-style: none; border-left: 1px solid #005596; }
+#jsapidoc_ol ol li { padding-left: 16px; cursor: pointer; }
+#jsapidoc_ol ol li:hover { background-color: #f0f0f0; color: #F7941E; font-weight: bold; }
 
 #jsapidoc_main {
 	position: absolute; top: 0; left: 20%; bottom: 0; right: 0; box-sizing: border-box;

@@ -36,7 +36,7 @@ window.jsapidoc = bi.instance(
 				
 				for( var j = 0; j < this.content[i].items.length; j++ )
 				{
-					ol2.appendChild(bi.node('li', bi.node('span', this.content[i].items[j].name.escape(),
+					ol2.appendChild(bi.node('li', bi.node('span', this.content[i].items[j].name.escape()),
 					{
 						click: function() { self.showClass(this.dataset.package, this.dataset.class); },
 						dataPackage: i,
