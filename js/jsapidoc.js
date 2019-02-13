@@ -95,13 +95,13 @@ window.jsapidoc = bi.instance(
 				
 				var tbody = bi.node('tbody');
 				
-				for( var i = 0; i < item.length; i++ )
+				for( var i = 0; i < item.properties.length; i++ )
 				{
 					tbody.appendChild(bi.node('tr',
 					[
-						bi.node('td', item[i].name, {click: function() { this.parentNode.classList.toggle('open'); }}),
-						bi.node('td', item[i].type),
-						bi.node('td', item[i].description)
+						bi.node('td', item.properties[i].name, {click: function() { this.parentNode.classList.toggle('open'); }}),
+						bi.node('td', item.properties[i].type),
+						bi.node('td', item.properties[i].description)
 					]));
 				}
 				
