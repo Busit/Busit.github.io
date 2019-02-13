@@ -11,8 +11,8 @@ jsapidoc.content =
 				sample: '<script type="text/javascript" src="/js/bi.js"></script>',
 				properties:
 				[
-					{name: '$rev', type: 'string', description: 'If set, this property designates the code revision identifier.<br />When requiring js files or css files, the revision identifier is appended as query string to manage the browser cache.<br />If you set the revision identifier to a variable number (i.e.: <code>new Date().getTime()</code>) then this has the effect to prevent the browser cache.'},
-					{name: '$root', type: 'string', description: 'If set, this property designates the root directory for js and css file inclusion. It should not include a trailing slash.'}
+					{name: '$rev', type: 'string', description: 'If set, this property designates the code revision identifier.<br />When requiring js files or css files, the revision identifier is appended as query string to manage the browser cache.<br />If you set the revision identifier to a variable number then this has the effect to prevent the browser cache.<br />Example: <code>bi.$rev = "v1.0.42-beta";</code>'},
+					{name: '$root', type: 'string', description: 'If set, this property designates the root directory for js and css file inclusion. It should not include a trailing slash.<br />Example: <code>bi.$root = "/web/app/project";</code>'}
 				],
 				methods:
 				[

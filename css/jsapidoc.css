@@ -61,8 +61,8 @@ header {
 #jsapidoc_main tbody td:nth-child(1) { color: #F7941E; cursor: pointer; text-align: left; }
 #jsapidoc_main tbody td:nth-child(2) { text-align: center; }
 #jsapidoc_main tbody td:nth-child(3) { width: 100%; max-width: 0; }
-#jsapidoc_main thead th { text-align: left; }
+#jsapidoc_main thead th { text-align: left; color: #545454; }
 #jsapidoc_main thead tr { border-bottom: 1px solid rgba(0,0,0,0.14); background-color: #ffffff; }
 #jsapidoc_main tbody tr { border-bottom: 1px solid rgba(0,0,0,0.14); }
-#jsapidoc_main tbody td div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 1em; }
-#jsapidoc_main tbody tr.open td div { white-space: unset; max-height: undet; }
+#jsapidoc_main tbody td div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 1.2em; }
+#jsapidoc_main tbody tr.open td div { white-space: unset; max-height: none; }
