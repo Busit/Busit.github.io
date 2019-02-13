@@ -107,7 +107,7 @@ window.jsapidoc = bi.instance(
 				
 				main.appendChild(bi.node('section',
 				[
-					bi.node('h2', 'Properties')
+					bi.node('h2', 'Properties'),
 					bi.node('table',
 					[
 						bi.node('thead', bi.node('tr',
