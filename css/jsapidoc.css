@@ -27,6 +27,12 @@ header {
 	box-shadow: 0 0 5px 2px rgba(100, 100, 100, 0.8);
 }
 
+pre {
+    border: 1px solid rgba(0,0,0,0.14);
+    padding: 8px 16px;
+    background-color: #ffffff;
+}
+
 #jsapidoc_ol {
 	position: absolute; top: 60px; left: 0; bottom: 0; width: 250px; box-sizing: border-box;
 	overflow: auto; margin: 0; padding: 16px; list-style: none; z-index: 1;
@@ -58,9 +64,9 @@ header {
 #jsapidoc_main h2 { font-size: 18px; font-weight: 200; margin: 8px 0; }
 #jsapidoc_main table { border-collapse: collapse; width: 100%; }
 #jsapidoc_main tbody td, #jsapidoc_main thead th { padding: 8px 16px; vertical-align: top; }
-#jsapidoc_main tbody td:nth-child(1) { color: #F7941E; text-align: left; }
-#jsapidoc_main tbody td:nth-child(2) { text-align: center; }
+#jsapidoc_main tbody td:nth-child(1) { color: #F7941E; text-align: left; font-family: monospace; }
+#jsapidoc_main tbody td:nth-child(2) { text-align: center; font-family: monospace; }
 #jsapidoc_main tbody td:nth-child(3) { width: 100%; max-width: 0; }
-#jsapidoc_main thead th { text-align: left; color: #545454; }
-#jsapidoc_main thead tr { border-bottom: 1px solid rgba(0,0,0,0.14); background-color: #ffffff; }
+#jsapidoc_main thead th { text-align: left; color: #545454; border-left: 2px solid #fafafa; }
+#jsapidoc_main thead tr { border-bottom: 1px solid rgba(0,0,0,0.14); background-color: rgba(0,85,150,0.1); }
 #jsapidoc_main tbody tr { border-bottom: 1px solid rgba(0,0,0,0.14); }
