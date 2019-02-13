@@ -101,7 +101,7 @@ window.jsapidoc = bi.instance(
 					[
 						bi.node('td', item.properties[i].name, {click: function() { this.parentNode.classList.toggle('open'); }}),
 						bi.node('td', item.properties[i].type),
-						bi.node('td', bi.node('div', item.properties[i].description))
+						bi.node('td', item.properties[i].description)
 					]));
 				}
 				
