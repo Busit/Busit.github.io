@@ -51,7 +51,7 @@ header {
 #jsapidoc_main {
 	position: absolute; top: 60px; left: 250px; bottom: 0; right: 0; box-sizing: border-box;
 	overflow: auto; margin: 0; padding: 16px 48px 48px 24px; background-color: #fafafa;
-	font-weight: 200; font-family: roboto; color: #333333; font-size: 14px;
+	font-weight: 200; font-family: roboto; color: #333333; font-size: 14px; line-height: 2;
 }
 #jsapidoc_main section { clear: both; margin: 16px 0; width: 100%; overflow: auto; }
 #jsapidoc_main h1 { font-size: 24px; font-weight: 200; padding: 0 0 8px 0; border-bottom: 1px solid rgba(0,0,0,.14); margin: 0 0 24px 0; color: #005596; }
