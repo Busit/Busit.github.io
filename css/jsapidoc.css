@@ -5,6 +5,13 @@
 @font-face { font-family: 'roboto'; font-weight: lighter; font-style: normal; src: url('roboto_light.woff') format('woff'); }
 @font-face { font-family: 'roboto'; font-weight: lighter; font-style: italic; src: url('roboto_light_i.woff') format('woff'); }
 
+html, body { width: 100%; height: 100%; margin: 0; padding: 0; font-family: roboto, Verdana, sans-serif; overflow: hidden; }
+* { box-sizing: border-box; margin: 0; }
+header, section, nav, footer, aside { display: block; }
+a { text-decoration: none; outline: none !important; }
+input, select, button { outline: none !important; }
+body, header, footer { min-width: 780px; }
+
 header {
 	background: #005596;
 	top: 0; right: 0; left: 0;
@@ -49,9 +56,9 @@ header {
 #jsapidoc_main section { clear: both; margin: 16px 0; width: 100%; overflow: auto; }
 #jsapidoc_main h1 { font-size: 24px; font-weight: 200; padding: 0 0 8px 0; border-bottom: 1px solid rgba(0,0,0,.14); margin: 0 0 24px 0; color: #005596; }
 #jsapidoc_main h2 { font-size: 18px; font-weight: 200; margin: 8px 0; }
-#jsapidoc_main table { border-collapse: collapse; }
+#jsapidoc_main table { border-collapse: collapse; width: 100%; }
 #jsapidoc_main tbody td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 8px 16px; }
 #jsapidoc_main tbody td.open { white-space: unset; }
 #jsapidoc_main tbody td:nth-child(1) { color: #F7941E; cursor: pointer; text-align: left; }
 #jsapidoc_main tbody td:nth-child(2) { text-align: center; }
-#jsapidoc_main tbody td:nth-child(3) { width: 100%; }
+#jsapidoc_main tbody td:nth-child(3) { width: 100%; max-width: 30%; }
