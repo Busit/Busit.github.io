@@ -92,10 +92,32 @@ window.jsapidoc = bi.instance(
 			if( item.properties )
 			{
 				item.properties.sort(function(a, b) { return (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1); });
+				
+				var tbody = bi.node('tbody');
+				
+				for( var i = 0; i < item.length; i++ )
+				{
+					tbody.appendChild(bi.node('tr',
+					[
+						bi.node('td', item[i].name, {click: function() { this.parentNode.classList.toggle('open'); }}),
+						bi.node('td', item[i].type),
+						bi.node('td', item[i].description)
+					]));
+				}
+				
 				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Properties')
-					// todo
+					bi.node('table',
+					[
+						bi.node('thead', bi.node('tr',
+						[
+							bi.node('th', "Property"),
+							bi.node('th', "Type"),
+							bi.node('th', "Description")
+						])),
+						tbody
+					])
 				]));
 			}
 			
