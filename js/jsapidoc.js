@@ -99,7 +99,7 @@ window.jsapidoc = bi.instance(
 				{
 					tbody.appendChild(bi.node('tr',
 					[
-						bi.node('td', item.properties[i].name, {click: function() { this.parentNode.classList.toggle('open'); }}),
+						bi.node('td', item.properties[i].name),
 						bi.node('td', item.properties[i].type),
 						bi.node('td', item.properties[i].description)
 					]));
@@ -112,7 +112,7 @@ window.jsapidoc = bi.instance(
 					[
 						bi.node('thead', bi.node('tr',
 						[
-							bi.node('th', "Property"),
+							bi.node('th', "Name"),
 							bi.node('th', "Type"),
 							bi.node('th', "Description")
 						])),
@@ -123,10 +123,37 @@ window.jsapidoc = bi.instance(
 			
 			if( item.methods )
 			{
+				item.methods.sort(function(a, b) { return (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1); });
+				
+				var tbody = bi.node('tbody');
+				for( var i = 0; i < item.methods.length; i++ )
+				{
+					tbody.appendChild(bi.node('tr',
+					[
+						bi.node('td', item.methods[i].name),
+						bi.node('td', item.methods[i].returns),
+						bi.node('td', item.methods[i].description)
+					]));
+					
+					var ul = bi.node('ul');
+					for( var name in Object.keys(item.methods[i].parameters) )
+						ul.appendChild(bi.node('li', name + ": " + item.methods[i].parameters[name]));
+					tbody.lastChild.lastChild.appendChild(ul);
+				}
+				
 				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Methods')
-					// todo
+					bi.node('table',
+					[
+						bi.node('thead', bi.node('tr',
+						[
+							bi.node('th', "Name"),
+							bi.node('th', "Return Type"),
+							bi.node('th', "Description")
+						])),
+						tbody
+					])
 				]));
 			}
 			
