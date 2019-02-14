@@ -136,8 +136,9 @@ window.jsapidoc = bi.instance(
 					]));
 					
 					var ul = bi.node('ul');
-					for( var name in Object.keys(item.methods[i].parameters) )
-						ul.appendChild(bi.node('li', name + ": " + item.methods[i].parameters[name]));
+					var k = Object.keys(item.methods[i].parameters).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
+					for( var j = 0; j < k.length; j++  )
+						ul.appendChild(bi.node('li', k[j] + ": " + item.methods[i].parameters[k[j]]));
 					tbody.lastChild.lastChild.appendChild(ul);
 				}
 				
