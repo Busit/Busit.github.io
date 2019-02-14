@@ -71,5 +71,5 @@ pre {
 #jsapidoc_main thead tr { border-bottom: 1px solid rgba(0,0,0,0.14); background-color: rgba(0,85,150,0.1); }
 #jsapidoc_main tbody tr { border-bottom: 1px solid rgba(0,0,0,0.14); }
 #jsapidoc_main tbody ul { list-style: none; }
-#jsapidoc_main tbody li strong { font-family: monotype; font-style: normal; font-weight: 200; color: #F7941E; }
+#jsapidoc_main tbody li em { font-family: monotype; font-style: normal; font-weight: 200; color: #F7941E; }
 #jsapidoc_main tbody h3 { font-weight: bold; margin: 16px 8px; font-size: 14px; }

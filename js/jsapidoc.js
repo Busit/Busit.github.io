@@ -132,7 +132,7 @@ window.jsapidoc = bi.instance(
 					[
 						bi.node('td', item.methods[i].name),
 						bi.node('td', item.methods[i].returns),
-						bi.node('td', item.methods[i].description + "<br /><h3>Parameters</h3>")
+						bi.node('td', item.methods[i].description + "<h3>Parameters</h3>")
 					]));
 					
 					var ul = bi.node('ul');
