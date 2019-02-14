@@ -132,13 +132,13 @@ window.jsapidoc = bi.instance(
 					[
 						bi.node('td', item.methods[i].name),
 						bi.node('td', item.methods[i].returns),
-						bi.node('td', item.methods[i].description)
+						bi.node('td', item.methods[i].description + "<br /><h3>Parameters</h3>")
 					]));
 					
 					var ul = bi.node('ul');
 					var k = Object.keys(item.methods[i].parameters).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
 					for( var j = 0; j < k.length; j++  )
-						ul.appendChild(bi.node('li', k[j] + ": " + item.methods[i].parameters[k[j]]));
+						ul.appendChild(bi.node('li', "<em>" + k[j] + "</em>: " + item.methods[i].parameters[k[j]]));
 					tbody.lastChild.lastChild.appendChild(ul);
 				}
 				
