@@ -40,7 +40,7 @@ window.jsapidoc = bi.instance(
 				
 				for( var j = 0; j < items.length; j++ )
 				{
-					ol2.appendChild(bi.node('li', bi.node('span', items[j].name.escape()),
+					ol2.appendChild(bi.node('li', bi.node('span', items[j].escape()),
 					{
 						id: 'class_' + keys[i] + '_' + items[j],
 						click: function() { self.showClass(this.dataset.package, this.dataset.class); },
@@ -98,7 +98,7 @@ window.jsapidoc = bi.instance(
 				{
 					tbody.appendChild(bi.node('tr',
 					[
-						bi.node('td', props[i]),
+						bi.node('td', props[i].escape()),
 						bi.node('td', item.properties[props[i]].type),
 						bi.node('td', item.properties[props[i]].description)
 					]));
