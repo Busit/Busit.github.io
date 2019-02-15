@@ -20,32 +20,32 @@ window.jsapidoc = bi.instance(
 			bi.require("jsapidoc.content", function()
 			{
 				self.generateTreeStructure();
-				self.showClass(0, 0);
+				self.showClass('bi', 'core');
 			});
 		},
 		generateTreeStructure: function()
 		{
-			this.content.sort(function(a, b) { return (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1); });
+			var keys = Object.keys(this.content).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
 			var ol = bi.$('jsapidoc_ol');
 			
 			var self = this;
-			for( var i = 0; i < this.content.length; i++ )
+			for( var i = 0; i < keys.length; i++ )
 			{
-				this.content[i].items.sort(function(a, b) { return (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1); });
+				var items = Object.keys(this.content[keys[i]]).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
 				var li = ol.appendChild(bi.node('li', 
-					bi.node('span', this.content[i].name.escape(), {click: function() { this.parentNode.classList.toggle('open'); }}),
-					{id: 'package_' + i}
+					bi.node('span', keys[i].escape(), {click: function() { this.parentNode.classList.toggle('open'); }}),
+					{id: 'package_' + keys[i]}
 				));
 				var ol2 = li.appendChild(bi.node('ol'));
 				
-				for( var j = 0; j < this.content[i].items.length; j++ )
+				for( var j = 0; j < items.length; j++ )
 				{
-					ol2.appendChild(bi.node('li', bi.node('span', this.content[i].items[j].name.escape()),
+					ol2.appendChild(bi.node('li', bi.node('span', items[j].name.escape()),
 					{
-						id: 'class_' + i + '_' + j,
+						id: 'class_' + keys[i] + '_' + items[j],
 						click: function() { self.showClass(this.dataset.package, this.dataset.class); },
-						dataPackage: i,
-						dataClass: j
+						dataPackage: keys[i],
+						dataClass: items[j]
 					}));
 				}
 			}
@@ -58,7 +58,7 @@ window.jsapidoc = bi.instance(
 			bi.$('class_' + p + '_' + c).classList.add('selected');
 			
 			var main = bi.$('jsapidoc_main');
-			var item = this.content[p].items[c];
+			var item = this.content[p][c];
 			main.clear();
 			main.appendChild(bi.node('h1', item.title.escape()));
 			
@@ -91,17 +91,16 @@ window.jsapidoc = bi.instance(
 			
 			if( item.properties )
 			{
-				item.properties.sort(function(a, b) { return (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1); });
-				
+				var props = Object.keys(item.properties).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
 				var tbody = bi.node('tbody');
 				
-				for( var i = 0; i < item.properties.length; i++ )
+				for( var i = 0; i < props.length; i++ )
 				{
 					tbody.appendChild(bi.node('tr',
 					[
-						bi.node('td', item.properties[i].name),
-						bi.node('td', item.properties[i].type),
-						bi.node('td', item.properties[i].description)
+						bi.node('td', props[i]),
+						bi.node('td', item.properties[props[i]].type),
+						bi.node('td', item.properties[props[i]].description)
 					]));
 				}
 				
@@ -123,22 +122,22 @@ window.jsapidoc = bi.instance(
 			
 			if( item.methods )
 			{
-				item.methods.sort(function(a, b) { return (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1); });
-				
+				var methods = Object.keys(item.methods).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
 				var tbody = bi.node('tbody');
-				for( var i = 0; i < item.methods.length; i++ )
+				
+				for( var i = 0; i < methods.length; i++ )
 				{
 					tbody.appendChild(bi.node('tr',
 					[
-						bi.node('td', item.methods[i].name),
-						bi.node('td', item.methods[i].returns),
-						bi.node('td', item.methods[i].description + "<h3>Parameters</h3>")
+						bi.node('td', item.methods[methods[i]].signature),
+						bi.node('td', item.methods[methods[i]].returns),
+						bi.node('td', item.methods[methods[i]].description + "<h3>Parameters</h3>")
 					]));
 					
 					var ul = bi.node('ul');
-					var k = Object.keys(item.methods[i].parameters).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
-					for( var j = 0; j < k.length; j++  )
-						ul.appendChild(bi.node('li', "<em>" + k[j] + "</em>: " + item.methods[i].parameters[k[j]]));
+					var params = Object.keys(item.methods[methods[i]].parameters).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
+					for( var j = 0; j < params.length; j++  )
+						ul.appendChild(bi.node('li', "<em>" + params[j] + "</em>: " + item.methods[methods[i]].parameters[params[j]]));
 					tbody.lastChild.lastChild.appendChild(ul);
 				}
 				
