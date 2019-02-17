@@ -131,14 +131,18 @@ window.jsapidoc = bi.instance(
 					[
 						bi.node('td', item.methods[methods[i]].signature),
 						bi.node('td', item.methods[methods[i]].returns),
-						bi.node('td', item.methods[methods[i]].description + "<h3>Parameters</h3>")
+						bi.node('td', item.methods[methods[i]].description)
 					]));
 					
-					var ul = bi.node('ul');
-					var params = Object.keys(item.methods[methods[i]].parameters).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
-					for( var j = 0; j < params.length; j++  )
-						ul.appendChild(bi.node('li', "<em>" + params[j] + "</em>: " + item.methods[methods[i]].parameters[params[j]]));
-					tbody.lastChild.lastChild.appendChild(ul);
+					var params = Object.keys(item.methods[methods[i]].parameters||{}).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
+					if( params.length > 0 )
+					{
+						tbody.lastChild.lastChild.appendChild(bi.node('h3', 'Parameters'));
+						var ul = bi.node('ul');
+						for( var j = 0; j < params.length; j++  )
+							ul.appendChild(bi.node('li', "<em>" + params[j] + "</em>: " + item.methods[methods[i]].parameters[params[j]]));
+						tbody.lastChild.lastChild.appendChild(ul);
+					}
 				}
 				
 				main.appendChild(bi.node('section',
