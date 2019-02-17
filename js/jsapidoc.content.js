@@ -269,9 +269,9 @@ jsapidoc.content =
 			},
 			events:
 			{
-				'enter',
-				'escape',
-				'delete'
+				'enter': {},
+				'escape': {},
+				'delete': {}
 			}
 		}
 	}
