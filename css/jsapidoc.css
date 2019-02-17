@@ -61,7 +61,7 @@ pre {
 }
 #jsapidoc_main section { clear: both; margin: 16px 0; width: 100%; overflow: auto; }
 #jsapidoc_main h1 { font-size: 24px; font-weight: 200; padding: 0 0 8px 0; border-bottom: 1px solid rgba(0,0,0,.14); margin: 0 0 24px 0; color: #005596; }
-#jsapidoc_main h2 { font-size: 18px; font-weight: 200; margin: 8px 0; }
+#jsapidoc_main h2 { font-size: 18px; font-weight: bold; margin: 24px 0; display: inline-block; background-color: rgba(0,85,150,0.7); color: #ffffff; padding: 0 50px; border-radius: 1em; }
 #jsapidoc_main table { border-collapse: collapse; width: 100%; }
 #jsapidoc_main tbody td, #jsapidoc_main thead th { padding: 8px 32px 8px 16px; vertical-align: top; }
 #jsapidoc_main tbody td:nth-child(1) { color: #F7941E; text-align: left; font-family: monospace; }
@@ -71,5 +71,5 @@ pre {
 #jsapidoc_main thead tr { border-bottom: 1px solid rgba(0,0,0,0.14); background-color: rgba(0,85,150,0.1); }
 #jsapidoc_main tbody tr { border-bottom: 1px solid rgba(0,0,0,0.14); }
 #jsapidoc_main tbody ul { list-style: none; }
-#jsapidoc_main tbody li em { font-family: monotype; font-style: normal; font-weight: 200; color: #F7941E; }
+#jsapidoc_main tbody li em { font-family: monospace; font-style: normal; font-weight: 200; color: #F7941E; }
 #jsapidoc_main tbody h3 { font-weight: bold; margin: 16px 8px; font-size: 14px; }
