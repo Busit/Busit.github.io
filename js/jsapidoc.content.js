@@ -240,7 +240,7 @@ jsapidoc.content =
 			ctor:
 			{
 				signature: 'bi.Promise(executor?)',
-				description: 'Constructs a new instance of this class. The optional executor is a function that accepts two parameters: the resolve function to call in order to resolve this promise, and the reject function to call in order to reject this promise.'
+				description: 'Constructs a new instance of this class. The optional executor is a function that accepts two parameters: the resolve function to call in order to resolve this promise, and the reject function to call in order to reject this promise. The executor function itself should perform its operations and either call the resolve or reject argument function. Only one call of either is allowed, subsequent calls to resolve or reject will be ignored.'
 			},
 			properties:
 			{
