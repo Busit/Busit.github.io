@@ -163,10 +163,30 @@ window.jsapidoc = bi.instance(
 			
 			if( item.events )
 			{
+				var events = Object.keys(item.events).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
+				var tbody = bi.node('tbody');
+				
+				for( var i = 0; i < events.length; i++ )
+				{
+					tbody.appendChild(bi.node('tr',
+					[
+						bi.node('td', events[i].escape()),
+						bi.node('td', item.events[events[i]])
+					]));
+				}
+				
 				main.appendChild(bi.node('section',
 				[
-					bi.node('h2', 'Events')
-					// todo
+					bi.node('h2', 'Events'),
+					bi.node('table',
+					[
+						bi.node('thead', bi.node('tr',
+						[
+							bi.node('th', "Name"),
+							bi.node('th', "Description")
+						])),
+						tbody
+					])
 				]));
 			}
 		}
