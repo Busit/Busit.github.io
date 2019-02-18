@@ -190,10 +190,12 @@ jsapidoc.content =
 				'_':
 				{
 					signature: '_(key, ...)',
-					returns: '',
-					description: '',
+					returns: 'String',
+					description: 'Get the localized translation of the key. Alias of <code>bi.tanslate.get(key, ...)</code>.',
 					parameters:
 					{
+						'key': 'The translation key',
+						'...': 'Any number of substitution elements'
 					}
 				}
 			},
