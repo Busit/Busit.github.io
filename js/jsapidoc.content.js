@@ -265,6 +265,182 @@ jsapidoc.content =
 						't': 'The <code>this</code> argument as of <code>Function.apply()</code>',
 						'a': 'The <code>args</code> argument as of <code>Function.apply()</code>'
 					}
+				},
+				'Date.addSeconds':
+				{
+					signature: 'Date.addSeconds(n)',
+					returns: 'Date',
+					description: 'Adds the specified amount of time to the date.',
+					parameters:
+					{
+						'n': 'The amount of time to add.'
+					}
+				},
+				'Date.addMinutes':
+				{
+					signature: 'Date.addMinutes(n)',
+					returns: 'Date',
+					description: 'Adds the specified amount of time to the date.',
+					parameters:
+					{
+						'n': 'The amount of time to add.'
+					}
+				},
+				'Date.addHours':
+				{
+					signature: 'Date.addHours(n)',
+					returns: 'Date',
+					description: 'Adds the specified amount of time to the date.',
+					parameters:
+					{
+						'n': 'The amount of time to add.'
+					}
+				},
+				'Date.addDays':
+				{
+					signature: 'Date.addDays(n)',
+					returns: 'Date',
+					description: 'Adds the specified amount of time to the date.',
+					parameters:
+					{
+						'n': 'The amount of time to add.'
+					}
+				},
+				'Date.addMonths':
+				{
+					signature: 'Date.addMonths(n)',
+					returns: 'Date',
+					description: 'Adds the specified amount of time to the date.',
+					parameters:
+					{
+						'n': 'The amount of time to add.'
+					}
+				},
+				'Date.addYears':
+				{
+					signature: 'Date.addYears(n)',
+					returns: 'Date',
+					description: 'Adds the specified amount of time to the date.',
+					parameters:
+					{
+						'n': 'The amount of time to add.'
+					}
+				},
+				'Date.addWeeks':
+				{
+					signature: 'Date.addWeeks(n)',
+					returns: 'Date',
+					description: 'Adds the specified amount of time to the date.',
+					parameters:
+					{
+						'n': 'The amount of time to add.'
+					}
+				},
+				'Date.getWeek':
+				{
+					signature: 'Date.getWeek()',
+					returns: 'Number',
+					description: 'Returns the week number.',
+					parameters:
+					{
+					}
+				},
+				'Array.clear':
+				{
+					signature: 'Array.clear()',
+					returns: '',
+					description: 'Clears the array.',
+					parameters:
+					{
+					}
+				},
+				'Array.first':
+				{
+					signature: 'Array.first()',
+					returns: 'Object',
+					description: 'Returns the first element of the array or null if the array is empty.',
+					parameters:
+					{
+					}
+				},
+				'Array.last':
+				{
+					signature: 'Array.last()',
+					returns: 'Object',
+					description: 'Returns the last element of the array of null if the array is empty.',
+					parameters:
+					{
+					}
+				},
+				'Array.remove':
+				{
+					signature: 'Array.remove(v)',
+					returns: 'Object',
+					description: 'Removes the specified value from the array and return it. If the value is not found, null is returned.',
+					parameters:
+					{
+						'v': 'The value to remove.'
+					}
+				},
+				'Array.contains':
+				{
+					signature: 'Array.contains(v)',
+					returns: 'Boolean',
+					description: 'Returns whether or not the specified value is in the array.',
+					parameters:
+					{
+						'v': 'The value to check.'
+					}
+				},
+				'Array.containsAny':
+				{
+					signature: 'Array.containsAny(v)',
+					returns: 'Boolean',
+					description: 'Returns whether or not any of the specified values are contained in the array.',
+					parameters:
+					{
+						'v': 'Array of values to check.'
+					}
+				},
+				'Array.containsAll':
+				{
+					signature: 'Array.containsAll(v)',
+					returns: 'Boolean',
+					description: 'Returns whether or not all of the specified values are contained in the array.',
+					parameters:
+					{
+						'v': 'Array of values to check.'
+					}
+				},
+				'Array.pushUnique':
+				{
+					signature: 'Array.pushUnique(v)',
+					returns: 'Number',
+					description: 'Pushes the specified value in the array only if it is not already present. Returns the new array length.',
+					parameters:
+					{
+						'v': 'The value to push.'
+					}
+				},
+				'Array.aggregate':
+				{
+					signature: 'Array.aggregate(f, reverse)',
+					returns: 'Object',
+					description: 'Applies the specified function <code>f(result, item)</code> recursively on all elements of the array. The <code>result</code> is the return value of the previous call.',
+					parameters:
+					{
+						'f': 'The aggregation function to apply.',
+						'reverse': 'If true, the array is processed in reverse order. Default false.'
+					}
+				},
+				'Array.random':
+				{
+					signature: 'Array.random()',
+					returns: 'Object',
+					description: 'Returns a random element of the array.',
+					parameters:
+					{
+					}
 				}
 			},
 			events:
