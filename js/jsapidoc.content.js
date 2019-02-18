@@ -214,7 +214,7 @@ jsapidoc.content =
 	{
 		'document':
 		{
-			title: "DOM overrides and overloads",
+			title: "document",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -247,7 +247,7 @@ jsapidoc.content =
 		},
 		'window':
 		{
-			title: "DOM overrides and overloads",
+			title: "window",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			properties:
 			{
@@ -257,7 +257,7 @@ jsapidoc.content =
 		},
 		'RegExp':
 		{
-			title: "DOM overrides and overloads",
+			title: "RegExp",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -285,7 +285,7 @@ jsapidoc.content =
 		},
 		'Function':
 		{
-			title: "DOM overrides and overloads",
+			title: "Function",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -316,16 +316,16 @@ jsapidoc.content =
 		},
 		'location':
 		{
-			title: "DOM overrides and overloads",
+			title: "location",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			properties:
 			{
-				'parameters': {type: 'Object', description: 'The query string parameters in the form of a key-value pair object.'}
+				'parameters': {type: 'Object', description: 'The query string parameters in the form of a key-value pair object.<br />Note: the parameters are parsed on page load and will not reflect changes that occur afterwards.'}
 			}
 		},
 		'Date':
 		{
-			title: "DOM overrides and overloads",
+			title: "Date",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -412,7 +412,7 @@ jsapidoc.content =
 		},
 		'Array':
 		{
-			title: "DOM overrides and overloads",
+			title: "Array",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -517,7 +517,7 @@ jsapidoc.content =
 		},
 		'String':
 		{
-			title: "DOM overrides and overloads",
+			title: "String",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -594,7 +594,7 @@ jsapidoc.content =
 		},
 		'Object':
 		{
-			title: "DOM overrides and overloads",
+			title: "Object",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -654,7 +654,7 @@ jsapidoc.content =
 		},
 		'Base64':
 		{
-			title: "DOM overrides and overloads",
+			title: "Base64",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -682,7 +682,7 @@ jsapidoc.content =
 		},
 		'HTMLFormElement':
 		{
-			title: "DOM overrides and overloads",
+			title: "HTMLFormElement",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -699,7 +699,7 @@ jsapidoc.content =
 		},
 		'HTMLElement':
 		{
-			title: "DOM overrides and overloads",
+			title: "HTMLElement",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -807,7 +807,7 @@ jsapidoc.content =
 		},
 		'Event':
 		{
-			title: "DOM overrides and overloads",
+			title: "Event",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
@@ -842,7 +842,7 @@ jsapidoc.content =
 		},
 		'EventTarget':
 		{
-			title: "DOM overrides and overloads",
+			title: "EventTarget",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			methods:
 			{
