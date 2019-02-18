@@ -146,7 +146,7 @@ window.jsapidoc = bi.instance(
 						bi.node('td', item.methods[methods[i]].description)
 					]));
 					
-					var params = Object.keys(item.methods[methods[i]].parameters||{}).sort(function(a, b) { return (a.toLowerCase() > b.toLowerCase() ? 1 : -1); });
+					var params = Object.keys(item.methods[methods[i]].parameters||{});
 					if( params.length > 0 )
 					{
 						tbody.lastChild.lastChild.appendChild(bi.node('h3', 'Parameters'));

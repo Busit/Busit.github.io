@@ -231,7 +231,87 @@ jsapidoc.content =
 		'translate': {title: 'bi.translate'},
 		'rest': {title: 'bi.rest'}, 
 		'modal': {title: 'bi.modal'},
-		'gui': {title: 'bi.gui'}
+		'gui': {title: 'bi.gui'},
+		'Promise':
+		{
+			title: "Promise",
+			description: "The main purpose of this class is to polyfill the Promise object for browsers that do not support it. Meanwhile, this class offers additionnal guarantees and flexibility.",
+			sample: "var p = new bi.Promise(function(resolve, reject)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;resolve(42);<br />});<br />p.then(function(value) { console.log(value); }); // -> 42",
+			methods:
+			{
+				'all':
+				{
+					signature: '[static] all(iterable)',
+					returns: 'Promise',
+					description: 'Returns a single Promise that resolves when all of the promises passed as an iterable have resolved or when the iterable contains no promises. It rejects with the reason of the first promise that rejects. The order of the resolved values is guaranteed to be the same as the iterator.',
+					parameters:
+					{
+						'iterable': 'An array of Promise'
+					}
+				},
+				'race':
+				{
+					signature: '[static] race(iterable)',
+					returns: 'Promise',
+					description: 'Returns a promise that resolves or rejects as soon as one of the promises in an iterable resolves or rejects, with the value or reason from that promise.',
+					parameters:
+					{
+						'iterable': 'An array of Promise'
+					}
+				},
+				'reject':
+				{
+					signature: '[static] reject(reason)',
+					returns: 'Promise',
+					description: 'Returns a Promise object that is rejected with a given reason.',
+					parameters:
+					{
+						'reason': 'Reason why this Promise rejected.'
+					}
+				},
+				'resolve':
+				{
+					signature: '[static] resolve(value)',
+					returns: 'Promise',
+					description: 'Returns a Promise object that is resolved with a given value.',
+					parameters:
+					{
+						'value': 'Argument to be resolved by this Promise.'
+					}
+				},
+				'then':
+				{
+					signature: 'then(onFulfilled, onRejected?)',
+					returns: 'Promise',
+					description: 'Returns a Promise. It takes up to two arguments: callback functions for the success and failure cases of the Promise.',
+					parameters:
+					{
+						'onFulfilled': 'A Function called if the Promise is fulfilled. This function has one argument, the fulfillment value.',
+						'onRejected': 'A Function called if the Promise is rejected. This function has one argument, the rejection reason.'
+					}
+				},
+				'catch':
+				{
+					signature: 'catch(onRejected)',
+					returns: 'Promise',
+					description: 'Returns a Promise and deals with rejected cases only. It behaves the same as calling <code>Promise.then(undefined, onRejected)</code>.',
+					parameters:
+					{
+						'onRejected': 'A Function called if the Promise is rejected. This function has one argument, the rejection reason.'
+					}
+				},
+				'finally':
+				{
+					signature: 'finally(onFinally)',
+					returns: 'Promise',
+					description: 'Returns a Promise. When the promise is settled, i.e either fulfilled or rejected, the specified callback function is executed.',
+					parameters:
+					{
+						'onFinally': 'A Function called when the Promise is settled.'
+					}
+				}
+			}
+		}
 	},
 	'html':
 	{
@@ -276,6 +356,7 @@ jsapidoc.content =
 			{
 				'EventTarget': {type: 'HTMLElement', description: 'If the EventTarget type does not exist, it is cloned from HTMLElement.'},
 				'console': {type: 'Object', description: 'If the Console does not exist, an empty placeholder is created.'},
+				'Promise': {type: 'bi.Promise', description: 'If the Promise type does not exist, it is cloned from bi.Promise.'}
 			}
 		},
 		'RegExp':
@@ -901,85 +982,6 @@ jsapidoc.content =
 						'event': 'The event name',
 						'params': 'The event parameters',
 						'async': 'Whether or not the event is triggered asynchronousely'
-					}
-				}
-			}
-		},
-		'Promise':
-		{
-			title: "Promise",
-			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
-			methods:
-			{
-				'all':
-				{
-					signature: '[static] all(iterable)',
-					returns: 'Promise',
-					description: 'Returns a single Promise that resolves when all of the promises passed as an iterable have resolved or when the iterable contains no promises. It rejects with the reason of the first promise that rejects.',
-					parameters:
-					{
-						'iterable': 'An array of Promise'
-					}
-				},
-				'race':
-				{
-					signature: '[static] race(iterable)',
-					returns: 'Promise',
-					description: 'Returns a promise that resolves or rejects as soon as one of the promises in an iterable resolves or rejects, with the value or reason from that promise.',
-					parameters:
-					{
-						'iterable': 'An array of Promise'
-					}
-				},
-				'reject':
-				{
-					signature: '[static] reject(reason)',
-					returns: 'Promise',
-					description: 'Returns a Promise object that is rejected with a given reason.',
-					parameters:
-					{
-						'reason': 'Reason why this Promise rejected.'
-					}
-				},
-				'resolve':
-				{
-					signature: '[static] resolve(value)',
-					returns: 'Promise',
-					description: 'Returns a Promise object that is resolved with a given value.',
-					parameters:
-					{
-						'value': 'Argument to be resolved by this Promise.'
-					}
-				},
-				'then':
-				{
-					signature: 'then(onFulfilled, onRejected?)',
-					returns: 'Promise',
-					description: 'Returns a Promise. It takes up to two arguments: callback functions for the success and failure cases of the Promise.',
-					parameters:
-					{
-						'onFulfilled': 'A Function called if the Promise is fulfilled. This function has one argument, the fulfillment value.',
-						'onRejected': 'A Function called if the Promise is rejected. This function has one argument, the rejection reason.'
-					}
-				},
-				'catch':
-				{
-					signature: 'catch(onRejected)',
-					returns: 'Promise',
-					description: 'Returns a Promise and deals with rejected cases only. It behaves the same as calling <code>Promise.then(undefined, onRejected)</code>.',
-					parameters:
-					{
-						'onRejected': 'A Function called if the Promise is rejected. This function has one argument, the rejection reason.'
-					}
-				},
-				'finally':
-				{
-					signature: 'finally(onFinally)',
-					returns: 'Promise',
-					description: 'Returns a Promise. When the promise is settled, i.e either fulfilled or rejected, the specified callback function is executed.',
-					parameters:
-					{
-						'onFinally': 'A Function called when the Promise is settled.'
 					}
 				}
 			}
