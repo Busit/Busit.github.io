@@ -76,7 +76,7 @@ window.jsapidoc = bi.instance(
 				main.appendChild(bi.node('section',
 				[
 					bi.node('h2', 'Sample'),
-					bi.node('pre', item.sample.escape())
+					bi.node('pre', item.sample)
 				]));
 			}
 			

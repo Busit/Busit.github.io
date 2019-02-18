@@ -6,7 +6,7 @@ jsapidoc.content =
 		{
 			title: 'bi',
 			description: 'This is the base object required to operate the Busit Javascript API. It is created upon inclusion of the file in the DOM.<br />The <code>bi</code> object also acts as the global namespace for the entire API. The basic methods are defined directly on the root namespace described hereafter while other high level classes or functionnalities are created as packages registered as sub-properties of this object.',
-			sample: '<script type="text/javascript" src="/js/bi.js"></script>',
+			sample: '&lt;head&gt;<br />&lt;script type="text/javascript" src="/js/bi.js"&gt;&lt;/script&gt;<br />&lt;script type="text/javascript&gt;<br />bi.onLoad(function() { console.log("Ready!"); });<br />&lt;/script&gt;<br />&lt;/head&gt;',
 			properties:
 			{
 				'$rev': {type: 'String', description: 'If set, this property designates the code revision identifier.<br />When requiring js files or css files, the revision identifier is appended as query string to manage the browser cache.<br />If you set the revision identifier to a variable number then this has the effect to prevent the browser cache.<pre>bi.$rev = "v1.0.42-beta"; // fixed version<br />bi.$rev = new Date().getTime(); // always different to disable the browser cache</pre>'},
@@ -17,7 +17,7 @@ jsapidoc.content =
 				'all':
 				{
 					signature: 'all(search, element?)', 
-					returns: 'Element[]', 
+					returns: 'HTMLElement[]', 
 					description: 'Alias to <code>element.querySelectorAll(search)</code>.<pre>bi.all("div");<br />bi.all("ul &gt; li span.title", "section.content");</pre>',
 					parameters:
 					{
@@ -28,8 +28,8 @@ jsapidoc.content =
 				'first':
 				{
 					signature: 'first(search, element?)',
-					returns: 'Element',
-					description: 'Returns the first Element that matches the provided CSS selector. If no element matches, then <code>null</code> is returned.',
+					returns: 'HTMLElement',
+					description: 'Returns the first element that matches the provided CSS selector. If no element matches, then <code>null</code> is returned.',
 					parameters:
 					{
 						'search': 'A valid CSS selector String.',
@@ -39,8 +39,8 @@ jsapidoc.content =
 				'last':
 				{
 					signature: 'last(search, element?)',
-					returns: 'Element',
-					description: 'Returns the last Element that matches the provided CSS selector. If no element matches, then <code>null</code> is returned.',
+					returns: 'HTMLElement',
+					description: 'Returns the last element that matches the provided CSS selector. If no element matches, then <code>null</code> is returned.',
 					parameters:
 					{
 						'search': 'A valid CSS selector String',
@@ -50,18 +50,18 @@ jsapidoc.content =
 				'$':
 				{
 					signature: '$(id)',
-					returns: 'Element',
+					returns: 'HTMLElement',
 					description: 'Alias of <code>document.getElementById(id)</code>.',
 					parameters:
 					{
-						'id': 'The id of the Element to find.'
+						'id': 'The id of the element to find.'
 					}
 				},
 				'fire':
 				{
 					signature: 'fire(element, event, params?, async?)',
 					returns: '',
-					description: 'Triggers the specified event on the target element.<pre>// use fire as a function call<br />var a = [2,1,3];<br />bi.fire(a, "sort"); // -> [1,2,3]<br /><br />// use fire as an event<br />bi.fire(document.body, "click");<br /><br />// conflicting function name<br />document.body.click = function(txt) { console.log(txt); };<br />bi.fire(document.body, "click", "test"); // -> calls the click function and prints to the console<br />bi.fire(document.body, "@click", "test"); // -> dispatches the click event with event.data = "test"</pre>',
+					description: 'Triggers the specified event on the target element.<pre>// use fire as a function call<br />bi.fire(console, "log", "foo"); // -> "foo"<br /><br />// use fire as an event<br />bi.fire(document.body, "click");<br /><br />// conflicting function name<br />document.body.click = function(txt) { console.log(txt); };<br />bi.fire(document.body, "click", "test"); // -> calls the click function and prints to the console<br />bi.fire(document.body, "@click", "test"); // -> dispatches the click event with event.data = "test"</pre>',
 					parameters:
 					{
 						'element': 'The target element. If an Element is passed as argument, it is used directly. If a String is passed as argument, the element is resolved using <code>bi.all(element)</code>. If an Array is passed as argument, then the event is dispatched on all provided elements.',
@@ -73,70 +73,89 @@ jsapidoc.content =
 				'on':
 				{
 					signature: 'on(element, event, handler)',
-					returns: '',
-					description: '',
+					returns: 'Object',
+					description: 'Attaches an event handler to the specified element. Alias of <code>bi.connect(element, event, handler)</code>.',
 					parameters:
 					{
+						'element': 'The element of reference.',
+						'event': 'The name of the event.',
+						'handler': 'The callback function.'
 					}
 				},
 				'once':
 				{
 					signature: 'once(element, event, handler)',
-					returns: '',
-					description: '',
+					returns: 'Object',
+					description: 'Attaches an event handler to the specified element and detaches it after the first execution. Alias of <code>bi.connectOnce(element, event, handler)</code>.',
 					parameters:
 					{
+						'element': 'The element of reference.',
+						'event': 'The name of the event.',
+						'handler': 'The callback function.'
 					}
 				},
 				'release':
 				{
-					signature: 'release(element, event, handler)',
+					signature: 'release(element, event?, handler?)',
 					returns: '',
-					description: '',
+					description: 'Detaches the specified event handler from the target element. Alias of <code>bi.disconnect(element, event, handler)</code>.',
 					parameters:
 					{
+						'element': 'The element of reference or the attach hook.',
+						'event': 'The name of the event.',
+						'handler': 'The callback function.'
 					}
 				},
 				'connect':
 				{
 					signature: 'connect(element, event, handler)',
-					returns: '',
-					description: '',
+					returns: 'Object',
+					description: 'Attaches an event handler to the specified element. The return value is a special hook object that can be used to uniquely identify this handler and later detach it using <code>bi.disconnect(hook)</code>.<br />This method has the ability to attach to either an event or a regular function. When a function and an event share the same name, prefix the event name with an "@".<br />Note that in case of a function, the handler is executed after the original function.<pre>bi.connect(document.body, "click", function(e) { console.log(e); });<br /><br />var foo = "bar";<br />bi.connect(foo, "substring", function() { console.log("moo"); });<br />foo.substring(1); // -> "moo"</pre>',
 					parameters:
 					{
+						'element': 'The element of reference. If a string is provided, it is matched using <code>bi.all(element)</code>. If an array is provided, the handler is attached to all elements.',
+						'event': 'The name of the event or function to attach to.',
+						'handler': 'The callback function.'
 					}
 				},
 				'connectOnce':
 				{
 					signature: 'connectOnce(element, event, handler)',
-					returns: '',
-					description: '',
+					returns: 'Object',
+					description: 'Attaches an event handler to the specified element and detaches it after the first execution.',
 					parameters:
 					{
+						'element': 'The element of reference.',
+						'event': 'The name of the event.',
+						'handler': 'The callback function.'
 					}
 				},
 				'disconnect':
 				{
-					signature: 'disconnect(element, event, handler)',
+					signature: 'disconnect(element, event?, handler?)',
 					returns: '',
-					description: '',
+					description: 'Detaches the specified event handler from the target element. If only the first argument is provided, it can be the specific hook object returned from a previous <code>bi.connect(element, event, handler)</code> call.',
 					parameters:
 					{
+						'element': 'The element of reference or the attach hook.',
+						'event': 'The name of the event.',
+						'handler': 'The callback function.'
 					}
 				},
 				'onLoad':
 				{
 					signature: 'onLoad(callback)',
 					returns: '',
-					description: '',
+					description: 'Executes the callback function once the window has loaded. If the window was already loaded, the callback is called immediately.',
 					parameters:
 					{
+						'callback': 'The callback function'
 					}
 				},
 				'node':
 				{
 					signature: 'node(tag, attributes, content)',
-					returns: '',
+					returns: 'HTMLElement',
 					description: '',
 					parameters:
 					{
@@ -172,19 +191,21 @@ jsapidoc.content =
 				'instance':
 				{
 					signature: 'instance(definition)',
-					returns: '',
-					description: '',
+					returns: 'Object',
+					description: 'Creates a new class definition using <code>bi.define(definition)</code> and returns an instance of that new class. The constructor is called without arguments.',
 					parameters:
 					{
+						'definition': 'The class definition as per <code>bi.define</code>'
 					}
 				},
 				'importCss':
 				{
 					signature: 'importCss(name)',
 					returns: '',
-					description: '',
+					description: 'Imports the provided CSS file in the page. The name can be an absolute file name including the ".css" file extension, or a relative path excluding the ".css" file extension. Relative files are loaded from the <code>/bi.$root/css/</code> directory.<pre>bi.importCss("custom/main"); // relative path to /css/custom/main.css<br />bi.importCss("/css/custom/main.css"); // absolute path</pre>',
 					parameters:
 					{
+						'name': 'The name of the CSS file to import'
 					}
 				},
 				'_':
@@ -880,6 +901,85 @@ jsapidoc.content =
 						'event': 'The event name',
 						'params': 'The event parameters',
 						'async': 'Whether or not the event is triggered asynchronousely'
+					}
+				}
+			}
+		},
+		'Promise':
+		{
+			title: "Promise",
+			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
+			methods:
+			{
+				'all':
+				{
+					signature: '[static] all(iterable)',
+					returns: 'Promise',
+					description: 'Returns a single Promise that resolves when all of the promises passed as an iterable have resolved or when the iterable contains no promises. It rejects with the reason of the first promise that rejects.',
+					parameters:
+					{
+						'iterable': 'An array of Promise'
+					}
+				},
+				'race':
+				{
+					signature: '[static] race(iterable)',
+					returns: 'Promise',
+					description: 'Returns a promise that resolves or rejects as soon as one of the promises in an iterable resolves or rejects, with the value or reason from that promise.',
+					parameters:
+					{
+						'iterable': 'An array of Promise'
+					}
+				},
+				'reject':
+				{
+					signature: '[static] reject(reason)',
+					returns: 'Promise',
+					description: 'Returns a Promise object that is rejected with a given reason.',
+					parameters:
+					{
+						'reason': 'Reason why this Promise rejected.'
+					}
+				},
+				'resolve':
+				{
+					signature: '[static] resolve(value)',
+					returns: 'Promise',
+					description: 'Returns a Promise object that is resolved with a given value.',
+					parameters:
+					{
+						'value': 'Argument to be resolved by this Promise.'
+					}
+				},
+				'then':
+				{
+					signature: 'then(onFulfilled, onRejected?)',
+					returns: 'Promise',
+					description: 'Returns a Promise. It takes up to two arguments: callback functions for the success and failure cases of the Promise.',
+					parameters:
+					{
+						'onFulfilled': 'A Function called if the Promise is fulfilled. This function has one argument, the fulfillment value.',
+						'onRejected': 'A Function called if the Promise is rejected. This function has one argument, the rejection reason.'
+					}
+				},
+				'catch':
+				{
+					signature: 'catch(onRejected)',
+					returns: 'Promise',
+					description: 'Returns a Promise and deals with rejected cases only. It behaves the same as calling <code>Promise.then(undefined, onRejected)</code>.',
+					parameters:
+					{
+						'onRejected': 'A Function called if the Promise is rejected. This function has one argument, the rejection reason.'
+					}
+				},
+				'finally':
+				{
+					signature: 'finally(onFinally)',
+					returns: 'Promise',
+					description: 'Returns a Promise. When the promise is settled, i.e either fulfilled or rejected, the specified callback function is executed.',
+					parameters:
+					{
+						'onFinally': 'A Function called when the Promise is settled.'
 					}
 				}
 			}
