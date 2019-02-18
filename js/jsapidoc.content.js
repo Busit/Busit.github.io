@@ -244,9 +244,9 @@ jsapidoc.content =
 			},
 			properties:
 			{
-				'state': 'The current state, one of "pending", "fulfilled" or "rejected". This allows to introspect the meaning of the value in a fially() case.',
-				'value': 'The resolved value or undefined if the state is still pending or is rejected.',
-				'reason': 'The rejected reason or undefined if the stats is still pending or is fulfilled.'
+				'state': {type: 'String', description: 'The current state, one of "pending", "fulfilled" or "rejected". This allows to introspect the meaning of the value in a fially() case.'},
+				'value': {type: 'Object', description: 'The resolved value or undefined if the state is still pending or is rejected.'},
+				'reason': {type: 'Object', description: 'The rejected reason or undefined if the stats is still pending or is fulfilled.'}
 			},
 			methods:
 			{
