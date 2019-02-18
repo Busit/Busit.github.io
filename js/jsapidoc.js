@@ -20,7 +20,7 @@ window.jsapidoc = bi.instance(
 			bi.require("jsapidoc.content", function()
 			{
 				self.generateTreeStructure();
-				self.showClass('bi', 'core');
+				self.showClass('bi', 'bi');
 			});
 		},
 		generateTreeStructure: function()
@@ -84,8 +84,20 @@ window.jsapidoc = bi.instance(
 			{
 				main.appendChild(bi.node('section',
 				[
-					bi.node('h2', 'Constructor')
-					// todo
+					bi.node('h2', 'Constructor'),
+					bi.node('table',
+					[
+						bi.node('thead', bi.node('tr',
+						[
+							bi.node('th', "Name"),
+							bi.node('th', "Description")
+						])),
+						bi.node('tbody', bi.node('tr',
+						[
+							bi.node('td', item.ctor.signature),
+							bi.node('td', item.ctor.description)
+						]))
+					])
 				]));
 			}
 			

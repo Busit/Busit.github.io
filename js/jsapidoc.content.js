@@ -2,9 +2,9 @@ jsapidoc.content =
 {
 	'bi':
 	{
-		'core':
+		'bi':
 		{
-			title: 'Object: bi',
+			title: 'bi',
 			description: 'This is the base object required to operate the Busit Javascript API. It is created upon inclusion of the file in the DOM.<br />The <code>bi</code> object also acts as the global namespace for the entire API. The basic methods are defined directly on the root namespace described hereafter while other high level classes or functionnalities are created as packages registered as sub-properties of this object.',
 			sample: '<script type="text/javascript" src="/js/bi.js"></script>',
 			properties:
@@ -201,14 +201,14 @@ jsapidoc.content =
 			{
 			}
 		},
-		'ajax': {title: 'Function: bi.ajax'},
-		'cookie': {title: 'Object: bi.cookie'},
-		'EventTarget': {title: 'Class: bi.EventTarget'},
-		'env': {title: 'Object: bi.env'},
-		'translate': {title: 'Object: bi.translate'},
-		'rest': {title: 'Object: bi.rest'}, 
-		'modal': {title: 'Object: bi.modal'},
-		'gui': {title: 'Object: bi.gui'}
+		'ajax': {title: 'bi.ajax'},
+		'cookie': {title: 'bi.cookie'},
+		'EventTarget': {title: 'bi.EventTarget'},
+		'env': {title: 'bi.env'},
+		'translate': {title: 'bi.translate'},
+		'rest': {title: 'bi.rest'}, 
+		'modal': {title: 'bi.modal'},
+		'gui': {title: 'bi.gui'}
 	},
 	'html':
 	{
