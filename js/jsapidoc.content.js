@@ -237,6 +237,17 @@ jsapidoc.content =
 			title: "Promise",
 			description: "The main purpose of this class is to polyfill the Promise object for browsers that do not support it. Meanwhile, this class offers additionnal guarantees and flexibility.",
 			sample: "var p = new bi.Promise(function(resolve, reject)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;resolve(42);<br />});<br />p.then(function(value) { console.log(value); }); // -> 42",
+			ctor:
+			{
+				signature: 'bi.Promise(executor?)',
+				description: 'Constructs a new instance of this class. The optional executor is a function that accepts two parameters: the resolve function to call in order to resolve this promise, and the reject function to call in order to reject this promise.'
+			},
+			properties:
+			{
+				'state': 'The current state, one of "pending", "fulfilled" or "rejected". This allows to introspect the meaning of the value in a fially() case.',
+				'value': 'The resolved value or undefined if the state is still pending or is rejected.',
+				'reason': 'The rejected reason or undefined if the stats is still pending or is fulfilled.'
+			},
 			methods:
 			{
 				'all':
@@ -304,7 +315,7 @@ jsapidoc.content =
 				{
 					signature: 'finally(onFinally)',
 					returns: 'Promise',
-					description: 'Returns a Promise. When the promise is settled, i.e either fulfilled or rejected, the specified callback function is executed.',
+					description: 'Returns a Promise. When the promise is settled, i.e either fulfilled or rejected, the specified callback function is executed with the apropriate parameter.',
 					parameters:
 					{
 						'onFinally': 'A Function called when the Promise is settled.'
