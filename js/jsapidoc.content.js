@@ -149,16 +149,19 @@ jsapidoc.content =
 					description: 'Executes the callback function once the window has loaded. If the window was already loaded, the callback is called immediately.',
 					parameters:
 					{
-						'callback': 'The callback function'
+						'callback': 'The callback function.'
 					}
 				},
 				'node':
 				{
-					signature: 'node(tag, attributes, content)',
+					signature: 'node(tag, attributes?, content?)',
 					returns: 'HTMLElement',
-					description: '',
+					description: 'Creates an HTMLElement allowing to build the page. The attributes and content arguments can be inverted.<pre>bi.node("div", <br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;id: "myDiv",<br />&nbsp;&nbsp;&nbsp;&nbsp;styleBackgroundColor: "#ff0000",<br />&nbsp;&nbsp;&nbsp;&nbsp;click: function() { console.log("foo"); }<br />}, "my content");<br /><br />&lt;<div id="myDiv" style="background-color: #ff0000" click="console.log(\'foo\')"&gt;my content&lt/div&gt;</pre>',
 					parameters:
 					{
+						'tag': 'The HTML tag name.',
+						'attributes': 'The additionnal tag attributes, handlers, style and dataset in the form of a key/value object. If the key starts with "style" then the matching style property will be set. If the key starts with "data", the matching dataset property will be set. If the value is a function, an event handler is created for an event of that key name.'
+						'content': 'The element content. If a string is provided, it is interpreted as the innerHTML. If an element or array of elements is provided, it is appended as a child of this element.'
 					}
 				},
 				'provide':
@@ -246,7 +249,7 @@ jsapidoc.content =
 			{
 				'state': {type: 'String', description: 'The current state, one of "pending", "fulfilled" or "rejected". This allows to introspect the meaning of the value in a fially() case.'},
 				'value': {type: 'Object', description: 'The resolved value or undefined if the state is still pending or is rejected.'},
-				'reason': {type: 'Object', description: 'The rejected reason or undefined if the stats is still pending or is fulfilled.'}
+				'reason': {type: 'Object', description: 'The rejected reason or undefined if the state is still pending or is fulfilled.'}
 			},
 			methods:
 			{
