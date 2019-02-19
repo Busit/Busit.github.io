@@ -160,7 +160,7 @@ jsapidoc.content =
 					parameters:
 					{
 						'tag': 'The HTML tag name.',
-						'attributes': 'The additionnal tag attributes, handlers, style and dataset in the form of a key/value object. If the key starts with "style" then the matching style property will be set. If the key starts with "data", the matching dataset property will be set. If the value is a function, an event handler is created for an event of that key name.'
+						'attributes': 'The additionnal tag attributes, handlers, style and dataset in the form of a key/value object. If the key starts with "style" then the matching style property will be set. If the key starts with "data", the matching dataset property will be set. If the value is a function, an event handler is created for an event of that key name.',
 						'content': 'The element content. If a string is provided, it is interpreted as the innerHTML. If an element or array of elements is provided, it is appended as a child of this element.'
 					}
 				},
