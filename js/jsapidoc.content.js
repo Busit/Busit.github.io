@@ -6,7 +6,7 @@ jsapidoc.content =
 		{
 			title: 'bi',
 			description: 'This is the base object required to operate the Busit Javascript API. It is created upon inclusion of the file in the DOM.<br />The <code>bi</code> object also acts as the global namespace for the entire API. The basic methods are defined directly on the root namespace described hereafter while other high level classes or functionnalities are created as packages registered as sub-properties of this object.',
-			sample: '&lt;head&gt;<br />&lt;script type="text/javascript" src="/js/bi.js"&gt;&lt;/script&gt;<br />&lt;script type="text/javascript&gt;<br />bi.onLoad(function() { console.log("Ready!"); });<br />&lt;/script&gt;<br />&lt;/head&gt;',
+			sample: '&lt;head&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;script type="text/javascript" src="/js/bi.js"&gt;&lt;/script&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;script type="text/javascript&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bi.onLoad(function() { console.log("Ready!"); });<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;/script&gt;<br />&lt;/head&gt;',
 			properties:
 			{
 				'$rev': {type: 'String', description: 'If set, this property designates the code revision identifier.<br />When requiring js files or css files, the revision identifier is appended as query string to manage the browser cache.<br />If you set the revision identifier to a variable number then this has the effect to prevent the browser cache.<pre>bi.$rev = "v1.0.42-beta"; // fixed version<br />bi.$rev = new Date().getTime(); // always different to disable the browser cache</pre>'},
@@ -156,7 +156,7 @@ jsapidoc.content =
 				{
 					signature: 'node(tag, attributes?, content?)',
 					returns: 'HTMLElement',
-					description: 'Creates an HTMLElement allowing to build the page. The attributes and content arguments can be inverted.<pre>bi.node("div", <br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;id: "myDiv",<br />&nbsp;&nbsp;&nbsp;&nbsp;styleBackgroundColor: "#ff0000",<br />&nbsp;&nbsp;&nbsp;&nbsp;click: function() { console.log("foo"); }<br />}, "my content");<br /><br />&lt;<div id="myDiv" style="background-color: #ff0000" click="console.log(\'foo\')"&gt;my content&lt/div&gt;</pre>',
+					description: 'Creates an HTMLElement allowing to build the page. The attributes and content arguments can be inverted.<pre>bi.node("div", <br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;id: "myDiv",<br />&nbsp;&nbsp;&nbsp;&nbsp;styleBackgroundColor: "#ff0000",<br />&nbsp;&nbsp;&nbsp;&nbsp;click: function() { console.log("foo"); }<br />}, "my content");<br /><br />&lt;div id="myDiv" style="background-color: #ff0000" click="console.log(\'foo\')"&gt;my content&lt/div&gt;</pre>',
 					parameters:
 					{
 						'tag': 'The HTML tag name.',
