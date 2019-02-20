@@ -156,7 +156,7 @@ jsapidoc.content =
 				{
 					signature: 'node(tag, attributes?, content?)',
 					returns: 'HTMLElement',
-					description: 'Creates an HTMLElement allowing to build the page. The attributes and content arguments can be inverted.<pre>bi.node("div", <br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;id: "myDiv",<br />&nbsp;&nbsp;&nbsp;&nbsp;styleBackgroundColor: "#ff0000",<br />&nbsp;&nbsp;&nbsp;&nbsp;click: function() { console.log("foo"); }<br />}, "my content");<br /><br />&lt;div id="myDiv" style="background-color: #ff0000" click="console.log(\'foo\')"&gt;my content&lt/div&gt;</pre>',
+					description: 'Creates an HTMLElement allowing to build the page. The attributes and content arguments can be inverted.<pre>bi.node("div", <br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;id: "myDiv",<br />&nbsp;&nbsp;&nbsp;&nbsp;styleBackgroundColor: "#ff0000",<br />&nbsp;&nbsp;&nbsp;&nbsp;click: function() { console.log("foo"); }<br />}, "my content");<br /><br />// leads to the following HTML content<br />&lt;div id="myDiv" style="background-color: #ff0000" click="console.log(\'foo\')"&gt;my content&lt/div&gt;</pre>',
 					parameters:
 					{
 						'tag': 'The HTML tag name.',
@@ -168,18 +168,20 @@ jsapidoc.content =
 				{
 					signature: 'provide(name)',
 					returns: '',
-					description: '',
+					description: 'This is the notification callback from required javascript files included with <code>bi.require()</code>.<pre>// file /js/foo/bar.js<br />"use strict";<br />bi.fire(bi, "provide", ["foo/bar"]);</pre>',
 					parameters:
 					{
+						'name': 'The module name'
 					}
 				},
 				'require':
 				{
 					signature: 'require(name, successCallback)',
 					returns: '',
-					description: '',
+					description: 'Imports the provided Javascript file in the page and calls the successCallback when the import is complete. If an array of names is provided, each of them is required and the successCallback is called only when all are complete. The name can be an absolute file name including the ".js" file extension, or a relative path excluding the ".js" file extension. Relative files are loaded from the <code>/bi.$root/js/</code> directory. Each file (name) is inmported only once in the page to ensure unicity. This function should be used to manage dependencies of the encapsulated code.<pre>bi.require(["bi.modal", "bi.translate"], function()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;// bi.modal and bi.translate are now available<br />}</pre>',
 					parameters:
 					{
+						'name': 'The name of the Javascript file to import.'
 					}
 				},
 				'define':
@@ -222,9 +224,6 @@ jsapidoc.content =
 						'...': 'Any number of substitution elements'
 					}
 				}
-			},
-			events:
-			{
 			}
 		},
 		'ajax': {title: 'bi.ajax'},
@@ -532,6 +531,20 @@ jsapidoc.content =
 		{
 			title: "Array",
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
+			properties:
+			{
+				'first':
+				{
+					type: 'Object',
+					description: 'Getter for the first element of the array or null if the array is empty.'
+				},
+				'last':
+				{
+					type: 'Object',
+					description: 'Getter for the last element of the array of null if the array is empty.'
+				},
+				
+			},
 			methods:
 			{
 				'clear':
@@ -539,24 +552,6 @@ jsapidoc.content =
 					signature: 'clear()',
 					returns: '',
 					description: 'Clears the array.',
-					parameters:
-					{
-					}
-				},
-				'first':
-				{
-					signature: 'first()',
-					returns: 'Object',
-					description: 'Returns the first element of the array or null if the array is empty.',
-					parameters:
-					{
-					}
-				},
-				'last':
-				{
-					signature: 'last()',
-					returns: 'Object',
-					description: 'Returns the last element of the array of null if the array is empty.',
 					parameters:
 					{
 					}
