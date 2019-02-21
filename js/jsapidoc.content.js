@@ -263,7 +263,7 @@ jsapidoc.content =
 				{
 					signature: 'set(key, value, sessionOnly?, secure?, domain?, path?)',
 					returns: '',
-					description: 'Sets the specified cookie value.'
+					description: 'Sets the specified cookie value.',
 					parameters:
 					{
 						'key': 'The name of the cookie element.',
@@ -278,7 +278,7 @@ jsapidoc.content =
 				{
 					signature: 'remove(key, secure?, domain?, path?)',
 					returns: '',
-					description: 'Removes the specified cookie value. All parameters must match the ones used in <code>bi.cookie.set()</code>.'
+					description: 'Removes the specified cookie value. All parameters must match the ones used in <code>bi.cookie.set()</code>.',
 					parameters:
 					{
 						'key': 'The name of the cookie element.',
