@@ -188,7 +188,7 @@ jsapidoc.content =
 				{
 					signature: 'define(ctor, members, statics, inherit)',
 					returns: 'Object',
-					description: 'Defines a new class. The four parameters can be grouped into a single object if desired.<pre>var my_class = bi.define(<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;inherit: bi.EventTarget,<br />&nbsp;&nbsp;&nbsp;&nbsp;ctor: function() { /* constructor */ },<br />&nbsp;&nbsp;&nbsp;&nbsp;statics:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foo: function() { console.log("foo"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar: function() { console.log("bar"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />});<br /><br />var a = new my_class();<br />a.bar(); // -> "bar"<br />my_class.foo(); // -> "foo"</pre>',
+					description: 'Defines a new class. The four parameters can be grouped into a single object if desired.<pre>var my_class = bi.define(<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;inherit: bi.EventTarget,<br />&nbsp;&nbsp;&nbsp;&nbsp;ctor: function() { /* constructor */ },<br />&nbsp;&nbsp;&nbsp;&nbsp;statics:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foo: function() { console.log("foo"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar: function() { console.log("bar"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />});<br /><br />var a = new my_class();<br />a.bar(); // -> "bar"<br />my_class.foo(); // -> "foo"</pre>',
 					parameters:
 					{
 						'ctor': 'The constructor function.',
@@ -230,7 +230,17 @@ jsapidoc.content =
 				}
 			}
 		},
-		'ajax': {title: 'bi.ajax'},
+		'ajax':
+		{
+			title: 'bi.ajax',
+			description: 'This function represents a wrapper around the builtin XMLHttpRequest object. It accepts a success and error callback but also returns a Promise object to allow both paradigms to be used.',
+			sample: 'var request = bi.ajax("https://endpoint", {method: "POST", data: {foo: 42, bar: "moo"}});<br />request.then(function(value)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;console.log(value.response);<br />});',
+			ctor:
+			{
+				signature: 'bi.ajax(url, properties, successCallback, errorCallback)',
+				description: 'The properties object supports the following elements: <br /><ul><li><em>method</em>: The HTTP method to use in upper case (default "GET").</li><li><em>timeout</em>: The timeout of the request in milliseconds (default 0).</li><li><em>cookie</em>: Whether or not to send cookie information (default false).</li><li><em>mime</em>: Override the response mime type with the one provided (default null).</li><li><em>nocache</em>: If true and the method is "GET", a random query string parameter "_t" is appended to the request (default false).</li><li><em>as</em>: The responseType of the XMLHttpRequest: how to interpret the result (default "text").</li><li><em>headers</em>: A key/value pair of request headers (default {}).</li><li><em>user, password</em>: The Basic authorization header user and password (default null).</li><li><em>params</em>: The request parameters in the form of a key/value pair object, a FormData object or a HTMLFormElement (default null).</li></ul>'
+			}
+		},
 		'cookie': {title: 'bi.cookie'},
 		'EventTarget': {title: 'bi.EventTarget'},
 		'env': {title: 'bi.env'},
