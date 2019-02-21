@@ -242,7 +242,84 @@ jsapidoc.content =
 					'<br /><br />Both the successCallback and errorCallback (or Promise resolve and reject functions) will be passed an object with the following properties set : <ul><li><em>status</em>: the HTTP response code.</li><li><em>headers</em>: the HTTP response headers in the form of a key/value pair object.</li><li><em>response</em>: the response body interpreted according to the "as" request parameter.</li></ul>'
 			}
 		},
-		'cookie': {title: 'bi.cookie'},
+		'cookie':
+		{
+			title: 'bi.cookie',
+			description: '',
+			sample: '',
+			properties:
+			{
+			},
+			methods:
+			{
+				'get':
+				{
+					signature: 'get(key)', 
+					returns: 'String', 
+					description: 'Returns the value of the cookie parameter associated with the provided key or null if the key is not found or not available as per the "secure", "domain" and "path" components.',
+					parameters:
+					{
+						'key': 'The name of the cookie element to return.'
+					}
+				},
+				'set':
+				{
+					signature: 'set(key, value, sessionOnly?, secure?, domain?, path?)',
+					returns: '',
+					description: 'Sets the specified cookie value.'
+					parameters:
+					{
+						'key': 'The name of the cookie element.',
+						'value': 'The value of the cookie element.',
+						'sessionOnly': 'Whether or not the cookie is destroyed after the browser is closed. (Default true)',
+						'secure': 'Whether or not to force a HTTPS connection to retreive the value later on. (Default false)',
+						'domain': 'The domain for which the cookie is valid. If the root domain is specified, it is valid for all subdomains. (Default to the current subdomain)',
+						'path': 'The path (URI) for which the cookie is value. If the root "/" is specified, it is valid for all URIs. (Default to the current path)'
+					}
+				},
+				'remove':
+				{
+					signature: 'remove(key, secure?, domain?, path?)',
+					returns: '',
+					description: 'Removes the specified cookie value. All parameters must match the ones used in <code>bi.cookie.set()</code>.'
+					parameters:
+					{
+						'key': 'The name of the cookie element.',
+						'secure': 'Whether or not to force a HTTPS connection to retreive the value later on. (Default false)',
+						'domain': 'The domain for which the cookie is valid. If the root domain is specified, it is valid for all subdomains. (Default to the current subdomain)',
+						'path': 'The path (URI) for which the cookie is value. If the root "/" is specified, it is valid for all URIs. (Default to the current path)'
+					}
+				},
+				'has':
+				{
+					signature: 'has(key)', 
+					returns: 'Boolean', 
+					description: 'Returns whether or not the given key is available as per the "secure", "domain" and "path" components.',
+					parameters:
+					{
+						'key': 'The name of the cookie element to return.'
+					}
+				},
+				'all':
+				{
+					signature: 'all()', 
+					returns: 'Object', 
+					description: 'Returns all cookie elements in the form of a key/value pair object.',
+					parameters:
+					{
+					}
+				},
+				'clear':
+				{
+					signature: 'clear()', 
+					returns: '', 
+					description: 'Removes all cookie elements using <code>bi.cookie.remove()</code> with default "secure", "domain" and "path" values. Thus, some cookie elements may not be cleared of they were set with non-default parameters.',
+					parameters:
+					{
+					}
+				}
+			}
+		},
 		'EventTarget': {title: 'bi.EventTarget'},
 		'env': {title: 'bi.env'},
 		'translate': {title: 'bi.translate'},
