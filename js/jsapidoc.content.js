@@ -188,7 +188,7 @@ jsapidoc.content =
 				{
 					signature: 'define(ctor, members, statics, inherit)',
 					returns: 'Object',
-					description: 'Defines a new class. The four parameters can be grouped into a single object if desired.<pre>var my_class = bi.define({<br />&nbsp;&nbsp;&nbsp;&nbsp;inherit: bi.EventTarget,<br />&nbsp;&nbsp;&nbsp;&nbsp;ctor: function() { /* constructor */ },<br />statics:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foo: function() { console.log("foo"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;bar: function() { console.log("bar"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />});<br /><br />var a = new my_class();<br />a.bar(); // -> "bar"<br />my_class.foo(); // -> "foo"</pre>',
+					description: 'Defines a new class. The four parameters can be grouped into a single object if desired.<pre>var my_class = bi.define(<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;inherit: bi.EventTarget,<br />&nbsp;&nbsp;&nbsp;&nbsp;ctor: function() { /* constructor */ },<br />&nbsp;&nbsp;&nbsp;&nbsp;statics:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foo: function() { console.log("foo"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar: function() { console.log("bar"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />});<br /><br />var a = new my_class();<br />a.bar(); // -> "bar"<br />my_class.foo(); // -> "foo"</pre>',
 					parameters:
 					{
 						'ctor': 'The constructor function.',
