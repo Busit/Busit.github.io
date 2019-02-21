@@ -317,7 +317,47 @@ jsapidoc.content =
 				}
 			}
 		},
-		'EventTarget': {title: 'bi.EventTarget'},
+		'EventTarget': 
+		{
+			title: 'bi.EventTarget',
+			description: 'This is a base class to be inherited. It provides the ability to register event listeners and dispatch events. The methods of this class conform to the EventTarget object model but it is preferable to use the <code>bi.on()</code> and <code>bi.fire()</code> shortcuts to handle the events.',
+			sample: 'var my_class = bi.define(<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;inherit: bi.EventTarget<br />}<br /><br />var a = new my_class();<br />bi.on(a, "foo", function(e) { console.log(e.data); });<br />bi.fire(a, "foo", "bar"); // -> shows "bar" in the console',
+			methods:
+			{
+				'addEventListener':
+				{
+					signature: 'addEventListener(type, callback)', 
+					returns: '', 
+					description: 'Registers an event listener on this object instance.',
+					parameters:
+					{
+						'type': 'The event name.',
+						'callback': 'The callback function to dispatch when the event happens'
+					}
+				},
+				'removeEventListener':
+				{
+					signature: 'removeEventListener(type, callback)', 
+					returns: '', 
+					description: 'Removes an event listener from this object instance.',
+					parameters:
+					{
+						'type': 'The event name.',
+						'callback': 'The registered callback function'
+					}
+				},
+				'dispatchEvent':
+				{
+					signature: 'dispatchEvent(event)', 
+					returns: '', 
+					description: 'Dispatches an event on this object instance.',
+					parameters:
+					{
+						'event': 'The Event to dispatch'
+					}
+				}
+			}
+		},
 		'env': {title: 'bi.env'},
 		'translate': {title: 'bi.translate'},
 		'rest': {title: 'bi.rest'}, 
