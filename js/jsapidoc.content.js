@@ -178,7 +178,7 @@ jsapidoc.content =
 				{
 					signature: 'require(name, successCallback)',
 					returns: '',
-					description: 'Imports the provided Javascript file in the page and calls the successCallback when the import is complete. If an array of names is provided, each of them is required and the successCallback is called only when all are complete. The name can be an absolute file name including the ".js" file extension, or a relative path excluding the ".js" file extension. Relative files are loaded from the <code>/bi.$root/js/</code> directory. Each file (name) is inmported only once in the page to ensure unicity. This function should be used to manage dependencies of the encapsulated code.<pre>bi.require(["bi.modal", "bi.translate"], function()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;// bi.modal and bi.translate are now available<br />}</pre>',
+					description: 'Imports the provided Javascript file in the page and calls the successCallback when the import is complete. If an array of names is provided, each of them is required and the successCallback is called only when all are complete. The name can be an absolute file name including the ".js" file extension, or a relative path excluding the ".js" file extension. Relative files are loaded from the <code>/bi.$root/js/</code> directory. Each file is imported only once in the page to ensure unicity. This function should be used to manage dependencies of the encapsulated code.<pre>bi.require(["bi.modal", "bi.translate"], function()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;// bi.modal and bi.translate are now available<br />}</pre>',
 					parameters:
 					{
 						'name': 'The name of the Javascript file to import.'
@@ -187,10 +187,14 @@ jsapidoc.content =
 				'define':
 				{
 					signature: 'define(ctor, members, statics, inherit)',
-					returns: '',
-					description: '',
+					returns: 'Object',
+					description: 'Defines a new class. The four parameters can be grouped into a single object if desired.<pre>var my_class = bi.define({<br />&nbsp;&nbsp;&nbsp;&nbsp;inherit: bi.EventTarget,<br />&nbsp;&nbsp;&nbsp;&nbsp;ctor: function() { /* constructor */ },<br />statics:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foo: function() { console.log("foo"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;bar: function() { console.log("bar"); }<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />});<br /><br />var a = new my_class();<br />a.bar(); // -> "bar"<br />my_class.foo(); // -> "foo"</pre>',
 					parameters:
 					{
+						'ctor': 'The constructor function.',
+						'members': 'All member variables and functions in the form of a key/value pair object. Note that you should initialize the member properties in the constructor to avoid duplicated references amongst class instances.',
+						'statics': 'All static variables and functions in the form of a key/value pair object.',
+						'inherit': 'The parent class to inherit from.'
 					}
 				},
 				'instance':
