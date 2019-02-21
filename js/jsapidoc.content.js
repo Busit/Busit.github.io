@@ -245,11 +245,8 @@ jsapidoc.content =
 		'cookie':
 		{
 			title: 'bi.cookie',
-			description: '',
-			sample: '',
-			properties:
-			{
-			},
+			description: 'This class acts as a proxy to the cookie values with helper methods to manage the values with ease.',
+			sample: 'bi.cookie.set("foo", "42");<br />console.log(bi.cookie.get("foo")); // -> "42"<br />bi.cookie.remove("foo");<br />console.log(bi.cookie.get("foo")); // -> null',
 			methods:
 			{
 				'get':
@@ -271,7 +268,7 @@ jsapidoc.content =
 					{
 						'key': 'The name of the cookie element.',
 						'value': 'The value of the cookie element.',
-						'sessionOnly': 'Whether or not the cookie is destroyed after the browser is closed. (Default true)',
+						'sessionOnly': 'Whether or not the cookie is destroyed after the browser is closed. If false, then the value is preserved for 1 year maximum. (Default true)',
 						'secure': 'Whether or not to force a HTTPS connection to retreive the value later on. (Default false)',
 						'domain': 'The domain for which the cookie is valid. If the root domain is specified, it is valid for all subdomains. (Default to the current subdomain)',
 						'path': 'The path (URI) for which the cookie is value. If the root "/" is specified, it is valid for all URIs. (Default to the current path)'
