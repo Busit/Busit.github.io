@@ -61,7 +61,7 @@ jsapidoc.content =
 				{
 					signature: 'fire(element, event, params?, async?)',
 					returns: '',
-					description: 'Triggers the specified event on the target element.<pre>// use fire as a function call<br />bi.fire(console, "log", ["foo", 42]); // -> event.data = ["foo", 42]<br /><br />// use fire as an event<br />bi.fire(document.body, "click");<br /><br />// conflicting function name<br />document.body.click = function(txt1, txt2) { console.log(txt1 + " " + txt2); };<br />bi.fire(document.body, "click", ["hello", "world"]); // -> "hello world"<br />bi.fire(document.body, "@click", "test"); // -> dispatches the click event with event.data = "test"</pre>',
+					description: 'Triggers the specified event on the target element.<pre>// use fire as a function call<br />bi.fire(console, "log", ["foo"]); // -> console.log("foo") -> "foo"<br /><br />// use fire as an event<br />bi.fire(document.body, "click");<br /><br />// conflicting function name<br />document.body.click = function(txt1, txt2) { console.log(txt1 + " " + txt2); };<br />bi.fire(document.body, "click", ["hello", "world"]); // -> "hello world"<br />bi.fire(document.body, "@click", "test"); // -> dispatches the click event with event.data = "test"</pre>',
 					parameters:
 					{
 						'element': 'The target element. If an Element is passed as argument, it is used directly. If a String is passed as argument, the element is resolved using <code>bi.all(element)</code>. If an Array is passed as argument, then the event is dispatched on all provided elements.',
