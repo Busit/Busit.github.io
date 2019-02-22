@@ -61,12 +61,12 @@ jsapidoc.content =
 				{
 					signature: 'fire(element, event, params?, async?)',
 					returns: '',
-					description: 'Triggers the specified event on the target element.<pre>// use fire as a function call<br />bi.fire(console, "log", "foo"); // -> "foo"<br /><br />// use fire as an event<br />bi.fire(document.body, "click");<br /><br />// conflicting function name<br />document.body.click = function(txt) { console.log(txt); };<br />bi.fire(document.body, "click", "test"); // -> calls the click function and prints to the console<br />bi.fire(document.body, "@click", "test"); // -> dispatches the click event with event.data = "test"</pre>',
+					description: 'Triggers the specified event on the target element.<pre>// use fire as a function call<br />bi.fire(console, "log", ["foo", 42]); // -> event.data = ["foo", 42]<br /><br />// use fire as an event<br />bi.fire(document.body, "click");<br /><br />// conflicting function name<br />document.body.click = function(txt1, txt2) { console.log(txt1 + " " + txt2); };<br />bi.fire(document.body, "click", ["hello", "world"]); // -> "hello world"<br />bi.fire(document.body, "@click", "test"); // -> dispatches the click event with event.data = "test"</pre>',
 					parameters:
 					{
 						'element': 'The target element. If an Element is passed as argument, it is used directly. If a String is passed as argument, the element is resolved using <code>bi.all(element)</code>. If an Array is passed as argument, then the event is dispatched on all provided elements.',
 						'event': 'The name of the event. If the event starts with <code>"on"</code> and a matching function exists on the element, that function is called. If the element is an EventTarget, then the event is dispatched on that element. If the element is an EventTarget and also contains a function with a matching name, the function is called in priority, except if the event name is prefixed with the <code>"@"</code> symbol.',
-						'params': 'The parameters of the event. If the event resolves as a function, those are the function parameters. Otherwise the properties will be set in the <code>data</code> variable of the event.',
+						'params': 'The parameters of the event. If the event resolves as a function, those are the function parameters as of <code>function.apply()</code>. Otherwise the properties will be set in the <code>data</code> variable of the event.',
 						'async': 'If true, the <code>fire</code> function is processed in a later point in time, allowing the screen to eventually refresh. Default is false.'
 					}
 				},
@@ -321,7 +321,7 @@ jsapidoc.content =
 		{
 			title: 'bi.EventTarget',
 			description: 'This is a base class to be inherited. It provides the ability to register event listeners and dispatch events. The methods of this class conform to the EventTarget object model but it is preferable to use the <code>bi.on()</code> and <code>bi.fire()</code> shortcuts to handle the events.',
-			sample: 'var my_class = bi.define(<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;inherit: bi.EventTarget<br />}<br /><br />var a = new my_class();<br />bi.on(a, "foo", function(e) { console.log(e.data); });<br />bi.fire(a, "foo", "bar"); // -> shows "bar" in the console',
+			sample: 'var my_class = bi.define(<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;inherit: bi.EventTarget<br />});<br /><br />var a = new my_class();<br />bi.on(a, "foo", function(e) { console.log(e.data); });<br />bi.fire(a, "foo", "bar"); // -> shows "bar" in the console from the event handler',
 			methods:
 			{
 				'addEventListener':
