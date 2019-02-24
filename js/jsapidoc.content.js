@@ -371,7 +371,7 @@ jsapidoc.content =
 		'translate': 
 		{
 			title: 'bi.translate',
-			description: 'Manages the text translations. The alias method <em>bi._()</em> is a shorthand for <code>bi.translate.get()</code>. The translation files are loaded from the <code>bi.$root/js/locale</code> directory with the file name matching the specified locale.',
+			description: 'Manages the text translations. The alias method <code>bi._()</code> is a shorthand for <code>bi.translate.get()</code>. The translation files are loaded from the <code>bi.$root/js/locale</code> directory with the file name matching the specified locale.<br />The translation text can contain any number of substitution parameters in the form of <code>{0}</code> with the digit being the argument number starting at zero.<pre>"use strict";// Sample translation file<br /><br /><br />if( !bi.translate.cache.en ) bi.translate.cache.en = {};<br />bi.translate.cache.en.import(<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;"yes": "Yes",<br />&nbsp;&nbsp;&nbsp;&nbsp;"no": "No",<br />&nbsp;&nbsp;&nbsp;&nbsp;"ok": "OK",<br />&nbsp;&nbsp;&nbsp;&nbsp;"cancel": "Cancel"<br />});<br /><br />bi.fire(bi, "provide", ["locale/en"]);',
 			sample: 'bi.require("bi.translate", function()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;// the default locale is loaded<br />&nbsp;&nbsp;&nbsp;&nbsp;var txt = bi._("hello"); // -> "Hello"<br />&nbsp;&nbsp;&nbsp;&nbsp;bi.translate.switch("fr", function()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// the "fr" locale is now loaded<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;txt = bi._("hello"); // -> "Bonjour"<br />&nbsp;&nbsp;&nbsp;&nbsp;});<br />});',
 			properties:
 			{
