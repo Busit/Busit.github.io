@@ -61,7 +61,7 @@ jsapidoc.content =
 				{
 					signature: 'fire(element, event, params?, async?)',
 					returns: '',
-					description: 'Triggers the specified event on the target element.<pre>// use fire as a function call<br />bi.fire(console, "log", ["foo"]); // -> console.log("foo") -> "foo"<br /><br />// use fire as an event<br />bi.fire(document.body, "click");<br /><br />// conflicting function name<br />document.body.click = function(txt1, txt2) { console.log(txt1 + " " + txt2); };<br />bi.fire(document.body, "click", ["hello", "world"]); // -> "hello world"<br />bi.fire(document.body, "@click", "test"); // -> dispatches the click event with event.data = "test"</pre>',
+					description: 'Triggers the specified event on the target element.<pre>// use fire as a function call<br />bi.fire(console, "log", ["foo"]); // -> console.log("foo") -> "foo"<br /><br />// use fire as an event<br />bi.fire(document.body, "click");<br /><br />// conflicting function name<br />document.body.click = function(txt1, txt2) { console.log(txt1 + " " + txt2); };<br />bi.fire(document.body, "click", ["hello", "world"]); // -> "hello world"<br />bi.fire(document.body, "@click", ["hello", "world"]); // -> event.data = ["hello", "world"]</pre>',
 					parameters:
 					{
 						'element': 'The target element. If an Element is passed as argument, it is used directly. If a String is passed as argument, the element is resolved using <code>bi.all(element)</code>. If an Array is passed as argument, then the event is dispatched on all provided elements.',
@@ -192,7 +192,7 @@ jsapidoc.content =
 					parameters:
 					{
 						'ctor': 'The constructor function.',
-						'members': 'All member variables and functions in the form of a key/value pair object. Note that you should initialize the member properties in the constructor to avoid duplicated references amongst class instances.',
+						'members': 'All member variables and functions in the form of a key/value pair object. Note that you should initialize the member properties in the constructor to avoid duplicated references amongst class instances. The value of the member can be a function, a getter/setter or any regular object.',
 						'statics': 'All static variables and functions in the form of a key/value pair object.',
 						'inherit': 'The parent class to inherit from.'
 					}
@@ -214,7 +214,7 @@ jsapidoc.content =
 					description: 'Imports the provided CSS file in the page. The name can be an absolute file name including the ".css" file extension, or a relative path excluding the ".css" file extension. Relative files are loaded from the <code>/bi.$root/css/</code> directory.<pre>bi.importCss("custom/main"); // relative path to /css/custom/main.css<br />bi.importCss("/css/custom/main.css"); // absolute path</pre>',
 					parameters:
 					{
-						'name': 'The name of the CSS file to import'
+						'name': 'The name of the CSS file to import. If an array is provided, all files are imported.'
 					}
 				},
 				'_':
@@ -358,8 +358,71 @@ jsapidoc.content =
 				}
 			}
 		},
-		'env': {title: 'bi.env'},
-		'translate': {title: 'bi.translate'},
+		'env':
+		{
+			title: 'bi.env',
+			description: 'This object contains environment variables and global configuration parameters. It is the place to add such configurations such that they are available throughout the application.',
+			properties:
+			{
+				'DOMAIN': {type: 'String', description: 'This is the main hostname of the application. Default is <code>window.location.host</code>.'},
+				'LOCALES': {type: 'Array', description: 'This is the list of supported locales by <code>bi.translate</code>. The locales should be the lower-case two letter code of the language. The first locale in that list will be used by default when the user locale is not found or not supported.'}
+			}
+		},
+		'translate': 
+		{
+			title: 'bi.translate',
+			description: 'Manages the text translations. The alias method <em>bi._()</em> is a shorthand for <code>bi.translate.get()</code>. The translation files are loaded from the <code>bi.$root/js/locale</code> directory with the file name matching the specified locale.',
+			sample: 'bi.require("bi.translate", function()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;// the default locale is loaded<br />&nbsp;&nbsp;&nbsp;&nbsp;var txt = bi._("hello"); // -> "Hello"<br />&nbsp;&nbsp;&nbsp;&nbsp;bi.translate.switch("fr", function()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// the "fr" locale is now loaded<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;txt = bi._("hello"); // -> "Bonjour"<br />&nbsp;&nbsp;&nbsp;&nbsp;});<br />});',
+			properties:
+			{
+				'locale': {type: 'String', description: 'The current user locale as a two lower case language code. Defaults in order to the language set in the cookie, or as detected by the browser.'},
+				'cache': {type: 'Object', description: 'This is the translation store. At first level, the object keys are the locales, and at second level, a key/value pair object containing the translation key and the localised translation.'}
+			},
+			methods:
+			{
+				'init':
+				{
+					signature: 'init()',
+					returns: '',
+					description: 'This method is invoked upon file inclusion and loads the translation file matching the <code>bi.translate.locale</code>. Only then, the module fires the <code>bi.provide</code> event.',
+					parameters:
+					{
+					}
+				},
+				'get':
+				{
+					signature: 'get(key, ...)',
+					returns: 'String',
+					description: 'Returns the translation of the specified key in the current locale. If additionnal parameters are provided, they are used as substitution for the translated text.<pre>var firstname = "foo";<br />var lastname = "bar";<br />bi.translate.get("hello", firstname, lastname); // "Bonjour {0} {1}" -> "Bonjour foo bar"</pre>If the current locale does not exist or the key does not exist, then an empty string is returned.',
+					parameters:
+					{
+						'key': 'The translation key.',
+						'...': 'Any additionnal substitution parameters'
+					}
+				},
+				'load':
+				{
+					signature: 'load(locale)',
+					returns: '',
+					description: 'If the specified locale is different from the <code>bi.translate.locale</code>, then the cookie is set with that locale and the page is reloaded entirely to apply the change.',
+					parameters:
+					{
+						'locale': 'The two lower case language code.'
+					}
+				},
+				'switch':
+				{
+					signature: 'switch(locale, callback)',
+					returns: '',
+					description: 'Switches the current locale without reloading the page. If the <code>bi.env.LOCALES</code> does not contain the specified locale, the frist one of that list is loaded instead.',
+					parameters:
+					{
+						'locale': 'The two lower case language code.',
+						'callback': 'The callback function passed to <code>bi.require()</code> to load the translation file.'
+					}
+				}
+			}
+		},
 		'rest': {title: 'bi.rest'}, 
 		'modal': {title: 'bi.modal'},
 		'gui': {title: 'bi.gui'},
