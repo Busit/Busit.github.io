@@ -424,8 +424,155 @@ jsapidoc.content =
 			}
 		},
 		'rest': {title: 'bi.rest'}, 
-		'modal': {title: 'bi.modal'},
+		'modal':
+		{
+			title: 'bi.modal',
+			description: '',
+			methods:
+			{
+				'alert':
+				{
+					signature: '[static] alert(message, callback?)',
+					returns: '',
+					description: 'Displays a foremost element with the specified message and a single OK button. When the OK button is pressed, the element is removed from the DOM and the callback function is called.',
+					parameters:
+					{
+						'message': 'The message to display. The message is used as the content to bi.node() and can be an innerHTML or a node',
+						'callback': 'The callback function to call once the user has pressed the OK button'
+					}
+				},
+				'confirm':
+				{
+					signature: '[static] confirm(message, callback?, buttons?)',
+					returns: '',
+					description: 'Displays a foremost element with the specified message and multiple buttons. When any button is pressed, the element is removed from the DOM and the callback function is called with the index of the pressed button.',
+					parameters:
+					{
+						'message': 'The message to display. The message is used as the content to bi.node() and can be an innerHTML or a node',
+						'callback': 'The callback function to call once the user has pressed any button',
+						'buttons': 'An ordered array of button labels. If not provided, "OK" and "Cancel" are used'
+					}
+				},
+				'prompt':
+				{
+					signature: '[static] prompt(message, callback?, value?, type?)',
+					returns: '',
+					description: 'Displays a foremost element with the specified message and input. When the OK button is pressed, the element is removed from the DOM and the callback function is called with the input value. If the Cancel button is pressed, the callback function is called with a null value.',
+					parameters:
+					{
+						'message': 'The message to display. The message is used as the content to bi.node() and can be an innerHTML or a node',
+						'callback': 'The callback function to call once the user has pressed any button. The value of the input is passed as argument',
+						'value': 'The initial value of the input',
+						'type': 'If the type is a HTMLElement that contains a "value" property, it is used as input. If the type is "textarea", a textarea field is used as input. Else an input type text is used'
+					}
+				},
+				'modal':
+				{
+					signature: '[static] modal(dom, escapable?)',
+					returns: '',
+					description: 'Displays the provided element as foremost element. It listens for the "close" event to remove it from the DOM. If multiple modal elements are displayed, only the last is closed.',
+					parameters:
+					{
+						'dom': 'The node to display',
+						'escapable': 'If true, then the "close" event is triggered (and the element is removed) when the escape key is pressed or if the user clicks anywhere else'
+					}
+				}
+			}
+		},
 		'gui': {title: 'bi.gui'},
+		'color':
+		{
+			title: 'bi.color',
+			description: 'Provides ',
+			methods:
+			{
+				'toArray':
+				{
+					signature: '[static] toArray(color)',
+					returns: 'Array',
+					description: 'Returns the red, green, blue, alpha color components in the form of an array',
+					parameters:
+					{
+						'color': 'The color to decompose. If a #RRGGBB, rgb(R,G,B) or rgba(R,G,B,A) string is given, it is converted. If an object containing r, g, b and a properties is given, those are used.'
+					}
+				},
+				'toObject':
+				{
+					signature: '[static] toObject(color)',
+					returns: 'Object',
+					description: 'Returns the red, green, blue, alpha color components in the form of an object {r: int, g: int, b: int, a: float}',
+					parameters:
+					{
+						'color': 'The color to decompose as per toArray(color).'
+					}
+				},
+				'toString':
+				{
+					signature: '[static] toString(color)',
+					returns: 'String',
+					description: 'Returns the rgb() or rgba() form of the provided color',
+					parameters:
+					{
+						'color': 'The color to decompose as per toArray(color).'
+					}
+				},
+				'toHex':
+				{
+					signature: '[static] toHex(color)',
+					returns: 'String',
+					description: 'Returns the #RRGGBB form of the provided color',
+					parameters:
+					{
+						'color': 'The color to decompose as per toArray(color).'
+					}
+				},
+				'rgb2rgba':
+				{
+					signature: '[static] rgb2rgba(color, alpha)',
+					returns: 'String',
+					description: 'Returns the toString(color) form of the provided color with the applied alpha',
+					parameters:
+					{
+						'color': 'The color to decompose as per toArray(color).',
+						'alpha': 'The alpha component.',
+					}
+				},
+				'hsl2rgb':
+				{
+					signature: '[static] hsl2rgb(h, s, l)',
+					returns: 'Object',
+					description: 'Returns the rgb toObject(color) form of the provided hsl components',
+					parameters:
+					{
+						'h': 'The hue.'
+						's': 'The saturation.'
+						'l': 'The luminance.'
+					}
+				},
+				'rgb2hsl':
+				{
+					signature: '[static] rgb2hsl(rgb)',
+					returns: 'Object',
+					description: 'Returns the {h: int, s: float, l: float} form of the provided rgb color',
+					parameters:
+					{
+						'rgb': 'The rgb color to decompose as per toArray(color).'
+					}
+				},
+				'blend':
+				{
+					signature: '[static] blend(foreground, background, alpha)',
+					returns: 'String',
+					description: 'Returns the toHex(color) form of the result of alpha blending of the foreground on the background',
+					parameters:
+					{
+						'foreground': 'The foreground color to use as per toArray(color).'
+						'background': 'The background color to use as per toArray(color).'
+						'alpha': 'The alpha blending value.'
+					}
+				}
+			}
+		},
 		'Promise':
 		{
 			title: "Promise",
