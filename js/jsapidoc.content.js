@@ -427,7 +427,7 @@ jsapidoc.content =
 		'modal':
 		{
 			title: 'bi.modal',
-			description: '',
+			description: 'Provides convenience methods to replace the browser native alert, prompt and confirm methods.',
 			methods:
 			{
 				'alert':
@@ -483,7 +483,7 @@ jsapidoc.content =
 		'color':
 		{
 			title: 'bi.color',
-			description: 'Provides ',
+			description: 'Provides convenience methods to convert or decompose colors.',
 			methods:
 			{
 				'toArray':
