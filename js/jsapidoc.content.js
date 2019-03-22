@@ -428,6 +428,7 @@ jsapidoc.content =
 		{
 			title: 'bi.modal',
 			description: 'Provides convenience methods to replace the browser native alert, prompt and confirm methods.',
+			sample: 'bi.modal.alert("Hello World!");<br /><br />bi.modal.confirm("Are you sure ?", function(choice)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;if( choice === 0 ) console.log("yes");<br />&nbsp;&nbsp;&nbsp;&nbsp;else console.log("no");<br />});<br /><br />bi.modal.prompt("Enter your name", function(value)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;console.log(value);<br />});<br /><br />bi.modal.modal(bi.node("p", "Hello World!"), true);',
 			methods:
 			{
 				'alert':
