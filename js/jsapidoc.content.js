@@ -493,7 +493,7 @@ jsapidoc.content =
 					description: 'Returns the red, green, blue, alpha color components in the form of an array',
 					parameters:
 					{
-						'color': 'The color to decompose. If a #RRGGBB, rgb(R,G,B) or rgba(R,G,B,A) string is given, it is converted. If an object containing r, g, b and a properties is given, those are used.'
+						'color': 'The color to decompose. If a #RRGGBB, rgb(R,G,B) or rgba(R,G,B,A) string is given, it is converted. If an object containing r, g, b and a properties is given, those are used'
 					}
 				},
 				'toObject':
@@ -503,7 +503,7 @@ jsapidoc.content =
 					description: 'Returns the red, green, blue, alpha color components in the form of an object {r: int, g: int, b: int, a: float}',
 					parameters:
 					{
-						'color': 'The color to decompose as per toArray(color).'
+						'color': 'The color to decompose as per toArray(color)'
 					}
 				},
 				'toString':
@@ -513,7 +513,7 @@ jsapidoc.content =
 					description: 'Returns the rgb() or rgba() form of the provided color',
 					parameters:
 					{
-						'color': 'The color to decompose as per toArray(color).'
+						'color': 'The color to decompose as per toArray(color)'
 					}
 				},
 				'toHex':
@@ -523,7 +523,7 @@ jsapidoc.content =
 					description: 'Returns the #RRGGBB form of the provided color',
 					parameters:
 					{
-						'color': 'The color to decompose as per toArray(color).'
+						'color': 'The color to decompose as per toArray(color)'
 					}
 				},
 				'rgb2rgba':
@@ -533,8 +533,8 @@ jsapidoc.content =
 					description: 'Returns the toString(color) form of the provided color with the applied alpha',
 					parameters:
 					{
-						'color': 'The color to decompose as per toArray(color).',
-						'alpha': 'The alpha component.',
+						'color': 'The color to decompose as per toArray(color)',
+						'alpha': 'The alpha component'
 					}
 				},
 				'hsl2rgb':
@@ -544,9 +544,9 @@ jsapidoc.content =
 					description: 'Returns the rgb toObject(color) form of the provided hsl components',
 					parameters:
 					{
-						'h': 'The hue.'
-						's': 'The saturation.'
-						'l': 'The luminance.'
+						'h': 'The hue',
+						's': 'The saturation',
+						'l': 'The luminance'
 					}
 				},
 				'rgb2hsl':
@@ -556,7 +556,7 @@ jsapidoc.content =
 					description: 'Returns the {h: int, s: float, l: float} form of the provided rgb color',
 					parameters:
 					{
-						'rgb': 'The rgb color to decompose as per toArray(color).'
+						'rgb': 'The rgb color to decompose as per toArray(color)'
 					}
 				},
 				'blend':
@@ -566,9 +566,9 @@ jsapidoc.content =
 					description: 'Returns the toHex(color) form of the result of alpha blending of the foreground on the background',
 					parameters:
 					{
-						'foreground': 'The foreground color to use as per toArray(color).'
-						'background': 'The background color to use as per toArray(color).'
-						'alpha': 'The alpha blending value.'
+						'foreground': 'The foreground color to use as per toArray(color)',
+						'background': 'The background color to use as per toArray(color)',
+						'alpha': 'The alpha blending value'
 					}
 				}
 			}
