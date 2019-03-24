@@ -94,7 +94,7 @@ window.jsapidoc = bi.instance(
 						])),
 						bi.node('tbody', bi.node('tr',
 						[
-							bi.node('td', item.ctor.signature.replace(/ ([a-z0-9_])+\(/i, " <strong>$1</strong>(")),
+							bi.node('td', item.ctor.signature.replace(/(^| )([a-z0-9_$]+)\(/i, "$1<strong>$2</strong>(")),
 							bi.node('td', item.ctor.description)
 						]))
 					])
