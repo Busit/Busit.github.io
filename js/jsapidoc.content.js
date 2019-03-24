@@ -461,7 +461,7 @@ jsapidoc.content =
 		{
 			title: 'bi.rest',
 			description: 'This object is a wrapper around bi.ajax that will handle the Busit REST API response and errors. It provides a login mechanism to acquire credentials beforehand.<br />Note that the constants bi.env.API_HOST (the base url of the Busit REST API) and bi.env.DOMAIN (domain name to set the login cookie) are strongly recommended.',
-			sample: 'try<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;bi.rest.login(); // will load credentials from the cookie<br />&nbsp;&nbsp;&nbsp;&nbsp;bi.rest.get("/self/system/user/select").then(function(response)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(response.user_id);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br />catch(Exception e)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;// user not logged in<br />}',
+			sample: 'try<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;bi.rest.login(); // will load credentials from the cookie<br />&nbsp;&nbsp;&nbsp;&nbsp;bi.rest.get("/self/system/user/select").then(function(response)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(response.user_id);<br />&nbsp;&nbsp;&nbsp;&nbsp;});<br />}<br />catch(Exception e)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;// user not logged in<br />}',
 			properties:
 			{
 				'REST_API': {type: 'String', description: 'The base URL of the Busit REST API. It is initialized with bi.env.API_HOST'},
