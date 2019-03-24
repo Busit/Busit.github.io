@@ -141,7 +141,7 @@ window.jsapidoc = bi.instance(
 				{
 					tbody.appendChild(bi.node('tr',
 					[
-						bi.node('td', item.methods[methods[i]].signature),
+						bi.node('td', item.methods[methods[i]].signature.replace(/(^| )([a-z0-9_$]+)\(/i, "$1<strong>$2</strong>(")),
 						bi.node('td', item.methods[methods[i]].returns),
 						bi.node('td', item.methods[methods[i]].description)
 					]));
