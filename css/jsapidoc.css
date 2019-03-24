@@ -11,6 +11,7 @@ header, section, nav, footer, aside { display: block; }
 a { text-decoration: none; outline: none !important; }
 input, select, button { outline: none !important; }
 body, header, footer { min-width: 780px; }
+strong { font-weight: bold; }
 
 header {
 	background: #005596;
