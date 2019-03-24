@@ -457,7 +457,59 @@ jsapidoc.content =
 				}
 			}
 		},
-		'rest': {title: 'bi.rest'}, 
+		'rest':
+		{
+			title: 'bi.rest',
+			description: 'This object is a wrapper around bi.ajax that will handle the Busit REST API response and errors. It provides a login mechanism to acquire credentials beforehand.<br />Note that the constants bi.env.API_HOST (the base url of the Busit REST API) and bi.env.DOMAIN (domain name to set the login cookie) are strongly recommended.',
+			properties:
+			{
+				'REST_API': {type: 'String', description: 'The base URL of the Busit REST API. It is initialized with bi.env.API_HOST'},
+				'USER': {type: 'String', description: 'The currently logged user id'},
+				'TOKEN': {type: 'String', description: 'The currently logged user access token'}
+			},
+			methods:
+			{
+				'login':
+				{
+					signature: 'login(user?, pass?, remember?, successCallback?, errorCallback?)',
+					returns: '',
+					description: 'Attempts to retrieve the user credentials to use the Busit REST API. If the user and password parameters are omitted, the cookie values are used if available.',
+					parameters:
+					{
+						'user': 'The user name, email or id. If omitted as well as the password, the cookie values will be used',
+						'pass': 'The user password or token. If omitted as well as the user, the cookie values will be used',
+						'remember': 'Whether or not to store the retrieved credentials in the cookie. Default false',
+						'successCallback': 'The function to call with the user id as parameter when the credentials have been retrieved',
+						'errorCallback': 'The function to call of the authentication fails'
+					}
+				},
+				'logout':
+				{
+					signature: 'logout()',
+					returns: '',
+					description: 'Removes the cookie and sets the USER and TOKEN properties to null'
+				},
+				'isAuthenticated':
+				{
+					signature: 'isAuthenticated()',
+					returns: 'Boolean',
+					description: 'Returns whether or not the USER and TOKEN properties are populated and can be used'
+				},
+				'get':
+				{
+					signature: 'get(path, props?, successCallback?, errorCallback?)',
+					returns: 'Promise',
+					description: 'Performs the specified Busit REST API call and returns the response',
+					parameters:
+					{
+						'path': 'The target endpoint. If a full URL is provided, it is used as is. Otherwise, the path is appended to the REST_API property',
+						'props': 'The ajax request parameters (see bi.ajax). If props.headers.Authorization is specified, it will override the USER and TOKEN credentials',
+						'successCallback': 'The successCallback to handle the response. The callback will be called with the parsed JSON response from the Busit REST API',
+						'errorCallback': 'The errorCallback to handle the error. The callback will be called with the parsed JSON error from the Busit REST API'
+					}
+				}
+			}
+		}, 
 		'modal':
 		{
 			title: 'bi.modal',
@@ -514,7 +566,6 @@ jsapidoc.content =
 				}
 			}
 		},
-		'gui': {title: 'bi.gui'},
 		'color':
 		{
 			title: 'bi.color',
