@@ -355,6 +355,40 @@ jsapidoc.content =
 					{
 						'event': 'The Event to dispatch'
 					}
+				},
+				'on':
+				{
+					signature: 'on(event, handler)',
+					returns: 'Object',
+					description: 'Registers and event handler. Alias of <code>bi.on(this, event, handler)</code>.<br />Note: this is known to cause incompatibilities with the Dojo framework.',
+					parameters:
+					{
+						'event': 'The event name',
+						'handler': 'The event handler'
+					}
+				},
+				'once':
+				{
+					signature: 'once(event, handler)',
+					returns: 'Object',
+					description: 'Registers and event handler to execute only once. Alias of <code>bi.once(this, event, handler)</code>.',
+					parameters:
+					{
+						'event': 'The event name',
+						'handler': 'The event handler'
+					}
+				},
+				'fire':
+				{
+					signature: 'fire(event, params, async)',
+					returns: '',
+					description: 'Dispatches an event. Alias of <code>bi.fire(this, event, params, async)</code>.',
+					parameters:
+					{
+						'event': 'The event name',
+						'params': 'The event parameters',
+						'async': 'Whether or not the event is triggered asynchronousely'
+					}
 				}
 			}
 		},
@@ -485,6 +519,7 @@ jsapidoc.content =
 		{
 			title: 'bi.color',
 			description: 'Provides convenience methods to convert or decompose colors.',
+			sample: 'bi.color.toArray("#FF0000"); // -> [255, 0, 0, 1]<br />bi.color.toObject("#00FF00"); // -> {r: 0, g: 255, b: 0, a: 1}<br />bi.color.toString([0, 0, 255, 0.5]); // -> "rgba(0, 0, 255, 0.5)"<br />bi.color.toHex([0, 255, 255]); // -> "#00FFFF"<br />bi.color.blend("#FF0000", "#FFFFFF", 0.5); // -> "#FF7F7F"',
 			methods:
 			{
 				'toArray':
