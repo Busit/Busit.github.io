@@ -473,8 +473,8 @@ jsapidoc.content =
 				'login':
 				{
 					signature: '[static] login(user?, pass?, remember?, successCallback?, errorCallback?)',
-					returns: '',
-					description: 'Attempts to retrieve the user credentials to use the Busit REST API. If the user and password parameters are omitted, the cookie values are used if available.',
+					returns: 'Promise',
+					description: 'Attempts to retrieve the user credentials to use the Busit REST API. If the user and password parameters are omitted, the cookie values are used if available. The promise returns the user id upon resolution.',
 					parameters:
 					{
 						'user': 'The user name, email or id. If omitted as well as the password, the cookie values will be used',
@@ -1421,6 +1421,29 @@ jsapidoc.content =
 					}
 				}
 			}
+		}
+	},
+	'Single Page Application':
+	{
+		'bi.webapp':
+		{
+			title: 'bi.webapp',
+			description: 'This object is the main entry point for a single page web application. It offers a simple framework for natural browsing using # url elements.'
+		},
+		'bi.view':
+		{
+			title: 'bi.view',
+			description: 'This class represents a view (or one page) of a web application. See <code>bi.webapp</code> for more details on how to use it.'
+		},
+		'bi.views':
+		{
+			title: 'bi.views',
+			description: 'This object is the container for all the <code>bi.view</code> of a web application. See <code>bi.webapp</code> for more details on how to use it.'
+		},
+		'bi.panel':
+		{
+			title: 'bi.panel',
+			description: 'This object represents an overlay section of a <code>bi.view</code> as part of a web application. See <code>bi.webapp</code> for more details on how to use it.'
 		}
 	}
 };
