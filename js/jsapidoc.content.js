@@ -1429,7 +1429,12 @@ jsapidoc.content =
 		{
 			title: 'bi.webapp',
 			description: 'This object is the main entry point for a single page web application. It offers a simple framework for natural browsing using url fragments.',
-			sample: ''
+			sample: '',
+			properties:
+			{
+				'bi.panels': 'This object is the container for all the <code>bi.panel</code> of a web application',
+				'bi.views': 'This object is the container for all the <code>bi.view</code> of a web application'
+			}
 		},
 		'bi.view':
 		{
@@ -1494,15 +1499,11 @@ jsapidoc.content =
 				}
 			}
 		},
-		'bi.views':
-		{
-			title: 'bi.views',
-			description: 'This object is the container for all the <code>bi.view</code> of a web application. See <code>bi.webapp</code> for more details on how to use it.'
-		},
 		'bi.panel':
 		{
 			title: 'bi.panel',
 			description: 'This object represents an overlay section of a <code>bi.view</code> as part of a web application. See <code>bi.webapp</code> for more details on how to use it.',
+			sample: 'bi.panels["my_panel"] = bi.instance(<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;parent: bi.panel,<br />&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: function(view, data)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dom = view.dom.appendChild(bi.node("div", data));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide: function()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dom.remove();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />});',
 			properties:
 			{
 				'dom': {type: 'HTMLElement', description: 'The main dom element that holds the panel content. Null by default, it should ideally be set in the <code>show()</code> method.'},
@@ -1531,11 +1532,6 @@ jsapidoc.content =
 					}
 				}
 			}
-		},
-		'bi.panels':
-		{
-			title: 'bi.panels',
-			description: 'This object is the container for all the <code>bi.panel</code> of a web application. See <code>bi.webapp</code> for more details on how to use it.'
 		}
 	}
 };
