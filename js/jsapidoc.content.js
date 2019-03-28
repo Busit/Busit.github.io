@@ -1432,8 +1432,8 @@ jsapidoc.content =
 			sample: '',
 			properties:
 			{
-				'bi.panels': 'This object is the container for all the <code>bi.panel</code> of a web application',
-				'bi.views': 'This object is the container for all the <code>bi.view</code> of a web application'
+				'bi.panels': {type: 'Object', description: 'This object is the container for all the <code>bi.panel</code> of a web application'},
+				'bi.views': {type: 'Object', description: 'This object is the container for all the <code>bi.view</code> of a web application'}
 			}
 		},
 		'bi.view':
