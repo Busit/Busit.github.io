@@ -1428,12 +1428,71 @@ jsapidoc.content =
 		'bi.webapp':
 		{
 			title: 'bi.webapp',
-			description: 'This object is the main entry point for a single page web application. It offers a simple framework for natural browsing using # url elements.'
+			description: 'This object is the main entry point for a single page web application. It offers a simple framework for natural browsing using url fragments.',
+			sample: ''
 		},
 		'bi.view':
 		{
 			title: 'bi.view',
-			description: 'This class represents a view (or one page) of a web application. See <code>bi.webapp</code> for more details on how to use it.'
+			description: 'This class represents a view (or one page) of a web application. See <code>bi.webapp</code> for more details on how to use it.',
+			sample: 'bi.views["#my_view"] = bi.instance(<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;parent: bi.view,<br />&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: function(previous)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dom = bi.webapp.container.appendChild(bi.node("div", "Hello World!"));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide: function(next)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dom.remove();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />});',
+			properties:
+			{
+				'dom': {type: 'HTMLElement', description: 'The main dom element that holds the view content. Null by default, it should ideally be set in the <code>show()</code> method.'},
+				'panel': {type: 'bi.panel', description: 'Reference to the <code>bi.panel</code> that is currently being displayed. Null by default, it should ideally be set when showing a panel.'}
+			},
+			methods:
+			{
+				'show':
+				{
+					signature: 'show(previous)',
+					returns: '',
+					description: 'Abstract method that should show the current view. The content of the view should typically be added to the <code>bi.webapp.container</code>',
+					parameters:
+					{
+						'previous': 'The previous URL fragment that was shown before the current one'
+					}
+				},
+				'hide':
+				{
+					signature: 'hide(next)',
+					returns: '',
+					description: 'Abstract method that should hide the current view. Typically calle <code>this.dom.remove()</code> and also call <code>detachPanel()</code> to cleanup resources',
+					parameters:
+					{
+						'next': 'The next URL fragment to be shown after the current one'
+					}
+				},
+				'attachPanel':
+				{
+					signature: 'attachPanel(panel, data?)',
+					returns: 'bi.panel',
+					description: 'Attaches and returns the provided <code>bi.panel</code> to the current view. Detaches the previous panel if necessary. Then calls the <code>show()</code> method on the panel',
+					parameters:
+					{
+						'panel': 'An instance of <code>bi.panel</code> to show, or a string index to lookup in the <code>bi.panels</code> registry',
+						'data': 'The optional data to be provided to the panel'
+					}
+				},
+				'detachPanel':
+				{
+					signature: 'detachPanel()',
+					returns: '',
+					description: 'Removes the current <code>bi.panel</code> by calling its <code>hide()</code> method',
+					parameters:
+					{
+					}
+				},
+				'beforeunload':
+				{
+					signature: 'beforeunload()',
+					returns: 'String',
+					description: 'Abstract method that should return a String to prompt the user before navigating away from the view. If the return value is not null, a <code>bi.modal.confirm</code> is shown with the option to stay on the current view or leave to the next',
+					parameters:
+					{
+					}
+				}
+			}
 		},
 		'bi.views':
 		{
@@ -1443,7 +1502,40 @@ jsapidoc.content =
 		'bi.panel':
 		{
 			title: 'bi.panel',
-			description: 'This object represents an overlay section of a <code>bi.view</code> as part of a web application. See <code>bi.webapp</code> for more details on how to use it.'
+			description: 'This object represents an overlay section of a <code>bi.view</code> as part of a web application. See <code>bi.webapp</code> for more details on how to use it.',
+			properties:
+			{
+				'dom': {type: 'HTMLElement', description: 'The main dom element that holds the panel content. Null by default, it should ideally be set in the <code>show()</code> method.'},
+				'view': {type: 'bi.view', description: 'Reference to the <code>bi.view</code> that holds this panel. Null by default, it should ideally be set in the <code>show()</code> method.'}
+			},
+			methods:
+			{
+				'show':
+				{
+					signature: 'show(view?, data?)',
+					returns: '',
+					description: 'Abstract method that should show the panel for the given view. Typically although not required the panel should be displayed using <code>view.dom.appendChild(this.dom);</code>.',
+					parameters:
+					{
+						'view': 'The linked parent <code>bi.view</code>. It may be null if the panel is to be displayed independently of any view',
+						'data': 'The optional additional data required by the panel'
+					}
+				},
+				'hide':
+				{
+					signature: 'hide()',
+					returns: '',
+					description: 'Abstract method that should hide the panel',
+					parameters:
+					{
+					}
+				}
+			}
+		},
+		'bi.panels':
+		{
+			title: 'bi.panels',
+			description: 'This object is the container for all the <code>bi.panel</code> of a web application. See <code>bi.webapp</code> for more details on how to use it.'
 		}
 	}
 };
