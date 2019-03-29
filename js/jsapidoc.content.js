@@ -1428,17 +1428,47 @@ jsapidoc.content =
 		'bi.webapp':
 		{
 			title: 'bi.webapp',
-			description: 'This object is the main entry point for a single page web application. It offers a simple framework for natural browsing using url fragments.',
+			description: 'This object is the main entry point for a single page web application. It offers a simple framework for natural browsing using url fragments.<br />' +
+				'The views should be registered in <code>bi.views</code>. A default view should also be registered as <code>bi.views.default</code> in order to catch any missing (aka 404) view.<br />' +
+				'The matching of the view is based on the key registered in <code>bi.views</code> including the "#" symbol but excluding any "/" and after. As such, the URL <code>https://...#abc.def/123</code> will use the view <code>bi.views["#abc.def"]</code>. The complete URL fragment including the "/" parts can then be retrieved using <code>bi.webapp.currentHash</code>',
 			sample: 'bi.require(["bi.webapp", "bi.view"], function()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;bi.views.import(<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: bi.instance(' +
 				'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parent: bi.view,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: function(previous) { this.dom = bi.webapp.container.appendChild(bi.node("a", {href: "#page1"}, "Go to page 1")); },<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide: function(next) { this.dom.remove(); }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}' +
 				'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}),<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"#page1": bi.instance(' + 
 				'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parent: bi.view,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: function(previous) { this.dom = bi.webapp.container.appendChild(bi.node("a", {href: "#"}, "Go to homepage")); },<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide: function(next) { this.dom.remove(); }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}' +
-				'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br />&nbsp;&nbsp;&nbsp;&nbsp;});<br />});' +
-				'<br /><br />bi.webapp.initialize();',
+				'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br />&nbsp;&nbsp;&nbsp;&nbsp;});<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;bi.webapp.initialize();<br />});',
 			properties:
 			{
 				'bi.panels': {type: 'Object', description: 'This object is the container for all the <code>bi.panel</code> of a web application'},
-				'bi.views': {type: 'Object', description: 'This object is the container for all the <code>bi.view</code> of a web application'}
+				'bi.views': {type: 'Object', description: 'This object is the container for all the <code>bi.view</code> of a web application'},
+				'bi.webapp.container': {type: 'HTMLElement', description: 'This the main container in which the views should attach their dom. Default to <code>document.body</code>'},
+				'bi.webapp.current': {type: 'bi.view', description: 'This the current view'},
+				'bi.webapp.data': {type: 'Object', description: 'This a container to eventually pass or store temporary data between different views'},
+				'bi.webapp.currentHash': {type: 'String', description: 'This the current URL fragment. Default "#"'},
+				'bi.webapp.previousHash': {type: 'String', description: 'This the previous URL fragment. Default null'}
+			},
+			methods:
+			{
+				'initialize':
+				{
+					signature: '[static] initialize(container?)',
+					returns: '',
+					description: 'Initializes the Single Page Application browsing system by listening at the "hashchange" event of the browser. The default view "#" is loaded immediately',
+					parameters:
+					{
+						'container': 'Optional default container for the views. If an HTMLElement is provided, it is used directly. If a string is provided, the matching element id is used'
+					}
+				},
+				'route':
+				{
+					signature: '[static] route(next, previous?)',
+					returns: '',
+					description: 'Navigates to the next view and calls itd <code>show()</code> method.',
+					parameters:
+					{
+						'next': 'The String URL fragment to navigate to, including the leading "#". If a matching view cannot be found in <code>bi.views</code> then <code>bi.views.default</code> is used',
+						'previous': 'The String URL fragment if the previous view. If not specified, the <code>bi.webapp.currentHash</code> is used'
+					}
+				}
 			}
 		},
 		'bi.view':
