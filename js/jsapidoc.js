@@ -73,11 +73,13 @@ window.jsapidoc = bi.instance(
 			
 			if( item.sample )
 			{
-				main.appendChild(bi.node('section',
+				var s = main.appendChild(bi.node('section',
 				[
-					bi.node('h2', 'Sample'),
-					bi.node('pre', item.sample)
+					bi.node('h2', 'Sample')
 				]));
+				if( !Array.isArray(item.sample) ) item.sample = [item.sample];
+				for( var i = 0; i < item.sample.length; i++ )
+					s.appendChild(bi.node('pre', item.sample[i]));
 			}
 			
 			if( item.ctor )
