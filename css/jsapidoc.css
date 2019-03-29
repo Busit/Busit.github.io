@@ -33,6 +33,7 @@ pre {
     padding: 8px 16px;
     background-color: #ffffff;
 	white-space: normal; line-height: 1.5;
+	margin-top: 20px;
 }
 
 #jsapidoc_ol {
