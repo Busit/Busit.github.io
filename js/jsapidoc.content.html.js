@@ -214,7 +214,7 @@ jsapidoc.content['html'] =
 			'last':
 			{
 				type: 'Object',
-				description: 'Getter for the last element of the array of null if the array is empty.'
+				description: 'Getter for the last element of the array or null if the array is empty.'
 			},
 			
 		},
@@ -283,7 +283,7 @@ jsapidoc.content['html'] =
 			{
 				signature: 'aggregate(f, reverse)',
 				returns: 'Object',
-				description: 'Applies the specified function <code>f(result, item)</code> recursively on all elements of the array. The <code>result</code> is the return value of the previous call.',
+				description: 'Applies the specified function <code>f(result, item)</code> recursively on all elements of the array. In the provided function, the <code>result</code> parameter is the return value of the previous call.<br /><br />The final <code>result</code> is returned.',
 				parameters:
 				{
 					'f': 'The aggregation function to apply.',
@@ -561,7 +561,7 @@ jsapidoc.content['html'] =
 			{
 				signature: 'appendChild(child)',
 				returns: 'Element<br />Element[]',
-				description: 'Appends the specified element or list of elements to this parent.',
+				description: 'Appends the specified element or list of elements to this node.',
 				parameters:
 				{
 					'child': 'Element or array of elements to append.'
