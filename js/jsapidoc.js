@@ -4,6 +4,7 @@ window.jsapidoc = bi.instance(
 {
 	members:
 	{
+		content: {},
 		initialize: function(element)
 		{
 			if( !element ) element = document.body;
@@ -17,9 +18,10 @@ window.jsapidoc = bi.instance(
 			]);
 			
 			var self = this;
-			bi.require("jsapidoc.content", function()
+			bi.require(["jsapidoc.content.bi", "jsapidoc.content.html", "jsapidoc.content.spa"], function()
 			{
 				self.generateTreeStructure();
+				// default content
 				self.showClass('bi', 'bi');
 			});
 		},
