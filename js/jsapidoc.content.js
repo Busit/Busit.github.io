@@ -269,7 +269,7 @@ jsapidoc.content =
 						'key': 'The name of the cookie element.',
 						'value': 'The value of the cookie element.',
 						'sessionOnly': 'Whether or not the cookie is destroyed after the browser is closed. If false, then the value is preserved for 1 year maximum. (Default true)',
-						'secure': 'Whether or not to force a HTTPS connection to retreive the value later on. (Default false)',
+						'secure': 'Whether or not to force a HTTPS connection to retrieve the value later on. (Default false)',
 						'domain': 'The domain for which the cookie is valid. If the root domain is specified, it is valid for all subdomains. (Default to the current subdomain)',
 						'path': 'The path (URI) for which the cookie is value. If the root "/" is specified, it is valid for all URIs. (Default to the current path)'
 					}
@@ -282,7 +282,7 @@ jsapidoc.content =
 					parameters:
 					{
 						'key': 'The name of the cookie element.',
-						'secure': 'Whether or not to force a HTTPS connection to retreive the value later on. (Default false)',
+						'secure': 'Whether or not to force a HTTPS connection to retrieve the value later on. (Default false)',
 						'domain': 'The domain for which the cookie is valid. If the root domain is specified, it is valid for all subdomains. (Default to the current subdomain)',
 						'path': 'The path (URI) for which the cookie is value. If the root "/" is specified, it is valid for all URIs. (Default to the current path)'
 					}
@@ -864,7 +864,8 @@ jsapidoc.content =
 			description: "The following DOM extensions ensure a minimum level of browser compatibility and otherwise add some common sense methods to the base Javascript objects.",
 			properties:
 			{
-				'parameters': {type: 'Object', description: 'The query string parameters in the form of a key-value pair object.<br />Note: the parameters are parsed on page load and will not reflect changes that occur afterwards.'}
+				'parameters': {type: 'Object', description: 'The query string parameters in the form of a key-value pair object.<br />Note: the parameters are parsed on page load and will not reflect changes that occur afterwards.'},
+				'href': {type: 'String', description: 'Returns a String containing a "#" followed by the fragment identifier of the URL. The fragment is not percent-decoded. If the URL does not have a fragment identifier, this property contains an empty string.'}
 			}
 		},
 		'Date':
