@@ -298,6 +298,16 @@ jsapidoc.content['html'] =
 				parameters:
 				{
 				}
+			},
+			'intersect':
+			{
+				signature: 'intersect(...a)',
+				returns: 'Array',
+				description: 'Returns intersection with one or several array.',
+				parameters:
+				{
+					'a': 'Array(s) with which we return the intersection.'
+				}
 			}
 		}
 	},
