@@ -60,6 +60,11 @@
 	<p>Therefore, we consider that the REST API lies in an 8th layer <strong>on top of HTTP</strong>.
 		And according to the ISO encapsulation, we should not rely on a lower level specifics: the HTTP headers, the HTTP response code or the HTTP encoding,...</p>
 	<p>The REST API speaks JSON and this is what matters.</p>
+	<p class="we_say">But the return code gives a quick hint about the result !</p>
+	<p>Indeed, the return code will tell you if the HTTP request did succeed (code 200) or failed (i.e. error 500). But what did exactly ?<br />
+		If you automate a script to send request and just expect a 200 return code. If you typed a wrong but valid URL that ends up somewhere else and return a nice picture of a cat... This is return code 200 !
+		What if you have an API endpoint that is supposed to return an ID, this is return code 200... but you still need to parse the response anyway to get the value you are expecting. The sames goes for errors.
+		</p><p>This is why only checking the HTTP return code is not a practice we recommend, in any case. The content matters, not how you get it.</p>
 	<p class="you_say">So is the entire world wrong and you are right ?</p>
 	<p>There is no right or wrong. If ever there is an evolution of the HTTP protocol, the Busit REST API will remain untouched whereas other implementations
 		will most probably need deep adjustments to make it compliant to another version... which may later change again...</p>
@@ -69,7 +74,7 @@
 <div class="answer">
 	<p class="you_say">Why use MD5 whereas it has been proven to be a compromized algorithm ?</p>
 	<p>
-		The <a href="https://en.wikipedia.org/wiki/MD5">MD5</a> hashing algorithm is used to issue API tokens and to hash passwords.
+		The <a href="https://en.wikipedia.org/wiki/MD5">MD5</a> hashing algorithm is used to issue API tokens.
 		This is an educated choice for the purposes it serves. You may have read or heard that MD5 is compromized or weak or else, 
 		which is entirely true. However, this does not remove the intresic propreties of the algorithm per-se that we are interrested in:</p>
 	<ol>
@@ -88,8 +93,8 @@
 		input is not less computationally hard than brute force. Once again, the collision weakness of the algorithm does not alter the complexity of retreiving
 		the original password. Meanwhile, due to other internal security considerations, we have opted for a longer hash length using the SHA2 algorithm.</li>
 	</ul>
-	<p class="we_say">How does one find your password based on the MD5 hash ?</p>
-	<p>There are two ways to find the password based on the MD5 hash. Those are the same two methods than for any other hashing algorithm:</p>
+	<p class="we_say">How does one find your password based on the hash ?</p>
+	<p>There are two ways to find the password based on a hash. Those are the same two methods for any hashing algorithm:</p>
 	<ol>
 		<li><strong>Rainbow tables</strong>. Simplified: This means that people keep a list of all possible hash with the corresponding input value. Then you just
 			have to select the hash in the list and that's it, you have it ! However, this requires a huge list of entries of 128bit each, which can extend to about
