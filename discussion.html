@@ -60,9 +60,15 @@
 	<p>Therefore, we consider that the REST API lies in an 8th layer <strong>on top of HTTP</strong>.
 		And according to the ISO encapsulation, we should not rely on a lower level specifics: the HTTP headers, the HTTP response code or the HTTP encoding,...</p>
 	<p>The REST API speaks JSON and this is what matters.</p>
+	<p class="we_say">But the request verb (GET, POST) specifies what you want to do !</p>
+	<p>Many APIs are exposing low-level atomic endpoints such as "create an entity", "list elements", "modify something",...
+		Although it might be useful, a real business operation may require to perform dozens of such low-level operations. A more valuable API would
+		expose a single endpoint to perform all those tasks at once, i.e.: <em>Update the employee contract, send a notification to HR, create a new history record and return a downloadable signed document</em>.<br />
+		Is this a GET, a POST, a PUT... ? Not really either of those ! So instead of trying to place an awkward HTTP request verb on top of it, lets just consider that the actual content is of significance, not the 
+		envelope around it.</p>
 	<p class="we_say">But the return code gives a quick hint about the result !</p>
-	<p>Indeed, the return code will tell you if the HTTP request did succeed (code 200) or failed (i.e. error 500). But what did exactly ?<br />
-		If you automate a script to send request and just expect a 200 return code. If you typed a wrong but valid URL that ends up somewhere else and return a nice picture of a cat... This is return code 200 !
+	<p>Indeed, the return code will tell you if the HTTP request did succeed (code 200) or failed (i.e. error 500). But "what" did ?<br />
+		If you automate a script to send request and just expect a 200 return code and you typed a wrong but valid URL that ends up somewhere else and return a nice picture of a cat... This is return code 200 !
 		What if you have an API endpoint that is supposed to return an ID, this is return code 200... but you still need to parse the response anyway to get the value you are expecting. The sames goes for errors.
 		</p><p>This is why only checking the HTTP return code is not a practice we recommend, in any case. The content matters, not how you get it.</p>
 	<p class="you_say">So is the entire world wrong and you are right ?</p>
