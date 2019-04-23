@@ -18,7 +18,7 @@ window.jsapidoc = bi.instance(
 			]);
 			
 			var self = this;
-			bi.require(["jsapidoc.content.bi", "jsapidoc.content.html", "jsapidoc.content.spa"], function()
+			bi.require(["jsapidoc.content.bi", "jsapidoc.content.html", "jsapidoc.content.spa", "jsapidoc.content.webapp"], function()
 			{
 				self.generateTreeStructure();
 				// default content

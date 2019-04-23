@@ -15,11 +15,11 @@ jsapidoc.content['Single Page Application'] =
 		{
 			'bi.panels': {type: 'Object', description: 'This object is the container for all the <code>bi.panel</code> of a web application'},
 			'bi.views': {type: 'Object', description: 'This object is the container for all the <code>bi.view</code> of a web application'},
-			'bi.webapp.container': {type: 'HTMLElement', description: 'This the main container in which the views should attach their dom. Default to <code>document.body</code>'},
-			'bi.webapp.current': {type: 'bi.view', description: 'This the current view'},
-			'bi.webapp.data': {type: 'Object', description: 'This a container to eventually pass or store temporary data between different views'},
-			'bi.webapp.currentHash': {type: 'String', description: 'This the current URL fragment. Default "#"'},
-			'bi.webapp.previousHash': {type: 'String', description: 'This the previous URL fragment. Default null'}
+			'bi.webapp.container': {type: 'HTMLElement', description: 'The main container in which the views should attach their dom. Default to <code>document.body</code>'},
+			'bi.webapp.current': {type: 'bi.view', description: 'The current view'},
+			'bi.webapp.data': {type: 'Object', description: 'An object container to eventually pass or store temporary data between different views'},
+			'bi.webapp.currentHash': {type: 'String', description: 'The current URL fragment. Default "#"'},
+			'bi.webapp.previousHash': {type: 'String', description: 'The previous URL fragment. Default null'}
 		},
 		methods:
 		{
@@ -37,7 +37,7 @@ jsapidoc.content['Single Page Application'] =
 			{
 				signature: '[static] route(next, previous?)',
 				returns: '',
-				description: 'Navigates to the next view and calls itd <code>show()</code> method.',
+				description: 'Navigates to the next view and calls its <code>show()</code> method.',
 				parameters:
 				{
 					'next': 'The String URL fragment to navigate to, including the leading "#". If a matching view cannot be found in <code>bi.views</code> then <code>bi.views.default</code> is used',
