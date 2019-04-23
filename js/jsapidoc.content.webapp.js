@@ -25,4 +25,4 @@ jsapidoc.content['Busit WebApps'] =
 		}
 	}
 };
-bi.fire(bi, 'provide', ['jsapidoc.content.spa']);
+bi.fire(bi, 'provide', ['jsapidoc.content.webapp']);
