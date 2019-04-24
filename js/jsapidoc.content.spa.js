@@ -4,7 +4,7 @@ jsapidoc.content['Single Page Application'] =
 	{
 		title: 'Single Page Application',
 		description: 'A Single Page Application aims at providing an entire multi-page website without actually browsing to a different URL. This provides a seamless browsing experience to the user.<br /><br />' + 
-			'The different pages are modeled by the concept of views. One view is displayed at a time, which allows just-in-time fetching of resources and constructing the HTML content only when necessary.' +
+			'The different pages are modeled by the concept of views. One view is displayed at a time, which allows just-in-time fetching of resources and constructing the HTML content only when necessary.<br /><br />' + 
 			'The navigation is therefore managed by using URL fragments (#hashtags). The browser history (back and forward navigation) will remember the visited views and browse naturally between those just like different URLs.<br /><br />' +
 			'The concept of Single Page Application also implies that all requests to the application server are performed using ajax requests such that the application remains responsive during background operations.'
 	},
