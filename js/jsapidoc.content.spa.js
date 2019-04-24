@@ -1,9 +1,17 @@
 jsapidoc.content['Single Page Application'] = 
 {
-	'bi.webapp':
+	'1) Concepts':
 	{
-		title: 'bi.webapp',
-		description: 'This object is the main entry point for a single page web application. It offers a simple framework for natural browsing using url fragments.<br /><br />' +
+		title: 'Single Page Application',
+		description: 'A Single Page Application aims at providing an entire multi-page website without actually browsing to a different URL. This provides a seamless browsing experience to the user.<br /><br />' + 
+			'The different pages are modeled by the concept of views. One view is displayed at a time, which allows just-in-time fetching of resources and constructing the HTML content only when necessary.' +
+			'The navigation is therefore managed by using URL fragments (#hashtags). The browser history (back and forward navigation) will remember the visited views and browse naturally between those just like different URLs.<br /><br />' +
+			'The concept of Single Page Application also implies that all requests to the application server are performed using ajax requests such that the application remains responsive during background operations.'
+	},
+	'2) Entry point':
+	{
+		title: 'Class : bi.webapp',
+		description: 'This object is the main entry point for a single page web application.<br /><br />' +
 			'The views should be registered in <code>bi.views</code>. A default view should also be registered as <code>bi.views.default</code> in order to catch any missing (aka 404) view.<br /><br />' +
 			'The matching of the view is based on the key registered in <code>bi.views</code> including the "#" symbol but excluding any "/" and after.<br />Example: the URL <code>https://...#abc.def/123</code> will use the view <code>bi.views["#abc.def"]</code> regardless of the trailing "/123". Meanwhile, the complete URL fragment including the "/" parts can then be retrieved using <code>bi.webapp.currentHash</code> or the native <code>location.hash</code> property.',
 		sample: 'bi.require(["bi.webapp", "bi.view"], function()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;bi.views.import(<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: bi.instance(' +
@@ -46,9 +54,9 @@ jsapidoc.content['Single Page Application'] =
 			}
 		}
 	},
-	'bi.view':
+	'3) Views':
 	{
-		title: 'bi.view',
+		title: 'Class : bi.view',
 		description: 'This class represents a view (or one page) of a web application. See <code>bi.webapp</code> for more details on how to use it.',
 		sample: 'bi.views["#my_view"] = bi.instance(<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;parent: bi.view,<br />&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: function(previous)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dom = bi.webapp.container.appendChild(bi.node("div", "Hello World!"));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide: function(next)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dom.remove();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />});',
 		properties:
@@ -109,9 +117,9 @@ jsapidoc.content['Single Page Application'] =
 			}
 		}
 	},
-	'bi.panel':
+	'4) Panels':
 	{
-		title: 'bi.panel',
+		title: 'Class : bi.panel',
 		description: 'This object represents an overlay section of a <code>bi.view</code> as part of a web application. See <code>bi.webapp</code> for more details on how to use it.',
 		sample: 'bi.panels["my_panel"] = bi.instance(<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;parent: bi.panel,<br />&nbsp;&nbsp;&nbsp;&nbsp;members:<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: function(view, data)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dom = view.dom.appendChild(bi.node("div", data));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide: function()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dom.remove();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />});',
 		properties:
