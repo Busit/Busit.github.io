@@ -1,4 +1,4 @@
-jsapidoc.content['html'] = 
+jsapidoc.content[' html'] = 
 {
 	'document':
 	{

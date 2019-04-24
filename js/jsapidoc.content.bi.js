@@ -1,4 +1,4 @@
-jsapidoc.content['bi'] = 
+jsapidoc.content[' bi'] = 
 {
 	'bi':
 	{
