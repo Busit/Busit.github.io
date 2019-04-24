@@ -1,6 +1,19 @@
 jsapidoc.content['Busit WebApps'] = 
 {
-	'1) WebApp Template':
+	'1) What is a WebApp ?':
+	{
+		title: 'Busit WebApps',
+		description: 'In the Busit platform, the administrator can deploy web applications that serve various purposes. For instance, the administrator panel itself is a WebApp.<br /><br />' +
+			'This allows to apply updates very easily, or even deploy different version of the same WebApp side by side.<br />'
+			'A WebApp is therefore a zip archive that contains all the files that need to be deployed on the platform. Each WebApp is characterized by the listed properties.',
+		properties:
+		{
+			'name': {type: 'String', description: 'This is the friendly name of the WebApp.'},
+			'path': {type: 'String', description: 'This is the unique URL root path of the WebApp. For instance, if the path is <code>my_app</code>, the full URL will be <code>https://host.net/my_app</code>'},
+			'businessapp': {type: 'Boolean', description: 'This flag indicates if the WebApp can be used as a template for a BusinessApp.'}
+		}
+	},
+	'2) WebApp Template':
 	{
 		title: 'WebApp Template',
 		description: 'The Busit WebApp template consists of default skeleton files that are common to all WebApps. The files may contain variables (see properties below) that will be substituted to match the final WebApp (aka: not the template itself).' + 
@@ -24,7 +37,7 @@ jsapidoc.content['Busit WebApps'] =
 			'{WEBAPP_TITLE}': {type: 'String', description: 'This variable is substituted by the friendly name of the WebApp.'}
 		}
 	},
-	'2) .metadata.json':
+	'3) .metadata.json':
 	{
 		title: 'WebApp Template substitution metadata file',
 		description: 'This JSON file is part of the WebApp Template. It defines the set of custom variables that can be substituted when deploying a WebApp.<br /><br />' +
@@ -41,11 +54,12 @@ jsapidoc.content['Busit WebApps'] =
 			'Welcome to busit.com, the answer is 42 and the question is {UNKNOWN}.'
 			]
 	},
-	'3) index.js':
+	'4) Entry point':
 	{
-		title: 'WebApp entry point: index.js',
-		description: 'This file is the default WebApp Template entry point that is loaded from the main <code>index.html</code> file. Typically, it contains a Single Page Application.<br /><br />' +
-			'Note that the <code>bi</code> namespace is not included in the default WebApp Template, so if you want to build a Single Page Application, you should inlude those files in the WebApp archive.',
+		title: 'WebApp entry point',
+		description: 'The <code>index.js</code> file is the default WebApp Template entry point that is loaded from the main <code>index.html</code> file. Typically, it would contain a Single Page Application.<br />' +
+			'Note that the <code>bi</code> namespace is not included in the default WebApp Template, so if you want to build a Single Page Application, you should inlude those files in the WebApp archive.<br /><br />' +
+			'The Busit WebApp engine allows the use of PHP 7 for server-side scripting if necessary. Hence, the entry point can be customized by providing a custom <code>.htaccess</code> file, by overriding the <code>index.html</code> file, or by using an <code>index.php</code> file instead.',
 		sample: '"use strict";<br /><br />var title = document.createElement("h1");<br />title.textContent = "{WEBAPP_TITLE}";<br />document.body.appendChild(title);'
 	}
 };
