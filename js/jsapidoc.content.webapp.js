@@ -41,7 +41,7 @@ jsapidoc.content['Busit WebApps'] =
 	{
 		title: 'WebApp Template substitution metadata file',
 		description: 'This JSON file is part of the WebApp Template. It defines the set of custom variables that can be substituted when deploying a WebApp.<br /><br />' +
-			'When deploying a zip archive of a WebApp, every file that matches the <code>fileMatch</code> property is scanned and the variables contained between curly braces <code>{VARIABLE}</code> are substituted.<br /><br />' + 
+			'When deploying a zip archive of a WebApp, every file that matches the regular expression contained in the <code>fileMatch</code> property is scanned and the variables contained between curly braces <code>{VARIABLE}</code> are substituted.<br /><br />' + 
 			'The variables can be fixed values, or API configuration variables themselves. If a variable notation does not match, then it is left untouched.',
 		sample: ['{<br />' + 
 			'&nbsp;&nbsp;&nbsp;&nbsp;"fileMatch": "(config\\\\.json|\\\\.conf)$",<br />' + 
