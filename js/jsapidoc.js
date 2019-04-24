@@ -22,7 +22,7 @@ window.jsapidoc = bi.instance(
 			{
 				self.generateTreeStructure();
 				// default content
-				self.showClass('bi', 'bi');
+				self.showClass(' bi', 'bi');
 			});
 		},
 		generateTreeStructure: function()
