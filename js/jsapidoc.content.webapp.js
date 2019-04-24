@@ -4,7 +4,7 @@ jsapidoc.content['Busit WebApps'] =
 	{
 		title: 'Busit WebApps',
 		description: 'In the Busit platform, the administrator can deploy web applications that serve various purposes. For instance, the administrator panel itself is a WebApp.<br /><br />' +
-			'This allows to apply updates very easily, or even deploy different version of the same WebApp side by side.<br />'
+			'This allows to apply updates very easily, or even deploy different version of the same WebApp side by side.<br />' + 
 			'A WebApp is therefore a zip archive that contains all the files that need to be deployed on the platform. Each WebApp is characterized by the listed properties.',
 		properties:
 		{
